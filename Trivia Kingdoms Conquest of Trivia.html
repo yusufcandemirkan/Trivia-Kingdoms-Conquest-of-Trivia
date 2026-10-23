@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Trivia Dünyası: 7 Kıta Savaşı</title>
+  <style>
+    :root {
+      --bg-dark: #0b1120;
+      --card-bg: #1e293b;
+      --accent-blue: #38bdf8;
+      --accent-gold: #fbbf24;
+      --accent-purple: #c084fc;
+      --player-color: #2563eb;
+      --bot1-color: #dc2626;
+      --bot2-color: #16a34a;
+      --neutral-color: #64748b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Üst Bar (Ekonomi & Can & Krediler) */
+    header {
+      width: 100%;
+      max-width: 960px;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      border-bottom: 2px solid #334155;
+      gap: 10px;
+    }
+
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      background: #0f172a;
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: 1px solid #334155;
+    }
+
+    .btn-claim {
+      background: linear-gradient(135deg, #a855f7, #6b21a8);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.1s;
+    }
+    .btn-claim:hover { transform: scale(1.05); }
+
+    .btn-ad {
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Ana Alan & Harita */
+    main {
+      width: 100%;
+      max-width: 960px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .map-card {
+      width: 100%;
+      background: #131c31;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid #334155;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    .map-header {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .map-header h2 {
+      font-size: 16px;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      background: #090e1a;
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+    }
+
+    .continent {
+      cursor: pointer;
+      stroke: #090e1a;
+      stroke-width: 2.5;
+      transition: fill 0.3s, filter 0.2s;
+    }
+
+    .continent:hover {
+      filter: brightness(1.25);
+    }
+
+    .cont-label {
+      font-size: 13px;
+      font-weight: bold;
+      fill: #ffffff;
+      pointer-events: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Modallar & Kartlar */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 17, 32, 0.88);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      border: 1px solid #334155;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Savaş Türü Seçim Ekranı */
+    .battle-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .battle-btn {
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid #334155;
+      background: #0f172a;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .battle-btn:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .battle-btn.double-risk {
+      border-color: #a855f7;
+      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+    }
+
+    .battle-btn.double-risk:hover {
+      border-color: #d8b4fe;
+    }
+
+    .badge-sub {
+      font-size: 11px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: #334155;
+      color: #cbd5e1;
+    }
+
+    /* Soru ve Çark Ekranı */
+    .timer-bar {
+      width: 100%;
+      height: 6px;
+      background: #334155;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .timer-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--accent-blue);
+      transition: width 1s linear;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-btn {
+      background: #0f172a;
+      color: var(--text-main);
+      border: 1px solid #334155;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s;
+    }
+    .option-btn:hover { background: #1e293b; border-color: var(--accent-blue); }
+    .option-btn.correct { background: #16a34a !important; border-color: #22c55e !important; }
+    .option-btn.wrong { background: #dc2626 !important; border-color: #ef4444 !important; }
+
+    .guess-input-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .guess-input {
+      padding: 10px;
+      font-size: 16px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      width: 140px;
+    }
+
+    .btn-submit {
+      background: var(--accent-blue);
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Üst Gösterge Paneli -->
+  <header>
+    <div class="status-group">
+      <div class="badge">❤️ Can: <span id="livesDisplay" style="color: #ef4444;">3/3</span></div>
+      <div class="badge">🎫 Bilet: <span id="ticketsDisplay" style="color: var(--accent-blue);">3/3</span></div>
+      <div class="badge">⚔️ Özel Kredi: <span id="specialCreditsDisplay" style="color: var(--accent-purple);">1/2</span></div>
+      <div class="badge">🪙 Altın: <span id="goldDisplay" style="color: var(--accent-gold);">150</span></div>
+    </div>
+    <div class="status-group">
+      <button class="btn-claim" onclick="claimDailyReward()">🎁 Günlük Kredi Al</button>
+      <button class="btn-ad" onclick="watchAdReward()">▶ Reklam (+1 Can/+1 Kredi)</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="map-card">
+      <div class="map-header">
+        <h2>Dünya Haritası (7 Kıta)</h2>
+        <span style="font-size: 12px; color: var(--text-muted);">
+          Mavi: Sen | Kırmızı: Doğu İttifakı | Yeşil: Güney İttifakı
+        </span>
+      </div>
+
+      <!-- 7 Kıtayı Kapsayan Eşit Dağıtılmış SVG Harita -->
+      <svg viewBox="0 0 900 500" id="worldMap">
+        <!-- 1. KUZEY AMERİKA (Mavi - Oyuncu) -->
+        <polygon id="c_na" class="continent" points="50,40 260,30 280,120 190,190 130,220 80,130" fill="#2563eb" onclick="selectContinent('na')"></polygon>
+        <text x="140" y="110" class="cont-label">KUZEY AMERİKA</text>
+
+        <!-- 2. GÜNEY AMERİKA (Yeşil - Bot 2) -->
+        <polygon id="c_sa" class="continent" points="170,240 260,250 240,380 190,410 150,300" fill="#16a34a" onclick="selectContinent('sa')"></polygon>
+        <text x="180" y="320" class="cont-label">GÜNEY AMERİKA</text>
+
+        <!-- 3. AVRUPA (Mavi - Oyuncu) -->
+        <polygon id="c_eu" class="continent" points="350,50 480,45 470,140 370,160 330,110" fill="#2563eb" onclick="selectContinent('eu')"></polygon>
+        <text x="390" y="105" class="cont-label">AVRUPA</text>
+
+        <!-- 4. AFRİKA (Yeşil - Bot 2) -->
+        <polygon id="c_af" class="continent" points="360,180 480,170 510,290 440,390 350,280" fill="#16a34a" onclick="selectContinent('af')"></polygon>
+        <text x="410" y="270" class="cont-label">AFRİKA</text>
+
+        <!-- 5. ASYA (Kırmızı - Bot 1) -->
+        <polygon id="c_as" class="continent" points="490,40 840,40 810,190 640,250 500,160" fill="#dc2626" onclick="selectContinent('as')"></polygon>
+        <text x="640" y="120" class="cont-label">ASYA</text>
+
+        <!-- 6. OKYANUSYA (Kırmızı - Bot 1) -->
+        <polygon id="c_oc" class="continent" points="670,270 820,260 830,370 710,380" fill="#dc2626" onclick="selectContinent('oc')"></polygon>
+        <text x="725" y="325" class="cont-label">OKYANUSYA</text>
+
+        <!-- 7. ANTARKTİKA (Mavi - Oyuncu) -->
+        <polygon id="c_an" class="continent" points="120,440 780,440 730,485 170,485" fill="#2563eb" onclick="selectContinent('an')"></polygon>
+        <text x="420" y="470" class="cont-label">ANTARKTİKA</text>
+      </svg>
+    </div>
+  </main>
+
+  <!-- Savaş Türü Seçim Modalı -->
+  <div class="modal-overlay" id="battleSelectModal">
+    <div class="modal-card">
+      <h3 id="targetContinentTitle">Kıta Kuşatması</h3>
+      <p style="font-size: 13px; color: var(--text-muted);">Saldırı tarzını ve risk katsayısını seçin:</p>
+      
+      <div class="battle-options">
+        <!-- 1v1 Normal Savaş -->
+        <div class="battle-btn" onclick="startBattle('1v1')">
+          <strong style="color: var(--accent-blue);">1 v 1 Klasik Kuşatma</strong>
+          <span class="badge-sub">Maliyet: 1 Bilet 🎫</span>
+          <p style="font-size: 11px; color: #94a3b8;">Normal risk. Kaybedersen 1 can gider, kazanırsan bölge senin olur.</p>
+        </div>
+
+        <!-- 2v2 Özel Kredili Yüksek Risk Savaş -->
+        <div class="battle-btn double-risk" onclick="startBattle('2v2')">
+          <strong style="color: var(--accent-purple);">2 v 2 İttifak Savaşı</strong>
+          <span class="badge-sub" style="background:#581c87; color:#f3e8ff;">Maliyet: 1 Özel Kredi ⚔️</span>
+          <p style="font-size: 11px; color: #d8b4fe;">
+            <strong>2X GETİRİ:</strong> +100 Altın & Kıta<br>
+            <strong>2X RİSK:</strong> Kayıpta <span style="color:#f87171;">-2 Can</span>!
+          </p>
+        </div>
+      </div>
+      <button class="option-btn" style="text-align: center; margin-top: 6px;" onclick="closeModals()">İptal</button>
+    </div>
+  </div>
+
+  <!-- Çoktan Seçmeli Trivia Soru Modalı -->
+  <div class="modal-overlay" id="questionModal">
+    <div class="modal-card">
+      <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+      <span id="questionBadge" style="font-size: 11px; color: var(--accent-gold); font-weight: bold;">TARİH</span>
+      <h4 id="questionText">Soru metni...</h4>
+      <div class="options-grid" id="optionsGrid"></div>
+    </div>
+  </div>
+
+  <!-- Bil ve Fethet Tarzı Sayısal Tahmin Modalı -->
+  <div class="modal-overlay" id="guessModal">
+    <div class="modal-card">
+      <span style="font-size: 11px; color: var(--accent-purple); font-weight: bold;">2v2 KRİTİK SAYISAL TAHMİN</span>
+      <h4 id="guessQuestionText">Soru metni...</h4>
+      <div class="guess-input-group">
+        <input type="number" id="guessInput" class="guess-input" placeholder="Yıl veya Sayı">
+        <button class="btn-submit" onclick="submitGuess()">Hamleyi Yap</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sahte Reklam / Ödül Modalı -->
+  <div class="modal-overlay" id="adModal">
+    <div class="modal-card" style="background: black; border: 2px dashed #fbbf24;">
+      <h3 style="color: #fbbf24;">Ödüllü Video Reklam</h3>
+      <p style="font-size: 13px; color: #
