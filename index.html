@@ -16,7 +16,7 @@
       --bot2-color: #059669;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --ocean-color: #081326;
+      --ocean-color: #09152b;
     }
 
     * {
@@ -28,7 +28,7 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 20%, #1e293b 0%, var(--bg-dark) 85%);
+      background: radial-gradient(circle at 50% 15%, #1e293b 0%, var(--bg-dark) 90%);
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -39,15 +39,18 @@
 
     header {
       width: 100%;
-      max-width: 1050px;
-      padding: 12px 24px;
+      max-width: 1400px;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
       border-bottom: 2px solid var(--panel-border);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 25px rgba(0,0,0,0.6);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
     .stat-badge {
@@ -55,9 +58,9 @@
       align-items: center;
       gap: 8px;
       font-weight: 700;
-      font-size: 14px;
-      background: rgba(7, 13, 25, 0.7);
-      padding: 8px 16px;
+      font-size: 15px;
+      background: rgba(7, 13, 25, 0.75);
+      padding: 8px 18px;
       border-radius: 20px;
       border: 1px solid var(--panel-border);
     }
@@ -66,35 +69,35 @@
       background: linear-gradient(135deg, #10b981, #047857);
       color: white;
       border: 1px solid #34d399;
-      padding: 8px 16px;
+      padding: 9px 20px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+      gap: 8px;
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
       transition: all 0.2s;
     }
-    .btn-ad:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+    .btn-ad:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(16, 185, 129, 0.55); }
 
     main {
       width: 100%;
-      max-width: 1050px;
+      max-width: 1500px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px;
+      padding: 20px;
       gap: 16px;
     }
 
     .map-container {
       width: 100%;
       background: var(--card-bg);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.85);
       border: 1px solid var(--panel-border);
     }
 
@@ -102,71 +105,77 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      padding: 0 6px;
+      margin-bottom: 14px;
+      padding: 0 8px;
     }
 
     .map-title {
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
     }
 
     .audio-toggle {
-      background: none;
+      background: rgba(7, 13, 25, 0.6);
       border: 1px solid var(--panel-border);
       color: var(--text-muted);
-      padding: 4px 10px;
+      padding: 6px 14px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       cursor: pointer;
+      font-weight: 600;
     }
 
-    /* Doğrudan Gömülü SVG Harita */
+    /* 2 Kat Büyütülmüş Ultra Geniş SVG Harita Alanı */
+    .svg-scroll-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+      background: var(--ocean-color);
+    }
+
     svg#gameMap {
       width: 100%;
+      min-width: 1200px; /* Küçük ekranlarda kaydırılabilir minimum genişlik */
       height: auto;
-      max-height: 520px;
-      background: var(--ocean-color);
-      border-radius: 14px;
-      border: 1px solid #1e293b;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
       display: block;
     }
 
     .continent {
       cursor: pointer;
-      transition: fill 0.4s ease, filter 0.25s ease;
+      transition: filter 0.25s ease, opacity 0.25s ease;
     }
 
     .continent path {
-      stroke: #070d19;
-      stroke-width: 1.2;
+      stroke: #060c18;
+      stroke-width: 1.4;
       stroke-linejoin: round;
       fill: inherit;
     }
 
     .continent:hover {
-      filter: brightness(1.3) drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+      filter: brightness(1.35) drop-shadow(0 0 15px rgba(56, 189, 248, 0.6));
     }
 
     .continent-label {
       pointer-events: none;
-      font-size: 13px;
-      font-weight: 800;
+      font-size: 20px;
+      font-weight: 900;
       fill: #ffffff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-      letter-spacing: 0.5px;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.95);
+      letter-spacing: 1px;
     }
 
-    /* Modal Arayüzleri */
+    /* Modallar */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(4, 8, 16, 0.88);
-      backdrop-filter: blur(8px);
+      background: rgba(4, 8, 16, 0.9);
+      backdrop-filter: blur(10px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -182,31 +191,31 @@
 
     .modal-card {
       background: var(--card-bg);
-      border-radius: 20px;
-      padding: 26px;
+      border-radius: 24px;
+      padding: 30px;
       width: 100%;
-      max-width: 490px;
+      max-width: 520px;
       border: 1px solid var(--panel-border);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.85);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.9);
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
 
     .wheel-container {
       position: relative;
-      width: 210px;
-      height: 210px;
-      margin: 8px auto;
+      width: 230px;
+      height: 230px;
+      margin: 10px auto;
     }
 
     .wheel {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 4px solid var(--accent-gold);
-      box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+      border: 5px solid var(--accent-gold);
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
       transition: transform 3.5s cubic-bezier(0.12, 0.95, 0.2, 1);
       background: conic-gradient(
         #ef4444 0deg 72deg,
@@ -219,23 +228,23 @@
 
     .wheel-pointer {
       position: absolute;
-      top: -12px;
+      top: -14px;
       left: 50%;
       transform: translateX(-50%);
       width: 0;
       height: 0;
-      border-left: 12px solid transparent;
-      border-right: 12px solid transparent;
-      border-top: 22px solid #ffffff;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 24px solid #ffffff;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
       z-index: 10;
     }
 
     .timer-bar {
       width: 100%;
-      height: 8px;
+      height: 9px;
       background: #070d18;
-      border-radius: 4px;
+      border-radius: 5px;
       overflow: hidden;
       border: 1px solid var(--panel-border);
     }
@@ -248,7 +257,7 @@
     }
 
     .category-tag {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--accent-gold);
       text-transform: uppercase;
@@ -256,25 +265,25 @@
     }
 
     .question-text {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 600;
-      line-height: 1.45;
-      min-height: 52px;
+      line-height: 1.5;
+      min-height: 55px;
     }
 
     .options-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
     .option-btn {
-      background: rgba(7, 13, 24, 0.6);
+      background: rgba(7, 13, 24, 0.7);
       color: var(--text-main);
       border: 1px solid var(--panel-border);
-      padding: 13px 18px;
+      padding: 14px 20px;
       border-radius: 12px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 500;
       cursor: pointer;
       text-align: left;
@@ -298,15 +307,15 @@
     }
 
     .guess-input {
-      padding: 12px 18px;
-      font-size: 18px;
+      padding: 14px 20px;
+      font-size: 20px;
       font-weight: bold;
       background: #070d18;
       border: 2px solid var(--panel-border);
-      border-radius: 10px;
+      border-radius: 12px;
       color: white;
       text-align: center;
-      width: 150px;
+      width: 160px;
       outline: none;
     }
 
@@ -314,24 +323,24 @@
       background: var(--accent-blue);
       color: #070d18;
       font-weight: 800;
-      font-size: 15px;
+      font-size: 16px;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
       cursor: pointer;
     }
 
     .ad-card {
       background: #020617;
       border: 2px dashed #f59e0b;
-      padding: 35px 20px;
+      padding: 40px 24px;
     }
 
     .ad-timer {
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 900;
       color: var(--accent-gold);
-      margin-top: 12px;
+      margin-top: 14px;
     }
   </style>
 </head>
@@ -339,115 +348,121 @@
 
   <header>
     <div class="stat-badge">
-      <span>🎫 Biletler:</span>
+      <span>🎫 Sefer Biletleri:</span>
       <span id="ticketCount" style="color: var(--accent-blue);">3/3</span>
     </div>
     <button class="btn-ad" onclick="openRewardedAd()">
       <span>▶ Reklam İzle (+1 Bilet)</span>
     </button>
     <div class="stat-badge">
-      <span>🌐 Mavi Kıtalar:</span>
-      <span id="territoryCount" style="color: var(--accent-gold);">2/6</span>
+      <span>🌐 Hakimiyet:</span>
+      <span id="territoryCount" style="color: var(--accent-gold);">2/6 Kıta</span>
     </div>
   </header>
 
   <main>
     <div class="map-container">
       <div class="map-header">
-        <div class="map-title">Dünya Fetih Haritası: Düşman Kıtasına Tıklayarak Sefer Başlatın</div>
+        <div class="map-title">Küresel Harp Haritası: Hedef Kıtaya Tıklayarak Fetih Başlatın</div>
         <button class="audio-toggle" onclick="toggleAudio()" id="audioBtn">🔊 Ses: Açık</button>
       </div>
 
-      <!-- KODUN İÇİNE GÖMÜLÜ, DIŞ BAĞIMSIZ GERÇEK DÜNYA HARİTASI (SVG) -->
-      <svg viewBox="0 0 1000 520" id="gameMap">
-        <!-- Ekvator ve Meridyen Kılavuz Çizgileri -->
-        <line x1="0" y1="260" x2="1000" y2="260" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
-        <line x1="500" y1="0" x2="500" y2="520" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
+      <!-- 2 KAT BÜYÜTÜLMÜŞ DETAYLI DÜNYA HARİTASI (2000 x 1000) -->
+      <div class="svg-scroll-wrapper">
+        <svg viewBox="0 0 2000 1000" id="gameMap">
+          <!-- Meridyen ve Paralel Çizgileri -->
+          <line x1="0" y1="500" x2="2000" y2="500" stroke="rgba(255,255,255,0.05)" stroke-dasharray="6" />
+          <line x1="1000" y1="0" x2="1000" y2="1000" stroke="rgba(255,255,255,0.05)" stroke-dasharray="6" />
 
-        <!-- 1. KUZEY AMERİKA & GRÖNLAND (Kırmızı) -->
-        <g id="c1" class="continent" fill="#dc2626" onclick="handleContinentClick(1)">
-          <!-- Grönland -->
-          <path d="M285,30 C320,25 350,55 355,85 C360,115 330,135 305,130 C280,125 270,95 275,60 Z" />
-          <!-- Kanada ve Alaska Adaları -->
-          <path d="M190,40 C215,35 240,45 235,65 C220,75 195,65 190,40 Z" />
-          <path d="M135,45 C160,40 175,55 160,70 C145,75 130,65 135,45 Z" />
-          <!-- Kuzey Amerika Ana Karası & Meksika -->
-          <path d="M50,85 C95,50 160,55 220,50 C265,70 240,115 255,150 C265,185 240,225 200,245 C185,255 170,270 155,230 C145,185 105,165 75,145 C50,130 35,110 50,85 Z" />
-          <!-- Karayip Adaları / Küba -->
-          <path d="M220,240 C240,235 250,245 235,252 Z" />
-          <text x="160" y="145" text-anchor="middle" class="continent-label">Kuzey Amerika</text>
-        </g>
+          <!-- 1. KUZEY AMERİKA & GRÖNLAND (Kırmızı) -->
+          <g id="c1" class="continent" fill="#dc2626" onclick="handleContinentClick(1)">
+            <!-- Grönland -->
+            <path d="M570,70 C630,55 700,105 710,170 C715,225 660,270 610,260 C560,250 540,190 550,120 Z" />
+            <!-- Kanada Arktik Adaları -->
+            <path d="M375,80 C420,70 470,90 460,130 C430,150 380,130 375,80 Z" />
+            <path d="M260,90 C310,80 340,110 310,140 C280,150 250,130 260,90 Z" />
+            <!-- Alaska & Kanada & ABD & Meksika -->
+            <path d="M90,165 C180,95 310,105 430,95 C520,135 470,225 500,295 C520,365 475,445 390,485 C360,505 330,535 305,455 C285,365 205,325 145,285 C95,255 70,215 90,165 Z" />
+            <!-- Florida & Karayip Adaları / Küba / Hispanyola -->
+            <path d="M435,470 C475,460 495,480 465,495 Z" />
+            <path d="M480,500 C510,495 530,515 500,525 Z" />
+            <text x="310" y="285" text-anchor="middle" class="continent-label">Kuzey Amerika</text>
+          </g>
 
-        <!-- 2. GÜNEY AMERİKA (Kırmızı) -->
-        <g id="c2" class="continent" fill="#dc2626" onclick="handleContinentClick(2)">
-          <!-- Güney Amerika Karası ve Ateş Toprakları -->
-          <path d="M195,265 C235,255 285,295 305,335 C325,385 280,440 250,480 C235,495 220,500 215,465 C210,420 195,355 180,315 C175,285 185,270 195,265 Z" />
-          <!-- Falkland / Malvinas -->
-          <circle cx="255" cy="485" r="3" />
-          <text x="245" y="375" text-anchor="middle" class="continent-label">Güney Amerika</text>
-        </g>
+          <!-- 2. GÜNEY AMERİKA (Kırmızı) -->
+          <g id="c2" class="continent" fill="#dc2626" onclick="handleContinentClick(2)">
+            <!-- Kolombiya, Brezilya Çıkıntısı, Amazon, Arjantin & Şili -->
+            <path d="M385,525 C465,505 565,585 605,665 C645,765 555,875 495,955 C465,985 435,995 425,925 C415,835 385,705 355,625 C345,565 365,535 385,525 Z" />
+            <!-- Falkland Adaları -->
+            <circle cx="505" cy="965" r="7" />
+            <text x="485" y="745" text-anchor="middle" class="continent-label">Güney Amerika</text>
+          </g>
 
-        <!-- 3. AVRUPA (Oyuncu - Mavi) -->
-        <g id="c3" class="continent" fill="#2563eb" onclick="handleContinentClick(3)">
-          <!-- İskandinavya -->
-          <path d="M445,60 C465,55 485,75 475,115 C465,130 450,130 440,105 C435,80 440,65 445,60 Z" />
-          <!-- Britanya & İrlanda -->
-          <path d="M400,95 C415,90 420,110 410,125 C395,130 395,105 400,95 Z" />
-          <path d="M385,105 C395,100 395,115 390,120 Z" />
-          <!-- İzlanda -->
-          <path d="M360,55 C375,50 380,65 370,72 C360,72 355,62 360,55 Z" />
-          <!-- Ana Kıta: İberik, Fransa, Almanya, İtalya, Balkanlar -->
-          <path d="M405,145 C435,130 470,135 505,135 C520,165 490,195 470,205 C445,215 425,210 405,185 C390,170 395,150 405,145 Z" />
-          <!-- İtalya Çizmesi & Yunanistan -->
-          <path d="M445,190 L455,225 L445,230 Z" />
-          <text x="455" y="160" text-anchor="middle" class="continent-label">Avrupa</text>
-        </g>
+          <!-- 3. AVRUPA (Oyuncu - Mavi) -->
+          <g id="c3" class="continent" fill="#2563eb" onclick="handleContinentClick(3)">
+            <!-- İskandinav Yarımadası & Fiyortlar -->
+            <path d="M880,115 C925,105 965,145 945,225 C925,255 895,255 875,205 C865,155 875,125 880,115 Z" />
+            <!-- Britanya & İskoçya -->
+            <path d="M795,185 C825,175 835,215 815,245 C785,255 785,205 795,185 Z" />
+            <!-- İrlanda -->
+            <path d="M765,205 C785,195 785,225 775,235 Z" />
+            <!-- İzlanda -->
+            <path d="M715,105 C745,95 755,125 735,140 C715,140 705,120 715,105 Z" />
+            <!-- Kıta Avrupası: İberik, Fransa, Almanya, Polonya, İtalya, Balkanlar -->
+            <path d="M805,285 C865,255 935,265 1005,265 C1035,325 975,385 935,405 C885,425 845,415 805,365 C775,335 785,295 805,285 Z" />
+            <!-- İtalya Çizmesi & Mora -->
+            <path d="M885,375 L905,445 L885,455 Z" />
+            <text x="905" y="315" text-anchor="middle" class="continent-label">Avrupa</text>
+          </g>
 
-        <!-- 4. AFRİKA (Yeşil) -->
-        <g id="c4" class="continent" fill="#059669" onclick="handleContinentClick(4)">
-          <!-- Afrika Ana Karası -->
-          <path d="M405,225 C485,210 525,245 535,280 C550,330 515,395 495,435 C475,445 450,420 440,355 C410,335 390,285 395,255 C395,235 400,225 405,225 Z" />
-          <!-- Madagaskar Adası -->
-          <path d="M565,360 C575,355 580,385 570,405 C560,405 558,375 565,360 Z" />
-          <text x="465" y="325" text-anchor="middle" class="continent-label">Afrika</text>
-        </g>
+          <!-- 4. AFRİKA (Yeşil) -->
+          <g id="c4" class="continent" fill="#059669" onclick="handleContinentClick(4)">
+            <!-- Kuzey Sahra, Batı Afrika, Kongo Havzası, Güney Afrika Boynuzu -->
+            <path d="M805,445 C965,415 1045,485 1065,555 C1095,655 1025,785 985,865 C945,885 895,835 875,705 C815,665 775,565 785,505 C785,465 795,445 805,445 Z" />
+            <!-- Madagaskar -->
+            <path d="M1125,715 C1145,705 1155,765 1135,805 C1115,805 1110,745 1125,715 Z" />
+            <text x="925" y="645" text-anchor="middle" class="continent-label">Afrika</text>
+          </g>
 
-        <!-- 5. ASYA & ORTA DOĞU (Oyuncu - Mavi) -->
-        <g id="c5" class="continent" fill="#2563eb" onclick="handleContinentClick(5)">
-          <!-- Asya, Sibirya, Arap Yarımadası, Hindistan, Çin -->
-          <path d="M510,135 C580,60 760,50 870,75 C895,105 870,160 830,190 C785,235 770,290 710,295 C675,295 650,240 625,230 C590,275 565,270 540,235 C515,225 500,170 510,135 Z" />
-          <!-- Japon Takımadaları -->
-          <path d="M850,155 C865,150 870,185 860,210 C850,210 845,175 850,155 Z" />
-          <!-- Güneydoğu Asya Adaları (Endonezya/Filipinler) -->
-          <path d="M740,320 C765,315 780,335 760,345 Z" />
-          <path d="M780,325 C805,320 815,340 795,350 Z" />
-          <text x="690" y="165" text-anchor="middle" class="continent-label">Asya</text>
-        </g>
+          <!-- 5. ASYA & SİBİRYA (Oyuncu - Mavi) -->
+          <g id="c5" class="continent" fill="#2563eb" onclick="handleContinentClick(5)">
+            <!-- Rusya, Sibirya, Orta Asya, Arap Yarımadası, Hindistan, Çin -->
+            <path d="M1015,265 C1155,115 1515,95 1735,145 C1785,205 1735,315 1655,375 C1565,465 1535,575 1415,585 C1345,585 1295,475 1245,455 C1175,545 1125,535 1075,465 C1025,445 995,335 1015,265 Z" />
+            <!-- Japon Takımadaları -->
+            <path d="M1695,305 C1725,295 1735,365 1715,415 C1695,415 1685,345 1695,305 Z" />
+            <!-- Sri Lanka -->
+            <circle cx="1325" cy="625" r="8" />
+            <!-- Güneydoğu Asya & Endonezya Adaları -->
+            <path d="M1475,635 C1525,625 1555,665 1515,685 Z" />
+            <path d="M1555,645 C1605,635 1625,675 1585,695 Z" />
+            <text x="1375" y="325" text-anchor="middle" class="continent-label">Asya</text>
+          </g>
 
-        <!-- 6. OKYANUSYA / AVUSTRALYA (Yeşil) -->
-        <g id="c6" class="continent" fill="#059669" onclick="handleContinentClick(6)">
-          <!-- Avustralya Karası -->
-          <path d="M775,360 C835,335 885,370 880,415 C870,450 815,455 780,430 C760,410 760,380 775,360 Z" />
-          <!-- Yeni Zelanda Adaları -->
-          <path d="M920,430 C935,425 930,455 920,465 Z" />
-          <path d="M930,465 C940,460 935,485 925,490 Z" />
-          <!-- Tazmanya -->
-          <circle cx="845" cy="460" r="4" />
-          <text x="830" y="405" text-anchor="middle" class="continent-label">Okyanusya</text>
-        </g>
-      </svg>
+          <!-- 6. OKYANUSYA / AVUSTRALYA (Yeşil) -->
+          <g id="c6" class="continent" fill="#059669" onclick="handleContinentClick(6)">
+            <!-- Avustralya Kıtası -->
+            <path d="M1545,715 C1665,665 1765,735 1755,825 C1735,895 1625,905 1555,855 C1515,815 1515,755 1545,715 Z" />
+            <!-- Yeni Zelanda -->
+            <path d="M1835,855 C1865,845 1855,905 1835,925 Z" />
+            <path d="M1855,925 C1875,915 1865,965 1845,975 Z" />
+            <!-- Tazmanya -->
+            <circle cx="1685,915" r="9" />
+            <text x="1655,805" text-anchor="middle" class="continent-label">Okyanusya</text>
+          </g>
+        </svg>
+      </div>
     </div>
   </main>
 
   <!-- Çark Modal -->
   <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
-      <h3 style="font-size: 20px; font-weight: 800;">Kıta Seferi Başlıyor</h3>
+      <h3 style="font-size: 22px; font-weight: 800;">Kıta Seferi Başlıyor</h3>
       <div class="wheel-container">
         <div class="wheel-pointer"></div>
         <div class="wheel" id="wheel"></div>
       </div>
-      <p style="color: var(--text-muted); font-size: 14px;">Kader çarkı dönüyor...</p>
+      <p style="color: var(--text-muted); font-size: 15px;">Kader çarkı dönüyor...</p>
     </div>
   </div>
 
@@ -476,8 +491,8 @@
   <!-- Reklam Simülasyonu -->
   <div class="modal-overlay" id="adModal">
     <div class="modal-card ad-card">
-      <h3 style="color: #f59e0b;">ÖDÜLLÜ REKLAM SİMÜLASYONU</h3>
-      <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px;">
+      <h3 style="color: #f59e0b; font-size: 20px;">ÖDÜLLÜ REKLAM SİMÜLASYONU</h3>
+      <p style="color: var(--text-muted); font-size: 14px; margin-top: 8px;">
         (CrazyGames / AdinPlay SDK ile dolar kazandırır)
       </p>
       <div class="ad-timer" id="adTimer">5</div>
@@ -567,13 +582,13 @@
     let timerInterval = null;
     let timeLeft = 10;
 
-    // 6 Kıtanın Başlangıç Sahipleri
+    // 6 Kıta: 3 (Avrupa) ve 5 (Asya) Oyuncuda (Mavi)
     const continentOwners = {
       1: 'bot1',   // K. Amerika (Kırmızı)
       2: 'bot1',   // G. Amerika (Kırmızı)
-      3: 'player', // Avrupa (Oyuncu Mavi)
+      3: 'player', // Avrupa (Mavi)
       4: 'bot2',   // Afrika (Yeşil)
-      5: 'player', // Asya (Oyuncu Mavi)
+      5: 'player', // Asya (Mavi)
       6: 'bot2'    // Okyanusya (Yeşil)
     };
 
@@ -762,7 +777,7 @@
       for (let k in continentOwners) {
         if (continentOwners[k] === 'player') count++;
       }
-      document.getElementById('territoryCount').innerText = `${count}/6`;
+      document.getElementById('territoryCount').innerText = `${count}/6 Kıta`;
     }
 
     function checkWinCondition() {
