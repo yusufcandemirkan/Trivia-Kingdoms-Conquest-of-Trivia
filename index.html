@@ -4,11 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Trivia Kingdoms: Global Conquest</title>
-  
-  <!-- Gerçek Dünya Haritası İçin Kartografi Kütüphaneleri -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-
   <style>
     :root {
       --bg-dark: #070d18;
@@ -44,7 +39,7 @@
 
     header {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1050px;
       padding: 12px 24px;
       display: flex;
       justify-content: space-between;
@@ -86,7 +81,7 @@
 
     main {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1050px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -98,10 +93,9 @@
       width: 100%;
       background: var(--card-bg);
       border-radius: 20px;
-      padding: 16px;
+      padding: 18px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.8);
       border: 1px solid var(--panel-border);
-      position: relative;
     }
 
     .map-header {
@@ -130,39 +124,32 @@
       cursor: pointer;
     }
 
-    #mapWrapper {
-      position: relative;
+    /* Doğrudan Gömülü SVG Harita */
+    svg#gameMap {
       width: 100%;
+      height: auto;
+      max-height: 520px;
       background: var(--ocean-color);
       border-radius: 14px;
       border: 1px solid #1e293b;
       box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
-      overflow: hidden;
-      min-height: 490px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    svg {
-      width: 100%;
-      height: 100%;
       display: block;
     }
 
-    .country-path {
-      stroke: #060b14;
-      stroke-width: 0.4px;
+    .continent {
       cursor: pointer;
-      transition: fill 0.35s ease, filter 0.2s ease;
+      transition: fill 0.4s ease, filter 0.25s ease;
     }
 
-    .continent-group {
-      cursor: pointer;
+    .continent path {
+      stroke: #070d19;
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+      fill: inherit;
     }
 
-    .continent-group:hover .country-path {
-      filter: brightness(1.3) drop-shadow(0 0 6px rgba(56, 189, 248, 0.4));
+    .continent:hover {
+      filter: brightness(1.3) drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
     }
 
     .continent-label {
@@ -174,16 +161,7 @@
       letter-spacing: 0.5px;
     }
 
-    .loader {
-      color: var(--accent-blue);
-      font-weight: bold;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Modallar */
+    /* Modal Arayüzleri */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -361,7 +339,7 @@
 
   <header>
     <div class="stat-badge">
-      <span>🎫 Sefer Biletleri:</span>
+      <span>🎫 Biletler:</span>
       <span id="ticketCount" style="color: var(--accent-blue);">3/3</span>
     </div>
     <button class="btn-ad" onclick="openRewardedAd()">
@@ -380,10 +358,84 @@
         <button class="audio-toggle" onclick="toggleAudio()" id="audioBtn">🔊 Ses: Açık</button>
       </div>
 
-      <div id="mapWrapper">
-        <div class="loader" id="mapLoader">🌍 Küresel harita yükleniyor...</div>
-        <svg id="worldSvg" viewBox="0 0 960 500" style="display: none;"></svg>
-      </div>
+      <!-- KODUN İÇİNE GÖMÜLÜ, DIŞ BAĞIMSIZ GERÇEK DÜNYA HARİTASI (SVG) -->
+      <svg viewBox="0 0 1000 520" id="gameMap">
+        <!-- Ekvator ve Meridyen Kılavuz Çizgileri -->
+        <line x1="0" y1="260" x2="1000" y2="260" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
+        <line x1="500" y1="0" x2="500" y2="520" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
+
+        <!-- 1. KUZEY AMERİKA & GRÖNLAND (Kırmızı) -->
+        <g id="c1" class="continent" fill="#dc2626" onclick="handleContinentClick(1)">
+          <!-- Grönland -->
+          <path d="M285,30 C320,25 350,55 355,85 C360,115 330,135 305,130 C280,125 270,95 275,60 Z" />
+          <!-- Kanada ve Alaska Adaları -->
+          <path d="M190,40 C215,35 240,45 235,65 C220,75 195,65 190,40 Z" />
+          <path d="M135,45 C160,40 175,55 160,70 C145,75 130,65 135,45 Z" />
+          <!-- Kuzey Amerika Ana Karası & Meksika -->
+          <path d="M50,85 C95,50 160,55 220,50 C265,70 240,115 255,150 C265,185 240,225 200,245 C185,255 170,270 155,230 C145,185 105,165 75,145 C50,130 35,110 50,85 Z" />
+          <!-- Karayip Adaları / Küba -->
+          <path d="M220,240 C240,235 250,245 235,252 Z" />
+          <text x="160" y="145" text-anchor="middle" class="continent-label">Kuzey Amerika</text>
+        </g>
+
+        <!-- 2. GÜNEY AMERİKA (Kırmızı) -->
+        <g id="c2" class="continent" fill="#dc2626" onclick="handleContinentClick(2)">
+          <!-- Güney Amerika Karası ve Ateş Toprakları -->
+          <path d="M195,265 C235,255 285,295 305,335 C325,385 280,440 250,480 C235,495 220,500 215,465 C210,420 195,355 180,315 C175,285 185,270 195,265 Z" />
+          <!-- Falkland / Malvinas -->
+          <circle cx="255" cy="485" r="3" />
+          <text x="245" y="375" text-anchor="middle" class="continent-label">Güney Amerika</text>
+        </g>
+
+        <!-- 3. AVRUPA (Oyuncu - Mavi) -->
+        <g id="c3" class="continent" fill="#2563eb" onclick="handleContinentClick(3)">
+          <!-- İskandinavya -->
+          <path d="M445,60 C465,55 485,75 475,115 C465,130 450,130 440,105 C435,80 440,65 445,60 Z" />
+          <!-- Britanya & İrlanda -->
+          <path d="M400,95 C415,90 420,110 410,125 C395,130 395,105 400,95 Z" />
+          <path d="M385,105 C395,100 395,115 390,120 Z" />
+          <!-- İzlanda -->
+          <path d="M360,55 C375,50 380,65 370,72 C360,72 355,62 360,55 Z" />
+          <!-- Ana Kıta: İberik, Fransa, Almanya, İtalya, Balkanlar -->
+          <path d="M405,145 C435,130 470,135 505,135 C520,165 490,195 470,205 C445,215 425,210 405,185 C390,170 395,150 405,145 Z" />
+          <!-- İtalya Çizmesi & Yunanistan -->
+          <path d="M445,190 L455,225 L445,230 Z" />
+          <text x="455" y="160" text-anchor="middle" class="continent-label">Avrupa</text>
+        </g>
+
+        <!-- 4. AFRİKA (Yeşil) -->
+        <g id="c4" class="continent" fill="#059669" onclick="handleContinentClick(4)">
+          <!-- Afrika Ana Karası -->
+          <path d="M405,225 C485,210 525,245 535,280 C550,330 515,395 495,435 C475,445 450,420 440,355 C410,335 390,285 395,255 C395,235 400,225 405,225 Z" />
+          <!-- Madagaskar Adası -->
+          <path d="M565,360 C575,355 580,385 570,405 C560,405 558,375 565,360 Z" />
+          <text x="465" y="325" text-anchor="middle" class="continent-label">Afrika</text>
+        </g>
+
+        <!-- 5. ASYA & ORTA DOĞU (Oyuncu - Mavi) -->
+        <g id="c5" class="continent" fill="#2563eb" onclick="handleContinentClick(5)">
+          <!-- Asya, Sibirya, Arap Yarımadası, Hindistan, Çin -->
+          <path d="M510,135 C580,60 760,50 870,75 C895,105 870,160 830,190 C785,235 770,290 710,295 C675,295 650,240 625,230 C590,275 565,270 540,235 C515,225 500,170 510,135 Z" />
+          <!-- Japon Takımadaları -->
+          <path d="M850,155 C865,150 870,185 860,210 C850,210 845,175 850,155 Z" />
+          <!-- Güneydoğu Asya Adaları (Endonezya/Filipinler) -->
+          <path d="M740,320 C765,315 780,335 760,345 Z" />
+          <path d="M780,325 C805,320 815,340 795,350 Z" />
+          <text x="690" y="165" text-anchor="middle" class="continent-label">Asya</text>
+        </g>
+
+        <!-- 6. OKYANUSYA / AVUSTRALYA (Yeşil) -->
+        <g id="c6" class="continent" fill="#059669" onclick="handleContinentClick(6)">
+          <!-- Avustralya Karası -->
+          <path d="M775,360 C835,335 885,370 880,415 C870,450 815,455 780,430 C760,410 760,380 775,360 Z" />
+          <!-- Yeni Zelanda Adaları -->
+          <path d="M920,430 C935,425 930,455 920,465 Z" />
+          <path d="M930,465 C940,460 935,485 925,490 Z" />
+          <!-- Tazmanya -->
+          <circle cx="845" cy="460" r="4" />
+          <text x="830" y="405" text-anchor="middle" class="continent-label">Okyanusya</text>
+        </g>
+      </svg>
     </div>
   </main>
 
@@ -509,99 +561,217 @@
       });
     }
 
-    /* Oyun Verisi & Durumu */
+    /* Oyun Durumu */
     let tickets = 3;
-    let selectedContinentKey = null;
+    let selectedContinentId = null;
     let timerInterval = null;
     let timeLeft = 10;
 
+    // 6 Kıtanın Başlangıç Sahipleri
     const continentOwners = {
-      na: 'bot1',   // K. Amerika (Kırmızı)
-      sa: 'bot1',   // G. Amerika (Kırmızı)
-      eu: 'player', // Avrupa (Mavi)
-      af: 'bot2',   // Afrika (Yeşil)
-      as: 'player', // Asya & Arap Yarımadası (Mavi)
-      oc: 'bot2'    // Okyanusya (Yeşil)
+      1: 'bot1',   // K. Amerika (Kırmızı)
+      2: 'bot1',   // G. Amerika (Kırmızı)
+      3: 'player', // Avrupa (Oyuncu Mavi)
+      4: 'bot2',   // Afrika (Yeşil)
+      5: 'player', // Asya (Oyuncu Mavi)
+      6: 'bot2'    // Okyanusya (Yeşil)
     };
 
-    const colors = {
-      player: '#2563eb',
-      bot1: '#dc2626',
-      bot2: '#059669'
-    };
+    const triviaPool = [
+      { category: 'Tarih', question: 'Kıbrıs hangi yılda Osmanlı yönetimine geçmiştir?', options: ['1453', '1571', '1683', '1492'], answer: 1 },
+      { category: 'Tarih', question: 'Çanakkale Boğazı Deniz Zaferi hangi tarihte kazanılmıştır?', options: ['18 Mart 1915', '29 Ekim 1923', '30 Ağustos 1922', '19 Mayıs 1919'], answer: 0 },
+      { category: 'Coğrafya', question: 'Yüzölçümü bakımından dünyanın en büyük kıtası hangisidir?', options: ['Afrika', 'Asya', 'Kuzey Amerika', 'Avrupa'], answer: 1 },
+      { category: 'Coğrafya', question: 'Dünyanın en uzun sıradağlar zinciri hangisidir?', options: ['Himalayalar', 'And Dağları', 'Alpler', 'Kayalık Dağlar'], answer: 1 },
+      { category: 'Bilim', question: 'Periyodik tabloda "Au" sembolü hangi elementi temsil eder?', options: ['Gümüş', 'Altın', 'Bakır', 'Demir'], answer: 1 },
+      { category: 'Spor', question: 'FIFA Dünya Kupası\'nı en çok kazanan ülke hangisidir?', options: ['Almanya', 'İtalya', 'Brezilya', 'Arjantin'], answer: 2 }
+    ];
 
-    const continentMeta = {
-      na: { name: 'Kuzey Amerika', x: 200, y: 150 },
-      sa: { name: 'Güney Amerika', x: 310, y: 350 },
-      eu: { name: 'Avrupa', x: 505, y: 130 },
-      af: { name: 'Afrika', x: 495, y: 290 },
-      as: { name: 'Asya', x: 700, y: 175 },
-      oc: { name: 'Okyanusya', x: 820, y: 380 }
-    };
+    const guessPool = [
+      { question: 'Ay\'a ilk insan hangi yılda ayak basmıştır?', answer: 1969 },
+      { question: 'Titanik gemisi hangi yılda batmıştır?', answer: 1912 },
+      { question: 'İstanbul hangi yılda fethedilmiştir?', answer: 1453 },
+      { question: 'Amerika kıtası Kristof Kolomb tarafından hangi yılda keşfedilmiştir?', answer: 1492 }
+    ];
 
-    /* Kesin Sınır Belirleme: Arap Yarımadası'nı Asya'ya Bağlayan Kod Eşleştiricisi */
-    const arabiaAndMiddleEastIds = new Set([
-      682, // Suudi Arabistan
-      887, // Yemen
-      512, // Umman
-      784, // Birleşik Arap Emirlikleri
-      634, // Katar
-      414, // Kuveyt
-      368, // Irak
-      400, // Ürdün
-      760, // Suriye
-      422, // Lübnan
-      376, // İsrail
-      275, // Filistin
-      364  // İran
-    ]);
-
-    const northAmericaIds = new Set([124, 840, 484, 304, 44, 192, 214, 332, 388, 591, 558, 340, 188, 320]); // Kanada, ABD, Meksika, Grönland vb.
-    const oceaniaIds = new Set([36, 554, 598, 242, 90, 548, 882, 584, 583, 296]); // Avustralya, Yeni Zelanda, Papua Yeni Gine vb.
-
-    function getContinentKey(feature, centroid) {
-      const id = parseInt(feature.id);
-      const [lon, lat] = centroid;
-
-      // 1. Arap Yarımadası ve Yakın Doğu Doğrudan Asya'dır
-      if (arabiaAndMiddleEastIds.has(id)) {
-        return 'as';
+    function handleContinentClick(id) {
+      playClickSound();
+      if (continentOwners[id] === 'player') {
+        alert('Bu kıta zaten sizin hakimiyetinizde!');
+        return;
       }
 
-      // 2. Kuzey Amerika
-      if (northAmericaIds.has(id)) return 'na';
-
-      // 3. Okyanusya
-      if (oceaniaIds.has(id) || (lon > 110 && lat < -10)) return 'oc';
-
-      // 4. Amerika Kıtaları Boylam Ayrımı
-      if (lon < -30) {
-        return lat < 12 ? 'sa' : 'na';
+      if (tickets <= 0) {
+        alert('Sefer biletiniz kalmadı! Reklam izleyerek yeni bilet alabilirsiniz.');
+        return;
       }
 
-      // 5. Afrika (Sina Yarımadası'nın batısı ve Kızıldeniz'in batısı)
-      // Mısır (818) dahil Afrika kıtası
-      if (lon >= -25 && lon <= 35 && lat >= -36 && lat <= 37) {
-        // Akdeniz'in kuzeyindeki Avrupa adalarını ve ülkelerini ele (Kıbrıs, Girit, Malta, İtalya vb.)
-        if (lat > 35 && lon > -10) return 'eu';
-        return 'af';
-      }
-
-      // 6. Avrupa (Kafkaslar ve Ural batısı)
-      if (lon >= -25 && lon <= 45 && lat > 35) {
-        return 'eu';
-      }
-
-      // 7. Geri kalan tüm Avrasya kütlesi Asya'dır
-      return 'as';
+      selectedContinentId = id;
+      tickets--;
+      updateUI();
+      startConquestFlow();
     }
 
-    /* Gerçek Haritayı Çizme */
-    async function loadWorldMap() {
-      try {
-        const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
-        const worldData = await response.json();
-        const countries = topojson.feature(worldData, worldData.objects.countries).features;
+    function startConquestFlow() {
+      const wheelModal = document.getElementById('wheelModal');
+      const wheel = document.getElementById('wheel');
+      wheelModal.style.display = 'flex';
 
-        const svg = d3.select('#worldSvg');
-        const width = 960, height =
+      const randomDeg = 1440 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+      setTimeout(() => {
+        wheelModal.style.display = 'none';
+        wheel.style.transform = 'rotate(0deg)';
+        if (Math.random() > 0.4) {
+          openTriviaModal();
+        } else {
+          openGuessModal();
+        }
+      }, 3500);
+    }
+
+    function openTriviaModal() {
+      const modal = document.getElementById('triviaModal');
+      const randomQ = triviaPool[Math.floor(Math.random() * triviaPool.length)];
+      
+      document.getElementById('categoryLabel').innerText = randomQ.category;
+      document.getElementById('questionText').innerText = randomQ.question;
+      
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      randomQ.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOption(btn, index === randomQ.answer);
+        grid.appendChild(btn);
+      });
+
+      modal.style.display = 'flex';
+      startTimer(() => {
+        playFailSound();
+        alert('Süre tükendi! Kuşatma püskürtüldü.');
+        modal.style.display = 'none';
+      });
+    }
+
+    function selectOption(button, isCorrect) {
+      clearInterval(timerInterval);
+      if (isCorrect) {
+        playSuccessSound();
+        button.classList.add('correct');
+        setTimeout(() => {
+          conquerContinent(selectedContinentId);
+          document.getElementById('triviaModal').style.display = 'none';
+        }, 900);
+      } else {
+        playFailSound();
+        button.classList.add('wrong');
+        setTimeout(() => {
+          alert('Yanlış cevap! Kıta savunması galip geldi.');
+          document.getElementById('triviaModal').style.display = 'none';
+        }, 900);
+      }
+    }
+
+    let currentGuessQ = null;
+    function openGuessModal() {
+      currentGuessQ = guessPool[Math.floor(Math.random() * guessPool.length)];
+      document.getElementById('guessQuestionText').innerText = currentGuessQ.question;
+      document.getElementById('guessInput').value = '';
+      document.getElementById('guessModal').style.display = 'flex';
+    }
+
+    function submitGuess() {
+      playClickSound();
+      const userVal = parseInt(document.getElementById('guessInput').value);
+      if (isNaN(userVal)) return;
+
+      const botOffset = (Math.floor(Math.random() * 25) - 12);
+      const botVal = currentGuessQ.answer + (botOffset === 0 ? 6 : botOffset);
+      const userDiff = Math.abs(userVal - currentGuessQ.answer);
+      const botDiff = Math.abs(botVal - currentGuessQ.answer);
+
+      let msg = `Gerçek Tarih: ${currentGuessQ.answer}\nSenin Tahminin: ${userVal}\nSavunan Krallık: ${botVal}\n\n`;
+
+      if (userDiff <= botDiff) {
+        playSuccessSound();
+        msg += 'Daha yakın tahmin ettiniz! Kıta fethedildi!';
+        alert(msg);
+        conquerContinent(selectedContinentId);
+      } else {
+        playFailSound();
+        msg += 'Düşman daha yakın tahmin yaptı. Kuşatma başarısız!';
+        alert(msg);
+      }
+      document.getElementById('guessModal').style.display = 'none';
+    }
+
+    function conquerContinent(id) {
+      playConquestSound();
+      continentOwners[id] = 'player';
+      const el = document.getElementById('c' + id);
+      el.setAttribute('fill', '#2563eb');
+      updateUI();
+      checkWinCondition();
+    }
+
+    function startTimer(onTimeout) {
+      clearInterval(timerInterval);
+      timeLeft = 10;
+      const fill = document.getElementById('timerFill');
+      fill.style.width = '100%';
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        fill.style.width = (timeLeft * 10) + '%';
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          onTimeout();
+        }
+      }, 1000);
+    }
+
+    function openRewardedAd() {
+      playClickSound();
+      const adModal = document.getElementById('adModal');
+      const timerEl = document.getElementById('adTimer');
+      let countdown = 5;
+      
+      adModal.style.display = 'flex';
+      timerEl.innerText = countdown;
+
+      const adInterval = setInterval(() => {
+        countdown--;
+        timerEl.innerText = countdown;
+        if (countdown <= 0) {
+          clearInterval(adInterval);
+          adModal.style.display = 'none';
+          tickets = Math.min(tickets + 1, 5);
+          updateUI();
+          playSuccessSound();
+          alert('Ödül Teslim Edildi: +1 Bilet krallığınıza eklendi!');
+        }
+      }, 1000);
+    }
+
+    function updateUI() {
+      document.getElementById('ticketCount').innerText = `${tickets}/3`;
+      let count = 0;
+      for (let k in continentOwners) {
+        if (continentOwners[k] === 'player') count++;
+      }
+      document.getElementById('territoryCount').innerText = `${count}/6`;
+    }
+
+    function checkWinCondition() {
+      const allPlayer = Object.values(continentOwners).every(v => v === 'player');
+      if (allPlayer) {
+        playConquestSound();
+        alert('KÜRESEL ZAFER! Bütün dünyayı fethettiniz ve tek cihan hükümdarı oldunuz!');
+      }
+    }
+  </script>
+</body>
+</html>
