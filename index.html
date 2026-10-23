@@ -6,9 +6,9 @@
   <title>Trivia Kingdoms: Global Conquest</title>
   <style>
     :root {
-      --bg-dark: #070d18;
-      --card-bg: #111a2e;
-      --panel-border: #1e2c4a;
+      --bg-dark: #070d19;
+      --card-bg: #0f172a;
+      --panel-border: #1e293b;
       --accent-blue: #38bdf8;
       --accent-gold: #f59e0b;
       --player-color: #2563eb;
@@ -16,7 +16,7 @@
       --bot2-color: #059669;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --ocean-color: #081120;
+      --ocean-color: #081326;
     }
 
     * {
@@ -28,7 +28,7 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 20%, #172554 0%, var(--bg-dark) 85%);
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, var(--bg-dark) 85%);
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -39,13 +39,13 @@
 
     header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1050px;
       padding: 12px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(17, 26, 46, 0.85);
-      backdrop-filter: blur(10px);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
       border-bottom: 2px solid var(--panel-border);
       box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
@@ -56,7 +56,7 @@
       gap: 8px;
       font-weight: 700;
       font-size: 14px;
-      background: rgba(7, 13, 24, 0.7);
+      background: rgba(7, 13, 25, 0.7);
       padding: 8px 16px;
       border-radius: 20px;
       border: 1px solid var(--panel-border);
@@ -81,7 +81,7 @@
 
     main {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1050px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,8 +93,8 @@
       width: 100%;
       background: var(--card-bg);
       border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.7);
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
       border: 1px solid var(--panel-border);
     }
 
@@ -103,7 +103,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      padding: 0 8px;
+      padding: 0 6px;
     }
 
     .map-title {
@@ -127,40 +127,35 @@
     svg {
       width: 100%;
       height: auto;
-      max-height: 480px;
+      max-height: 520px;
       background: var(--ocean-color);
       border-radius: 14px;
       border: 1px solid #1e293b;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.7);
     }
 
-    .territory {
-      transition: fill 0.35s ease, filter 0.2s, stroke 0.2s;
+    .continent {
       cursor: pointer;
-      stroke: #070d18;
-      stroke-width: 2.2;
+      stroke: #070d19;
+      stroke-width: 1.5;
       stroke-linejoin: round;
+      transition: fill 0.4s ease, filter 0.25s ease, transform 0.2s ease;
     }
 
-    .territory:hover {
-      filter: brightness(1.3) drop-shadow(0 0 10px rgba(255,255,255,0.4));
+    .continent:hover {
+      filter: brightness(1.3) drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
     }
 
-    .castle-icon {
+    .continent-label {
       pointer-events: none;
+      font-size: 13px;
+      font-weight: 800;
       fill: #ffffff;
-      opacity: 0.95;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+      letter-spacing: 0.5px;
     }
 
-    .territory-label {
-      pointer-events: none;
-      font-size: 12px;
-      font-weight: 700;
-      fill: #ffffff;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-    }
-
-    /* Modal Arayüzleri */
+    /* Modal ve Katmanlar */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -338,7 +333,7 @@
 
   <header>
     <div class="stat-badge">
-      <span>🎫 Biletler:</span>
+      <span>🎫 Sefer Biletleri:</span>
       <span id="ticketCount" style="color: var(--accent-blue);">3/3</span>
     </div>
     <button class="btn-ad" onclick="openRewardedAd()">
@@ -346,63 +341,72 @@
     </button>
     <div class="stat-badge">
       <span>🌐 Mavi Kıtalar:</span>
-      <span id="territoryCount" style="color: var(--accent-gold);">2/7</span>
+      <span id="territoryCount" style="color: var(--accent-gold);">2/6</span>
     </div>
   </header>
 
   <main>
     <div class="map-container">
       <div class="map-header">
-        <div class="map-title">Dünya Hakimiyeti: Fethetmek İstediğiniz Kıtayı Seçin</div>
+        <div class="map-title">Küresel Harita: Fethetmek İstediğiniz Kıtaya Tıklayın</div>
         <button class="audio-toggle" onclick="toggleAudio()" id="audioBtn">🔊 Ses: Açık</button>
       </div>
 
-      <!-- 7 Kıtadan Oluşan Dünya Haritası -->
-      <svg viewBox="0 0 850 480" id="gameMap">
-        <defs>
-          <g id="castle">
-            <path d="M-9,-7 h3 v3 h3 v-3 h3 v3 h3 v-3 h3 v14 h-18 z" />
-          </g>
-        </defs>
+      <!-- Gerçek Dünya Haritası Silüeti (SVG Paths) -->
+      <svg viewBox="0 0 1000 520" id="gameMap">
+        <!-- Izgara Çizgileri -->
+        <line x1="0" y1="260" x2="1000" y2="260" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
+        <line x1="500" y1="0" x2="500" y2="520" stroke="rgba(255,255,255,0.04)" stroke-dasharray="4" />
 
-        <!-- 1. KUZEY AMERİKA (Kırmızı) -->
-        <polygon id="t1" class="territory" points="70,50 250,45 280,120 230,195 180,215 130,230 145,175 60,110" fill="#dc2626" onclick="handleTerritoryClick(1)"></polygon>
+        <!-- 1. KUZEY AMERİKA & GRÖNLAND (Kırmızı) -->
+        <g id="c1" class="continent" fill="#dc2626" onclick="handleContinentClick(1)">
+          <!-- Grönland -->
+          <path d="M280,35 Q340,30 360,70 Q370,120 320,135 Q290,110 270,70 Z" />
+          <!-- Kuzey Amerika Ana Karası + Kanada Adaları -->
+          <path d="M40,90 Q90,55 170,60 Q210,50 250,90 Q220,135 240,180 Q220,230 180,260 Q170,270 145,225 Q135,170 75,150 Q45,130 40,90 Z" />
+          <text x="150" y="150" text-anchor="middle" class="continent-label">Kuzey Amerika</text>
+        </g>
 
         <!-- 2. GÜNEY AMERİKA (Kırmızı) -->
-        <polygon id="t2" class="territory" points="190,240 270,250 290,320 240,420 200,430 180,330" fill="#dc2626" onclick="handleTerritoryClick(2)"></polygon>
+        <g id="c2" class="continent" fill="#dc2626" onclick="handleContinentClick(2)">
+          <path d="M195,270 Q240,265 295,310 Q340,360 275,440 Q240,490 220,500 Q205,430 195,350 Q180,310 195,270 Z" />
+          <text x="245" y="375" text-anchor="middle" class="continent-label">Güney Amerika</text>
+        </g>
 
         <!-- 3. AVRUPA (Oyuncu - Mavi) -->
-        <polygon id="t3" class="territory" points="360,65 470,60 480,140 435,175 375,175 345,120" fill="#2563eb" onclick="handleTerritoryClick(3)"></polygon>
+        <g id="c3" class="continent" fill="#2563eb" onclick="handleContinentClick(3)">
+          <!-- İskandinavya + Batı & Doğu Avrupa + Akdeniz Havzası -->
+          <path d="M410,120 Q440,70 470,60 Q485,90 465,130 Q510,115 540,135 Q530,195 480,210 Q435,215 410,185 Q390,150 410,120 Z" />
+          <!-- Britanya -->
+          <path d="M405,100 Q420,95 425,120 Q410,130 400,115 Z" />
+          <text x="465" y="155" text-anchor="middle" class="continent-label">Avrupa</text>
+        </g>
 
         <!-- 4. AFRİKA (Yeşil) -->
-        <polygon id="t4" class="territory" points="365,190 485,190 520,270 480,380 410,385 370,280" fill="#059669" onclick="handleTerritoryClick(4)"></polygon>
+        <g id="c4" class="continent" fill="#059669" onclick="handleContinentClick(4)">
+          <!-- Afrika Kıtası + Madagaskar -->
+          <path d="M405,225 Q495,215 535,260 Q575,315 520,380 Q510,430 495,435 Q450,420 440,340 Q400,310 395,265 Z" />
+          <path d="M570,360 Q585,355 580,390 Q565,395 570,360 Z" />
+          <text x="470" y="325" text-anchor="middle" class="continent-label">Afrika</text>
+        </g>
 
-        <!-- 5. ORTA DOĞU & ORTA ASYA (Oyuncu - Mavi) -->
-        <polygon id="t5" class="territory" points="475,135 600,125 615,240 535,260 480,220 440,175" fill="#2563eb" onclick="handleTerritoryClick(5)"></polygon>
+        <!-- 5. ASYA & ORTA DOĞU (Oyuncu - Mavi) -->
+        <g id="c5" class="continent" fill="#2563eb" onclick="handleContinentClick(5)">
+          <!-- Rusya/Sibirya + Orta Doğu + Hindistan + Doğu Asya & Japonya -->
+          <path d="M545,130 Q630,50 820,60 Q890,90 880,165 Q830,195 785,250 Q750,310 700,285 Q670,230 635,230 Q595,285 570,270 Q540,240 550,180 Z" />
+          <!-- Japonya & Güneydoğu Adaları -->
+          <path d="M855,160 Q875,170 865,210 Q850,200 855,160 Z" />
+          <path d="M740,330 Q780,325 800,355 Q760,370 735,345 Z" />
+          <text x="700" y="165" text-anchor="middle" class="continent-label">Asya</text>
+        </g>
 
-        <!-- 6. DOĞU ASYA & SİBİRYA (Yeşil) -->
-        <polygon id="t6" class="territory" points="470,55 770,50 780,140 730,235 620,230 595,125" fill="#059669" onclick="handleTerritoryClick(6)"></polygon>
-
-        <!-- 7. OKYANUSYA / AVUSTRALYA (Kırmızı) -->
-        <polygon id="t7" class="territory" points="660,300 780,310 790,395 720,425 640,370" fill="#dc2626" onclick="handleTerritoryClick(7)"></polygon>
-
-        <!-- Kaleler -->
-        <use href="#castle" x="160" y="115" class="castle-icon" />
-        <use href="#castle" x="235" y="320" class="castle-icon" />
-        <use href="#castle" x="410" y="105" class="castle-icon" />
-        <use href="#castle" x="440" y="275" class="castle-icon" />
-        <use href="#castle" x="525" y="180" class="castle-icon" />
-        <use href="#castle" x="670" y="130" class="castle-icon" />
-        <use href="#castle" x="715" y="355" class="castle-icon" />
-
-        <!-- Kıta İsimleri -->
-        <text x="160" y="140" text-anchor="middle" class="territory-label">Kuzey Amerika</text>
-        <text x="235" y="345" text-anchor="middle" class="territory-label">Güney Amerika</text>
-        <text x="410" y="130" text-anchor="middle" class="territory-label">Avrupa</text>
-        <text x="440" y="300" text-anchor="middle" class="territory-label">Afrika</text>
-        <text x="525" y="205" text-anchor="middle" class="territory-label">Orta Doğu & Avrasya</text>
-        <text x="670" y="155" text-anchor="middle" class="territory-label">Asya Pasifik</text>
-        <text x="715" y="380" text-anchor="middle" class="territory-label">Okyanusya</text>
+        <!-- 6. OKYANUSYA / AVUSTRALYA (Yeşil) -->
+        <g id="c6" class="continent" fill="#059669" onclick="handleContinentClick(6)">
+          <!-- Avustralya Ana Karası + Yeni Zelanda -->
+          <path d="M780,360 Q860,340 890,395 Q875,445 810,440 Q770,420 780,360 Z" />
+          <path d="M930,430 Q945,435 935,465 Q920,455 930,430 Z" />
+          <text x="835" y="405" text-anchor="middle" class="continent-label">Okyanusya</text>
+        </g>
       </svg>
     </div>
   </main>
@@ -410,7 +414,7 @@
   <!-- Çark Modal -->
   <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
-      <h3 style="font-size: 20px; font-weight: 800;">Kıta Savaşı Başlıyor</h3>
+      <h3 style="font-size: 20px; font-weight: 800;">Kıta Seferi Başlıyor</h3>
       <div class="wheel-container">
         <div class="wheel-pointer"></div>
         <div class="wheel" id="wheel"></div>
@@ -446,14 +450,14 @@
     <div class="modal-card ad-card">
       <h3 style="color: #f59e0b;">ÖDÜLLÜ REKLAM SİMÜLASYONU</h3>
       <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px;">
-        (CrazyGames / AdinPlay SDK bağlandığında dolar kazandırır)
+        (CrazyGames / AdinPlay SDK ile dolar kazandırır)
       </p>
       <div class="ad-timer" id="adTimer">5</div>
     </div>
   </div>
 
   <script>
-    /* Ses Motoru */
+    /* Web Audio API Ses Motoru */
     let audioCtx = null;
     let audioEnabled = true;
 
@@ -529,28 +533,27 @@
       });
     }
 
-    /* Oyun Durumu */
+    /* Oyun Verisi & Durumu */
     let tickets = 3;
-    let selectedTerritoryId = null;
+    let selectedContinentId = null;
     let timerInterval = null;
     let timeLeft = 10;
 
-    // 7 Kıta Mülkiyeti: 3 ve 5 Oyuncunun (Mavi)
-    const territoryOwners = {
+    // 6 Ana Kıta: 3 (Avrupa) ve 5 (Asya) Oyuncuda
+    const continentOwners = {
       1: 'bot1',   // K. Amerika
       2: 'bot1',   // G. Amerika
       3: 'player', // Avrupa
       4: 'bot2',   // Afrika
-      5: 'player', // Avrasya
-      6: 'bot2',   // Asya Pasifik
-      7: 'bot1'    // Okyanusya
+      5: 'player', // Asya
+      6: 'bot2'    // Okyanusya
     };
 
     const triviaPool = [
       { category: 'Tarih', question: 'Kıbrıs hangi yılda Osmanlı yönetimine geçmiştir?', options: ['1453', '1571', '1683', '1492'], answer: 1 },
       { category: 'Tarih', question: 'Çanakkale Boğazı Deniz Zaferi hangi tarihte kazanılmıştır?', options: ['18 Mart 1915', '29 Ekim 1923', '30 Ağustos 1922', '19 Mayıs 1919'], answer: 0 },
-      { category: 'Coğrafya', question: 'Dünyanın en uzun nehri hangisidir?', options: ['Amazon Nehri', 'Nil Nehri', 'Yangtze', 'Mississippi'], answer: 1 },
       { category: 'Coğrafya', question: 'Yüzölçümü bakımından dünyanın en büyük kıtası hangisidir?', options: ['Afrika', 'Asya', 'Kuzey Amerika', 'Avrupa'], answer: 1 },
+      { category: 'Coğrafya', question: 'Dünyanın en uzun sıradağlar zinciri hangisidir?', options: ['Himalayalar', 'And Dağları', 'Alpler', 'Kayalık Dağlar'], answer: 1 },
       { category: 'Bilim', question: 'Periyodik tabloda "Au" sembolü hangi elementi temsil eder?', options: ['Gümüş', 'Altın', 'Bakır', 'Demir'], answer: 1 },
       { category: 'Spor', question: 'FIFA Dünya Kupası\'nı en çok kazanan ülke hangisidir?', options: ['Almanya', 'İtalya', 'Brezilya', 'Arjantin'], answer: 2 }
     ];
@@ -562,19 +565,19 @@
       { question: 'Amerika kıtası Kristof Kolomb tarafından hangi yılda keşfedilmiştir?', answer: 1492 }
     ];
 
-    function handleTerritoryClick(id) {
+    function handleContinentClick(id) {
       playClickSound();
-      if (territoryOwners[id] === 'player') {
+      if (continentOwners[id] === 'player') {
         alert('Bu kıta zaten sizin hakimiyetinizde!');
         return;
       }
 
       if (tickets <= 0) {
-        alert('Biletiniz bitti! Reklam izleyerek yeni sefer bileti alabilirsiniz.');
+        alert('Sefer biletiniz kalmadı! Reklam izleyerek yeni bilet alabilirsiniz.');
         return;
       }
 
-      selectedTerritoryId = id;
+      selectedContinentId = id;
       tickets--;
       updateUI();
       startConquestFlow();
@@ -620,7 +623,7 @@
       modal.style.display = 'flex';
       startTimer(() => {
         playFailSound();
-        alert('Süre tükendi! Sefer başarısız oldu.');
+        alert('Süre tükendi! Kuşatma püskürtüldü.');
         modal.style.display = 'none';
       });
     }
@@ -631,14 +634,14 @@
         playSuccessSound();
         button.classList.add('correct');
         setTimeout(() => {
-          conquerTerritory(selectedTerritoryId);
+          conquerContinent(selectedContinentId);
           document.getElementById('triviaModal').style.display = 'none';
         }, 900);
       } else {
         playFailSound();
         button.classList.add('wrong');
         setTimeout(() => {
-          alert('Yanlış cevap! Kıta fethedilemedi.');
+          alert('Yanlış cevap! Kıta savunması galip geldi.');
           document.getElementById('triviaModal').style.display = 'none';
         }, 900);
       }
@@ -662,25 +665,25 @@
       const userDiff = Math.abs(userVal - currentGuessQ.answer);
       const botDiff = Math.abs(botVal - currentGuessQ.answer);
 
-      let msg = `Gerçek Cevap: ${currentGuessQ.answer}\nSizin Tahmininiz: ${userVal}\nSavunan Krallık: ${botVal}\n\n`;
+      let msg = `Gerçek Tarih: ${currentGuessQ.answer}\nSenin Tahminin: ${userVal}\nSavunan Krallık: ${botVal}\n\n`;
 
       if (userDiff <= botDiff) {
         playSuccessSound();
-        msg += 'Daha yakın tahmin! Kıta fethedildi!';
+        msg += 'Daha yakın tahmin ettiniz! Kıta fethedildi!';
         alert(msg);
-        conquerTerritory(selectedTerritoryId);
+        conquerContinent(selectedContinentId);
       } else {
         playFailSound();
-        msg += 'Düşman daha yakın tahmin etti. Kuşatma kırıldı!';
+        msg += 'Düşman daha yakın tahmin yaptı. Kuşatma başarısız!';
         alert(msg);
       }
       document.getElementById('guessModal').style.display = 'none';
     }
 
-    function conquerTerritory(id) {
+    function conquerContinent(id) {
       playConquestSound();
-      territoryOwners[id] = 'player';
-      const el = document.getElementById('t' + id);
+      continentOwners[id] = 'player';
+      const el = document.getElementById('c' + id);
       el.setAttribute('fill', '#2563eb');
       updateUI();
       checkWinCondition();
@@ -720,7 +723,7 @@
           tickets = Math.min(tickets + 1, 5);
           updateUI();
           playSuccessSound();
-          alert('Ödül Teslim Edildi: +1 Bilet hesabınıza eklendi!');
+          alert('Ödül Teslim Edildi: +1 Bilet krallığınıza eklendi!');
         }
       }, 1000);
     }
@@ -728,17 +731,17 @@
     function updateUI() {
       document.getElementById('ticketCount').innerText = `${tickets}/3`;
       let count = 0;
-      for (let k in territoryOwners) {
-        if (territoryOwners[k] === 'player') count++;
+      for (let k in continentOwners) {
+        if (continentOwners[k] === 'player') count++;
       }
-      document.getElementById('territoryCount').innerText = `${count}/7`;
+      document.getElementById('territoryCount').innerText = `${count}/6`;
     }
 
     function checkWinCondition() {
-      const allPlayer = Object.values(territoryOwners).every(v => v === 'player');
+      const allPlayer = Object.values(continentOwners).every(v => v === 'player');
       if (allPlayer) {
         playConquestSound();
-        alert('DÜNYA HAKİMİYETİ! Bütün kıtaları fethettiniz ve küresel imparator oldunuz!');
+        alert('KÜRESEL ZAFER! Bütün dünyayı fethettiniz ve tek cihan hükümdarı oldunuz!');
       }
     }
   </script>
