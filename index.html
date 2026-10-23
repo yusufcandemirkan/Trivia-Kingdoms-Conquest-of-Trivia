@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Trivia Dünyası: 7 Kıta Savaşı</title>
+  <title>Trivia Kingdoms: Conquest of Trivia</title>
   <style>
     :root {
-      --bg-dark: #0b1120;
-      --card-bg: #1e293b;
+      --bg-dark: #0b0f19;
+      --card-bg: #151d30;
+      --panel-border: #23304d;
       --accent-blue: #38bdf8;
-      --accent-gold: #fbbf24;
-      --accent-purple: #c084fc;
+      --accent-gold: #f59e0b;
       --player-color: #2563eb;
       --bot1-color: #dc2626;
-      --bot2-color: #16a34a;
-      --neutral-color: #64748b;
+      --bot2-color: #059669;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
@@ -23,12 +22,12 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       user-select: none;
     }
 
     body {
-      background-color: var(--bg-dark);
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, var(--bg-dark) 80%);
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -37,377 +36,724 @@
       overflow-x: hidden;
     }
 
-    /* Üst Bar (Ekonomi & Can & Krediler) */
+    /* Üst Bar */
     header {
       width: 100%;
       max-width: 960px;
-      padding: 10px 16px;
+      padding: 12px 24px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      background: var(--card-bg);
-      border-bottom: 2px solid #334155;
-      gap: 10px;
+      background: rgba(21, 29, 48, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--panel-border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
 
-    .status-group {
+    .stat-badge {
       display: flex;
       align-items: center;
       gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      background: rgba(11, 15, 25, 0.7);
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--panel-border);
     }
-
-    .badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-      font-size: 13px;
-      background: #0f172a;
-      padding: 6px 12px;
-      border-radius: 16px;
-      border: 1px solid #334155;
-    }
-
-    .btn-claim {
-      background: linear-gradient(135deg, #a855f7, #6b21a8);
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: transform 0.1s;
-    }
-    .btn-claim:hover { transform: scale(1.05); }
 
     .btn-ad {
       background: linear-gradient(135deg, #10b981, #047857);
       color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
+      border: 1px solid #34d399;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
     }
+    .btn-ad:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
 
-    /* Ana Alan & Harita */
+    /* Oyun Alanı */
     main {
       width: 100%;
       max-width: 960px;
-      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 20px;
       gap: 16px;
     }
 
-    .map-card {
+    .map-container {
       width: 100%;
-      background: #131c31;
-      border-radius: 16px;
-      padding: 16px;
-      border: 1px solid #334155;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      text-align: center;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      border: 1px solid var(--panel-border);
+      position: relative;
     }
 
     .map-header {
-      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 12px;
+      padding: 0 8px;
     }
 
-    .map-header h2 {
-      font-size: 16px;
-      color: var(--accent-blue);
+    .map-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+    }
+
+    .audio-toggle {
+      background: none;
+      border: 1px solid var(--panel-border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
     }
 
     svg {
       width: 100%;
       height: auto;
-      max-height: 480px;
-      background: #090e1a;
+      max-height: 440px;
+      background: #0d1527;
       border-radius: 12px;
       border: 1px solid #1e293b;
     }
 
-    .continent {
+    .territory {
+      transition: fill 0.4s ease, filter 0.2s, stroke 0.2s;
       cursor: pointer;
-      stroke: #090e1a;
+      stroke: #0b0f19;
       stroke-width: 2.5;
-      transition: fill 0.3s, filter 0.2s;
+      stroke-linejoin: round;
     }
 
-    .continent:hover {
-      filter: brightness(1.25);
+    .territory:hover {
+      filter: brightness(1.25) drop-shadow(0 0 8px rgba(255,255,255,0.4));
     }
 
-    .cont-label {
-      font-size: 13px;
-      font-weight: bold;
-      fill: #ffffff;
+    .castle-icon {
       pointer-events: none;
+      fill: #ffffff;
+      opacity: 0.9;
+    }
+
+    .territory-label {
+      pointer-events: none;
+      font-size: 13px;
+      font-weight: 700;
+      fill: #ffffff;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
-    /* Modallar & Kartlar */
+    /* Modal ve Pencereler */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(11, 17, 32, 0.88);
-      backdrop-filter: blur(5px);
+      background: rgba(7, 10, 19, 0.88);
+      backdrop-filter: blur(6px);
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 100;
-      padding: 16px;
+      padding: 20px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .modal-card {
       background: var(--card-bg);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 20px;
+      padding: 28px;
       width: 100%;
-      max-width: 480px;
-      border: 1px solid #334155;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      max-width: 500px;
+      border: 1px solid var(--panel-border);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8);
       text-align: center;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
 
-    /* Savaş Türü Seçim Ekranı */
-    .battle-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 10px;
+    /* Çark */
+    .wheel-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 10px auto;
     }
 
-    .battle-btn {
-      padding: 14px;
-      border-radius: 12px;
-      border: 2px solid #334155;
-      background: #0f172a;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      transition: all 0.2s;
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 4px solid var(--accent-gold);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+      transition: transform 3.5s cubic-bezier(0.12, 0.95, 0.2, 1);
+      background: conic-gradient(
+        #ef4444 0deg 72deg,
+        #3b82f6 72deg 144deg,
+        #10b981 144deg 216deg,
+        #f59e0b 216deg 288deg,
+        #8b5cf6 288deg 360deg
+      );
     }
 
-    .battle-btn:hover {
-      border-color: var(--accent-blue);
-      transform: translateY(-2px);
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 22px solid #ffffff;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+      z-index: 10;
     }
 
-    .battle-btn.double-risk {
-      border-color: #a855f7;
-      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
-    }
-
-    .battle-btn.double-risk:hover {
-      border-color: #d8b4fe;
-    }
-
-    .badge-sub {
-      font-size: 11px;
-      padding: 3px 6px;
-      border-radius: 6px;
-      background: #334155;
-      color: #cbd5e1;
-    }
-
-    /* Soru ve Çark Ekranı */
+    /* Soru Tasarımı */
     .timer-bar {
       width: 100%;
-      height: 6px;
-      background: #334155;
-      border-radius: 3px;
+      height: 8px;
+      background: #0b0f19;
+      border-radius: 4px;
       overflow: hidden;
+      border: 1px solid var(--panel-border);
     }
 
     .timer-fill {
       height: 100%;
       width: 100%;
-      background: var(--accent-blue);
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
       transition: width 1s linear;
     }
 
+    .category-tag {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .question-text {
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.45;
+      min-height: 55px;
+    }
+
     .options-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
     .option-btn {
-      background: #0f172a;
+      background: rgba(11, 15, 25, 0.6);
       color: var(--text-main);
-      border: 1px solid #334155;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
+      border: 1px solid var(--panel-border);
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
       text-align: left;
-      transition: 0.2s;
+      transition: all 0.2s;
     }
-    .option-btn:hover { background: #1e293b; border-color: var(--accent-blue); }
-    .option-btn.correct { background: #16a34a !important; border-color: #22c55e !important; }
-    .option-btn.wrong { background: #dc2626 !important; border-color: #ef4444 !important; }
 
+    .option-btn:hover {
+      background: #1e293b;
+      border-color: var(--accent-blue);
+      transform: translateX(4px);
+    }
+
+    .option-btn.correct { background: #059669 !important; border-color: #34d399 !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+    .option-btn.wrong { background: #dc2626 !important; border-color: #f87171 !important; box-shadow: 0 0 15px rgba(220, 38, 38, 0.4); }
+
+    /* Kuşatma Tahmin Sorusu */
     .guess-input-group {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
+      margin-top: 10px;
     }
 
     .guess-input {
-      padding: 10px;
-      font-size: 16px;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #0b0f19;
+      border: 2px solid var(--panel-border);
+      border-radius: 10px;
       color: white;
       text-align: center;
-      width: 140px;
+      width: 150px;
+      outline: none;
     }
+    .guess-input:focus { border-color: var(--accent-blue); }
 
     .btn-submit {
       background: var(--accent-blue);
-      color: black;
-      font-weight: bold;
+      color: #0b0f19;
+      font-weight: 800;
+      font-size: 15px;
       border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .btn-submit:hover { transform: scale(1.05); }
+
+    /* Reklam Penceresi */
+    .ad-card {
+      background: #030712;
+      border: 2px dashed #f59e0b;
+      padding: 35px 20px;
+    }
+
+    .ad-timer {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent-gold);
+      margin-top: 12px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Üst Gösterge Paneli -->
   <header>
-    <div class="status-group">
-      <div class="badge">❤️ Can: <span id="livesDisplay" style="color: #ef4444;">3/3</span></div>
-      <div class="badge">🎫 Bilet: <span id="ticketsDisplay" style="color: var(--accent-blue);">3/3</span></div>
-      <div class="badge">⚔️ Özel Kredi: <span id="specialCreditsDisplay" style="color: var(--accent-purple);">1/2</span></div>
-      <div class="badge">🪙 Altın: <span id="goldDisplay" style="color: var(--accent-gold);">150</span></div>
+    <div class="stat-badge">
+      <span>🎫 Biletler:</span>
+      <span id="ticketCount" style="color: var(--accent-blue);">3/3</span>
     </div>
-    <div class="status-group">
-      <button class="btn-claim" onclick="claimDailyReward()">🎁 Günlük Kredi Al</button>
-      <button class="btn-ad" onclick="watchAdReward()">▶ Reklam (+1 Can/+1 Kredi)</button>
+    <button class="btn-ad" onclick="openRewardedAd()">
+      <span>▶ Reklam İzle (+1 Bilet)</span>
+    </button>
+    <div class="stat-badge">
+      <span>🏰 Mavi Bölgeler:</span>
+      <span id="territoryCount" style="color: var(--accent-gold);">3</span>
     </div>
   </header>
 
   <main>
-    <div class="map-card">
+    <div class="map-container">
       <div class="map-header">
-        <h2>Dünya Haritası (7 Kıta)</h2>
-        <span style="font-size: 12px; color: var(--text-muted);">
-          Mavi: Sen | Kırmızı: Doğu İttifakı | Yeşil: Güney İttifakı
-        </span>
+        <div class="map-title">Taktiksel Fetih Haritası: Düşman Kalesine Tıklayın</div>
+        <button class="audio-toggle" onclick="toggleAudio()" id="audioBtn">🔊 Ses: Açık</button>
       </div>
 
-      <!-- 7 Kıtayı Kapsayan Eşit Dağıtılmış SVG Harita -->
-      <svg viewBox="0 0 900 500" id="worldMap">
-        <!-- 1. KUZEY AMERİKA (Mavi - Oyuncu) -->
-        <polygon id="c_na" class="continent" points="50,40 260,30 280,120 190,190 130,220 80,130" fill="#2563eb" onclick="selectContinent('na')"></polygon>
-        <text x="140" y="110" class="cont-label">KUZEY AMERİKA</text>
+      <svg viewBox="0 0 650 380" id="gameMap">
+        <!-- SVG Kale Simgesi Şablonu -->
+        <defs>
+          <g id="castle">
+            <path d="M-10,-8 h4 v3 h4 v-3 h4 v3 h4 v-3 h4 v16 h-20 z" />
+          </g>
+        </defs>
 
-        <!-- 2. GÜNEY AMERİKA (Yeşil - Bot 2) -->
-        <polygon id="c_sa" class="continent" points="170,240 260,250 240,380 190,410 150,300" fill="#16a34a" onclick="selectContinent('sa')"></polygon>
-        <text x="180" y="320" class="cont-label">GÜNEY AMERİKA</text>
+        <!-- Oyuncu (Mavi) Eyaletleri: 1, 2, 3 -->
+        <polygon id="t1" class="territory" points="30,40 200,35 170,140 45,130" fill="#2563eb" onclick="handleTerritoryClick(1)"></polygon>
+        <polygon id="t2" class="territory" points="200,35 360,30 330,135 170,140" fill="#2563eb" onclick="handleTerritoryClick(2)"></polygon>
+        <polygon id="t3" class="territory" points="45,130 170,140 145,260 30,240" fill="#2563eb" onclick="handleTerritoryClick(3)"></polygon>
 
-        <!-- 3. AVRUPA (Mavi - Oyuncu) -->
-        <polygon id="c_eu" class="continent" points="350,50 480,45 470,140 370,160 330,110" fill="#2563eb" onclick="selectContinent('eu')"></polygon>
-        <text x="390" y="105" class="cont-label">AVRUPA</text>
+        <!-- Kırmızı Bot Eyaletleri: 4, 5, 6 -->
+        <polygon id="t4" class="territory" points="360,30 520,40 490,150 330,135" fill="#dc2626" onclick="handleTerritoryClick(4)"></polygon>
+        <polygon id="t5" class="territory" points="170,140 330,135 310,250 145,260" fill="#dc2626" onclick="handleTerritoryClick(5)"></polygon>
+        <polygon id="t6" class="territory" points="330,135 490,150 470,260 310,250" fill="#dc2626" onclick="handleTerritoryClick(6)"></polygon>
 
-        <!-- 4. AFRİKA (Yeşil - Bot 2) -->
-        <polygon id="c_af" class="continent" points="360,180 480,170 510,290 440,390 350,280" fill="#16a34a" onclick="selectContinent('af')"></polygon>
-        <text x="410" y="270" class="cont-label">AFRİKA</text>
+        <!-- Yeşil Bot Eyaletleri: 7, 8, 9 -->
+        <polygon id="t7" class="territory" points="520,40 620,55 610,175 490,150" fill="#059669" onclick="handleTerritoryClick(7)"></polygon>
+        <polygon id="t8" class="territory" points="145,260 310,250 285,355 130,345" fill="#059669" onclick="handleTerritoryClick(8)"></polygon>
+        <polygon id="t9" class="territory" points="310,250 470,260 450,365 285,355" fill="#059669" onclick="handleTerritoryClick(9)"></polygon>
 
-        <!-- 5. ASYA (Kırmızı - Bot 1) -->
-        <polygon id="c_as" class="continent" points="490,40 840,40 810,190 640,250 500,160" fill="#dc2626" onclick="selectContinent('as')"></polygon>
-        <text x="640" y="120" class="cont-label">ASYA</text>
+        <!-- Kaleler -->
+        <use href="#castle" x="110" y="80" class="castle-icon" />
+        <use href="#castle" x="260" y="80" class="castle-icon" />
+        <use href="#castle" x="90" y="190" class="castle-icon" />
+        <use href="#castle" x="420" y="85" class="castle-icon" />
+        <use href="#castle" x="230" y="190" class="castle-icon" />
+        <use href="#castle" x="390" y="195" class="castle-icon" />
+        <use href="#castle" x="550" y="110" class="castle-icon" />
+        <use href="#castle" x="210" y="300" class="castle-icon" />
+        <use href="#castle" x="370" y="305" class="castle-icon" />
 
-        <!-- 6. OKYANUSYA (Kırmızı - Bot 1) -->
-        <polygon id="c_oc" class="continent" points="670,270 820,260 830,370 710,380" fill="#dc2626" onclick="selectContinent('oc')"></polygon>
-        <text x="725" y="325" class="cont-label">OKYANUSYA</text>
-
-        <!-- 7. ANTARKTİKA (Mavi - Oyuncu) -->
-        <polygon id="c_an" class="continent" points="120,440 780,440 730,485 170,485" fill="#2563eb" onclick="selectContinent('an')"></polygon>
-        <text x="420" y="470" class="cont-label">ANTARKTİKA</text>
+        <!-- Eyalet İsimleri -->
+        <text x="110" y="105" text-anchor="middle" class="territory-label">Kuzeybatı</text>
+        <text x="260" y="105" text-anchor="middle" class="territory-label">İç Kuzey</text>
+        <text x="90" y="215" text-anchor="middle" class="territory-label">Batı Kıyı</text>
+        <text x="420" y="110" text-anchor="middle" class="territory-label">Kuzeydoğu</text>
+        <text x="230" y="215" text-anchor="middle" class="territory-label">Başkent</text>
+        <text x="390" y="220" text-anchor="middle" class="territory-label">Doğu Vadisi</text>
+        <text x="550" y="135" text-anchor="middle" class="territory-label">Sınır Boyu</text>
+        <text x="210" y="325" text-anchor="middle" class="territory-label">Güneybatı</text>
+        <text x="370" y="330" text-anchor="middle" class="territory-label">Güneydoğu</text>
       </svg>
     </div>
   </main>
 
-  <!-- Savaş Türü Seçim Modalı -->
-  <div class="modal-overlay" id="battleSelectModal">
+  <!-- Çark -->
+  <div class="modal-overlay" id="wheelModal">
     <div class="modal-card">
-      <h3 id="targetContinentTitle">Kıta Kuşatması</h3>
-      <p style="font-size: 13px; color: var(--text-muted);">Saldırı tarzını ve risk katsayısını seçin:</p>
-      
-      <div class="battle-options">
-        <!-- 1v1 Normal Savaş -->
-        <div class="battle-btn" onclick="startBattle('1v1')">
-          <strong style="color: var(--accent-blue);">1 v 1 Klasik Kuşatma</strong>
-          <span class="badge-sub">Maliyet: 1 Bilet 🎫</span>
-          <p style="font-size: 11px; color: #94a3b8;">Normal risk. Kaybedersen 1 can gider, kazanırsan bölge senin olur.</p>
-        </div>
-
-        <!-- 2v2 Özel Kredili Yüksek Risk Savaş -->
-        <div class="battle-btn double-risk" onclick="startBattle('2v2')">
-          <strong style="color: var(--accent-purple);">2 v 2 İttifak Savaşı</strong>
-          <span class="badge-sub" style="background:#581c87; color:#f3e8ff;">Maliyet: 1 Özel Kredi ⚔️</span>
-          <p style="font-size: 11px; color: #d8b4fe;">
-            <strong>2X GETİRİ:</strong> +100 Altın & Kıta<br>
-            <strong>2X RİSK:</strong> Kayıpta <span style="color:#f87171;">-2 Can</span>!
-          </p>
-        </div>
+      <h3 style="font-size: 20px; font-weight: 800;">Savaş Kategorisi Belirleniyor</h3>
+      <div class="wheel-container">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel"></div>
       </div>
-      <button class="option-btn" style="text-align: center; margin-top: 6px;" onclick="closeModals()">İptal</button>
+      <p style="color: var(--text-muted); font-size: 14px;">Kader çarkı dönüyor...</p>
     </div>
   </div>
 
-  <!-- Çoktan Seçmeli Trivia Soru Modalı -->
-  <div class="modal-overlay" id="questionModal">
+  <!-- Soru Modal -->
+  <div class="modal-overlay" id="triviaModal">
     <div class="modal-card">
       <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
-      <span id="questionBadge" style="font-size: 11px; color: var(--accent-gold); font-weight: bold;">TARİH</span>
-      <h4 id="questionText">Soru metni...</h4>
+      <div class="category-tag" id="categoryLabel">Tarih</div>
+      <div class="question-text" id="questionText">Soru yükleniyor...</div>
       <div class="options-grid" id="optionsGrid"></div>
     </div>
   </div>
 
-  <!-- Bil ve Fethet Tarzı Sayısal Tahmin Modalı -->
+  <!-- Sayısal Tahmin Modal -->
   <div class="modal-overlay" id="guessModal">
     <div class="modal-card">
-      <span style="font-size: 11px; color: var(--accent-purple); font-weight: bold;">2v2 KRİTİK SAYISAL TAHMİN</span>
-      <h4 id="guessQuestionText">Soru metni...</h4>
+      <div class="category-tag">Kale Kuşatması: En Yakın Tahmin</div>
+      <div class="question-text" id="guessQuestionText">İstanbul hangi yılda fethedilmiştir?</div>
       <div class="guess-input-group">
-        <input type="number" id="guessInput" class="guess-input" placeholder="Yıl veya Sayı">
-        <button class="btn-submit" onclick="submitGuess()">Hamleyi Yap</button>
+        <input type="number" id="guessInput" class="guess-input" placeholder="Yıl / Sayı">
+        <button class="btn-submit" onclick="submitGuess()">Kuşat</button>
       </div>
     </div>
   </div>
 
-  <!-- Sahte Reklam / Ödül Modalı -->
+  <!-- Reklam Simülasyonu -->
   <div class="modal-overlay" id="adModal">
-    <div class="modal-card" style="background: black; border: 2px dashed #fbbf24;">
-      <h3 style="color: #fbbf24;">Ödüllü Video Reklam</h3>
-      <p style="font-size: 13px; color: #
+    <div class="modal-card ad-card">
+      <h3 style="color: #f59e0b;">ÖDÜLLÜ VİDEO REKLAM SİMÜLASYONU</h3>
+      <p style="color: var(--text-muted); font-size: 13px; margin-top: 6px;">
+        (CrazyGames / AdinPlay SDK entegrasyonu tamamlandığında dolar geliri üretecektir)
+      </p>
+      <div class="ad-timer" id="adTimer">5</div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       1. WEB AUDIO API SES MOTORU (Sıfır Dosya Yükü)
+       ======================================================== */
+    let audioCtx = null;
+    let audioEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audioBtn').innerText = audioEnabled ? '🔊 Ses: Açık' : '🔇 Ses: Kapalı';
+    }
+
+    // Basit tıklama tıkı
+    function playClickSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    // Doğru cevap melodisi
+    function playSuccessSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime + idx * 0.09);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.09 + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + idx * 0.09);
+        osc.stop(audioCtx.currentTime + idx * 0.09 + 0.2);
+      });
+    }
+
+    // Yanlış cevap tok sesi
+    function playFailSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    // Harita fetih zafer fanfarı
+    function playConquestSound() {
+      if (!audioEnabled) return;
+      initAudio();
+      const notes = [440, 554.37, 659.25, 880];
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime + idx * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.12 + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + idx * 0.12);
+        osc.stop(audioCtx.currentTime + idx * 0.12 + 0.4);
+      });
+    }
+
+    /* ========================================================
+       2. OYUN MEKANİKLERİ VE VERİ
+       ======================================================== */
+    let tickets = 3;
+    let selectedTerritoryId = null;
+    let timerInterval = null;
+    let timeLeft = 10;
+
+    const territoryOwners = {
+      1: 'player', 2: 'player', 3: 'player',
+      4: 'bot1', 5: 'bot1', 6: 'bot1',
+      7: 'bot2', 8: 'bot2', 9: 'bot2'
+    };
+
+    const triviaPool = [
+      { category: 'Tarih', question: 'Kıbrıs hangi yılda Osmanlı yönetimine geçmiştir?', options: ['1453', '1571', '1683', '1492'], answer: 1 },
+      { category: 'Tarih', question: 'Çanakkale Kara Savaşları hangi yıl başlamıştır?', options: ['1914', '1915', '1918', '1920'], answer: 1 },
+      { category: 'Tarih', question: 'Magosa (Gazimağusa) Kuşatması hangi Osmanlı paşası komutasında tamamlanmıştır?', options: ['Lala Mustafa Paşa', 'Piyale Paşa', 'Sokollu Mehmed Paşa', 'Gazi Osman Paşa'], answer: 0 },
+      { category: 'Coğrafya', question: 'Yüzölçümü bakımından dünyanın en büyük adası hangisidir?', options: ['Madagaskar', 'Grönland', 'Britanya', 'Borneo'], answer: 1 },
+      { category: 'Bilim', question: 'Işık boşlukta yaklaşık saniyede kaç kilometre hızla ilerler?', options: ['150.000 km', '300.000 km', '500.000 km', '1.000.000 km'], answer: 1 },
+      { category: 'Spor', question: 'Modern olimpiyatların maraton koşusu mesafesi kaç kilometredir?', options: ['40.000 km', '42.195 km', '45.000 km', '48.500 km'], answer: 1 }
+    ];
+
+    const guessPool = [
+      { question: 'Ay\'a ilk insan hangi yılda ayak basmıştır?', answer: 1969 },
+      { question: 'Titanik transatlantiği hangi yılda batmıştır?', answer: 1912 },
+      { question: 'İstanbul hangi yılda fethedilmiştir?', answer: 1453 },
+      { question: 'Matbaa Avrupa\'da Gutenberg tarafından yaklaşık hangi yılda geliştirilmiştir?', answer: 1440 }
+    ];
+
+    function handleTerritoryClick(id) {
+      playClickSound();
+      if (territoryOwners[id] === 'player') {
+        alert('Bu bölge ve kale zaten senin mülkiyetinde!');
+        return;
+      }
+
+      if (tickets <= 0) {
+        alert('Yeterli biletin yok! Üst bardan reklam izleyerek anında bilet kazanabilirsin.');
+        return;
+      }
+
+      selectedTerritoryId = id;
+      tickets--;
+      updateUI();
+      startConquestFlow();
+    }
+
+    function startConquestFlow() {
+      const wheelModal = document.getElementById('wheelModal');
+      const wheel = document.getElementById('wheel');
+      wheelModal.style.display = 'flex';
+
+      const randomDeg = 1440 + Math.floor(Math.random() * 360);
+      wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+      setTimeout(() => {
+        wheelModal.style.display = 'none';
+        wheel.style.transform = 'rotate(0deg)';
+        if (Math.random() > 0.4) {
+          openTriviaModal();
+        } else {
+          openGuessModal();
+        }
+      }, 3500);
+    }
+
+    function openTriviaModal() {
+      const modal = document.getElementById('triviaModal');
+      const randomQ = triviaPool[Math.floor(Math.random() * triviaPool.length)];
+      
+      document.getElementById('categoryLabel').innerText = randomQ.category;
+      document.getElementById('questionText').innerText = randomQ.question;
+      
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+
+      randomQ.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => selectOption(btn, index === randomQ.answer);
+        grid.appendChild(btn);
+      });
+
+      modal.style.display = 'flex';
+      startTimer(() => {
+        playFailSound();
+        alert('Süre tükendi! Kuşatma püskürtüldü.');
+        modal.style.display = 'none';
+      });
+    }
+
+    function selectOption(button, isCorrect) {
+      clearInterval(timerInterval);
+      if (isCorrect) {
+        playSuccessSound();
+        button.classList.add('correct');
+        setTimeout(() => {
+          conquerTerritory(selectedTerritoryId);
+          document.getElementById('triviaModal').style.display = 'none';
+        }, 900);
+      } else {
+        playFailSound();
+        button.classList.add('wrong');
+        setTimeout(() => {
+          alert('Yanlış cevap! Düşman savunması galip geldi.');
+          document.getElementById('triviaModal').style.display = 'none';
+        }, 900);
+      }
+    }
+
+    let currentGuessQ = null;
+    function openGuessModal() {
+      currentGuessQ = guessPool[Math.floor(Math.random() * guessPool.length)];
+      document.getElementById('guessQuestionText').innerText = currentGuessQ.question;
+      document.getElementById('guessInput').value = '';
+      document.getElementById('guessModal').style.display = 'flex';
+    }
+
+    function submitGuess() {
+      playClickSound();
+      const userVal = parseInt(document.getElementById('guessInput').value);
+      if (isNaN(userVal)) return;
+
+      const botOffset = (Math.floor(Math.random() * 25) - 12);
+      const botVal = currentGuessQ.answer + (botOffset === 0 ? 5 : botOffset);
+      const userDiff = Math.abs(userVal - currentGuessQ.answer);
+      const botDiff = Math.abs(botVal - currentGuessQ.answer);
+
+      let msg = `Cevap: ${currentGuessQ.answer}\nSenin Tahminin: ${userVal}\nSavunan Krallık: ${botVal}\n\n`;
+
+      if (userDiff <= botDiff) {
+        playSuccessSound();
+        msg += 'Daha yakın tahmin ettin! Bölge fethedildi!';
+        alert(msg);
+        conquerTerritory(selectedTerritoryId);
+      } else {
+        playFailSound();
+        msg += 'Düşman kale komutanı daha yakın tahmin etti. Fetih başarısız!';
+        alert(msg);
+      }
+      document.getElementById('guessModal').style.display = 'none';
+    }
+
+    function conquerTerritory(id) {
+      playConquestSound();
+      territoryOwners[id] = 'player';
+      const el = document.getElementById('t' + id);
+      el.setAttribute('fill', '#2563eb');
+      updateUI();
+      checkWinCondition();
+    }
+
+    function startTimer(onTimeout) {
+      clearInterval(timerInterval);
+      timeLeft = 10;
+      const fill = document.getElementById('timerFill');
+      fill.style.width = '100%';
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        fill.style.width = (timeLeft * 10) + '%';
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          onTimeout();
+        }
+      }, 1000);
+    }
+
+    function openRewardedAd() {
+      playClickSound();
+      const adModal = document.getElementById('adModal');
+      const timerEl = document.getElementById('adTimer');
+      let countdown = 5;
+      
+      adModal.style.display = 'flex';
+      timerEl.innerText = countdown;
+
+      const adInterval = setInterval(() => {
+        countdown--;
+        timerEl.innerText = countdown;
+        if (countdown <= 0) {
+          clearInterval(adInterval);
+          adModal.style.display = 'none';
+          tickets = Math.min(tickets + 1, 5);
+          updateUI();
+          playSuccessSound();
+          alert('Ödül Teslim Edildi: +1 Bilet krallığına eklendi!');
+        }
+      }, 1000);
+    }
+
+    function updateUI() {
+      document.getElementById('ticketCount').innerText = `${tickets}/3`;
+      let count = 0;
+      for (let k in territoryOwners) {
+        if (territoryOwners[k] === 'player') count++;
+      }
+      document.getElementById('territoryCount').innerText = count;
+    }
+
+    function checkWinCondition() {
+      const allPlayer = Object.values(territoryOwners).every(v => v === 'player');
+      if (allPlayer) {
+        playConquestSound();
+        alert('ZAFER! Bütün krallıkları fethettiniz ve tek hükümdar oldunuz!');
+      }
+    }
+  </script>
+</body>
+</html>
