@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>GEO-STRAT: Modern Grand Strategy & Geopolitics</title>
+  <title>GEO-STRAT: Ultra-Detailed Modern World Atlas</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -17,21 +17,21 @@
       theme: {
         extend: {
           colors: {
-            "surface-dim": "#0e1321",
-            "surface-container-lowest": "#090e1c",
-            "surface-container-low": "#161b2a",
-            "surface-container": "#1a1f2e",
-            "surface-container-high": "#252a39",
-            "surface-container-highest": "#303444",
-            "primary": "#4cd7f6",
-            "primary-container": "#06b6d4",
-            "on-primary": "#003640",
-            "secondary": "#adc6ff",
-            "tertiary": "#ffb95f",
-            "outline": "#869397",
-            "outline-variant": "#3d494c",
-            "error": "#ffb4ab",
-            "error-container": "#93000a"
+            "surface-dim": "#080c17",
+            "surface-container-lowest": "#050811",
+            "surface-container-low": "#0d1322",
+            "surface-container": "#131b2e",
+            "surface-container-high": "#1c263e",
+            "surface-container-highest": "#283452",
+            "primary": "#38bdf8",
+            "primary-container": "#0284c7",
+            "on-primary": "#031525",
+            "secondary": "#818cf8",
+            "tertiary": "#f59e0b",
+            "outline": "#64748b",
+            "outline-variant": "#334155",
+            "error": "#f87171",
+            "ocean": "#070e1e"
           },
           fontFamily: {
             headline: ["Space Grotesk", "sans-serif"],
@@ -50,53 +50,74 @@
       line-height: 1;
     }
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
-    .custom-scroll::-webkit-scrollbar-track { background: rgba(14, 19, 33, 0.7); }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #3d494c; border-radius: 2px; }
-    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #4cd7f6; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(13, 19, 34, 0.7); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
     .corner-bracket { position: relative; }
     .corner-bracket::before {
       content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 6px;
-      border-top: 1.5px solid #4cd7f6; border-left: 1.5px solid #4cd7f6; pointer-events: none;
+      border-top: 1.5px solid #38bdf8; border-left: 1.5px solid #38bdf8; pointer-events: none;
     }
     .corner-bracket::after {
       content: ''; position: absolute; bottom: 0; right: 0; width: 6px; height: 6px;
-      border-bottom: 1.5px solid #4cd7f6; border-right: 1.5px solid #4cd7f6; pointer-events: none;
+      border-bottom: 1.5px solid #38bdf8; border-right: 1.5px solid #38bdf8; pointer-events: none;
     }
     .tactical-grid-bg {
-      background-size: 36px 36px;
+      background-size: 32px 32px;
       background-image: 
-        linear-gradient(to right, rgba(61, 73, 76, 0.12) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(61, 73, 76, 0.12) 1px, transparent 1px);
+        linear-gradient(to right, rgba(51, 65, 85, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(51, 65, 85, 0.15) 1px, transparent 1px);
     }
-    .province-path { cursor: pointer; transition: all 0.2s ease; }
-    .province-path:hover { fill-opacity: 0.65; stroke-width: 2.5; stroke: #4cd7f6; }
-    .province-path.active { fill-opacity: 0.85; stroke: #f59e0b; stroke-width: 3; }
+    
+    /* Vektörel Harita Detayları */
+    .nation-path {
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .nation-path:hover {
+      filter: brightness(1.35) drop-shadow(0 0 10px rgba(56, 189, 248, 0.6));
+      stroke: #38bdf8 !important;
+      stroke-width: 2px !important;
+    }
+    .nation-path.active-nation {
+      filter: brightness(1.5) drop-shadow(0 0 16px rgba(245, 158, 11, 0.9));
+      stroke: #f59e0b !important;
+      stroke-width: 2.5px !important;
+    }
+    .map-canvas-container {
+      cursor: grab;
+    }
+    .map-canvas-container:active {
+      cursor: grabbing;
+    }
   </style>
 </head>
 
-<body class="bg-surface-dim text-[#dee2f6] select-none font-body overflow-hidden h-screen w-screen flex flex-col">
+<body class="bg-surface-dim text-[#f1f5f9] select-none font-body overflow-hidden h-screen w-screen flex flex-col">
 
-  <!-- 1. TOP STRATEGIC COMMAND HUD -->
+  <!-- 1. ÜST STRATEJİK HUD -->
   <header class="fixed top-0 left-0 w-full h-12 flex items-center justify-between px-4 z-50 border-b border-outline-variant/40 bg-surface-dim/95 backdrop-blur-md">
     <div class="flex items-center gap-3 shrink-0">
       <div class="flex items-center gap-1.5 cursor-pointer">
         <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">public</span>
-        <span class="font-headline font-bold text-sm tracking-wider text-primary uppercase">Aegis Geopolitical Command</span>
+        <span class="font-headline font-bold text-sm tracking-wider text-primary uppercase">AEGIS GEOPOLITICAL ATLAS // V4.2</span>
       </div>
       <div class="h-4 w-[1px] bg-outline-variant/50 hidden md:block"></div>
       <div class="hidden xl:flex items-center gap-1.5 text-xs font-mono bg-surface-container px-2 py-0.5 rounded border border-outline-variant/30">
         <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-        <span id="currentDateDisplay" class="font-semibold">24 EKİM 2026</span>
-        <span class="text-primary text-[10px] font-bold tracking-widest pl-1">Q4 FİSKAL</span>
+        <span id="currentDateDisplay" class="font-semibold text-white">24 EKİM 2026</span>
+        <span class="text-primary text-[10px] font-bold tracking-widest pl-1">Q4 CANLI</span>
       </div>
     </div>
 
-    <!-- Telemetri Kapsülleri (Canlı Değişen İstatistikler) -->
+    <!-- Telemetri Kapsülleri -->
     <div class="hidden lg:flex items-center gap-2 font-mono text-xs overflow-x-auto custom-scroll py-1">
-      <div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
+      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
         <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">account_balance</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Hazine Rezervi</span>
+          <span class="text-[9px] text-outline uppercase">Milli Hazine</span>
           <div class="flex items-center gap-1">
             <span id="hudTreasury" class="font-bold text-white">$1.42T</span>
             <span id="hudTreasuryDelta" class="text-primary text-[10px]">(+$48.5B/Ay)</span>
@@ -104,10 +125,10 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
+      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
         <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Milli GSYİH</span>
+          <span class="text-[9px] text-outline uppercase">Global GSYİH</span>
           <div class="flex items-center gap-1">
             <span id="hudGdp" class="font-bold text-white">$1.34T</span>
             <span class="text-primary text-[10px] font-semibold">+3.8%</span>
@@ -115,10 +136,10 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-[#bcc9cd] text-sm">groups</span>
+      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
+        <span class="material-symbols-outlined text-outline text-sm">groups</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Toplam Nüfus</span>
+          <span class="text-[9px] text-outline uppercase">Egemen Nüfus</span>
           <div class="flex items-center gap-1">
             <span id="hudPopulation" class="font-bold text-white">85.8M</span>
             <span class="text-primary text-[10px]">(+1.1%)</span>
@@ -126,21 +147,10 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">military_tech</span>
-        <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Ordu Havuzu</span>
-          <div class="flex items-center gap-1">
-            <span class="font-bold text-white">425K</span>
-            <span class="text-tertiary text-[10px]">/ 680K</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-1.5 px-2 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
+      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
         <span class="material-symbols-outlined text-primary text-sm">shield</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Milli İstikrar</span>
+          <span class="text-[9px] text-outline uppercase">İstikrar Endeksi</span>
           <div class="flex items-center gap-1">
             <span id="hudStability" class="text-primary font-bold">82%</span>
             <span class="text-[9px] text-outline bg-surface-container-highest px-1 rounded">DÜŞÜK RİSK</span>
@@ -149,246 +159,337 @@
       </div>
     </div>
 
-    <!-- Simülasyon Hızı ve Zaman Butonu -->
+    <!-- Hız ve Tur Kontrolü -->
     <div class="flex items-center gap-2 shrink-0">
       <div class="flex items-center bg-surface-container-high rounded p-0.5 border border-outline-variant/40">
-        <button onclick="setSimSpeed(0)" id="speedBtn0" class="px-2 py-0.5 text-xs font-mono rounded text-primary bg-surface-container-highest">DURAKLAT</button>
+        <button onclick="setSimSpeed(0)" id="speedBtn0" class="px-2 py-0.5 text-xs font-mono rounded text-primary bg-surface-container-highest">DURDUR</button>
         <button onclick="setSimSpeed(1)" id="speedBtn1" class="px-2 py-0.5 text-xs font-mono text-outline hover:text-white">1X</button>
         <button onclick="setSimSpeed(2)" id="speedBtn2" class="px-2 py-0.5 text-xs font-mono text-outline hover:text-white">3X</button>
       </div>
       <button onclick="advanceTurn()" class="inline-flex items-center gap-1 px-3 py-1 bg-primary text-on-primary font-mono text-xs font-bold uppercase rounded shadow hover:bg-cyan-300 transition-all active:scale-95">
         <span class="material-symbols-outlined text-sm">fast_forward</span>
-        <span>TURU GEÇ (1 AY)</span>
+        <span>TURU GEÇ</span>
       </button>
     </div>
   </header>
 
-  <!-- ANA STRATEJİK ÇALIŞMA ALANI -->
+  <!-- ANA ÇALIŞMA ALANI -->
   <main class="relative w-full h-[calc(100vh-3rem)] mt-12 flex overflow-hidden">
 
-    <!-- 2. SOL PANEL: BAKANLIKLAR VE EYALET LİSTESİ -->
+    <!-- 2. SOL PANEL: DÜNYA DEVLETLERİ LİSTESİ -->
     <aside class="w-80 flex flex-col justify-between py-3 px-3 border-r border-outline-variant/30 bg-surface-container-low/95 backdrop-blur-xl z-30 shrink-0">
       <div class="flex flex-col gap-2">
         <div class="pb-2 border-b border-outline-variant/30 flex items-center justify-between">
           <div>
             <div class="font-headline font-bold text-primary flex items-center gap-1.5 text-sm">
-              <span class="material-symbols-outlined text-primary text-base">shield_person</span>
-              <span>STRATCOM SEKTÖRLERİ</span>
+              <span class="material-symbols-outlined text-primary text-base">travel_explore</span>
+              <span>KÜRESEL DEVLETLER</span>
             </div>
-            <p class="font-mono text-[10px] text-outline uppercase tracking-wider">TÜRKİYE BÖLGESEL HAKİMİYET</p>
+            <p class="font-mono text-[10px] text-outline uppercase tracking-wider">HAKİMİYET & BLOKLAR</p>
           </div>
-          <span class="px-1.5 py-0.5 text-[9px] bg-primary/10 border border-primary/30 text-primary font-mono rounded">5 EYALET</span>
+          <span class="px-1.5 py-0.5 text-[9px] bg-primary/10 border border-primary/30 text-primary font-mono rounded">7 BÖLGE</span>
         </div>
 
-        <button onclick="triggerEmergencyDecree()" class="w-full flex items-center justify-center gap-2 py-1.5 bg-primary text-on-primary font-mono text-xs font-bold uppercase rounded shadow hover:bg-cyan-300 active:scale-95 transition-all">
-          <span class="material-symbols-outlined text-sm">emergency_home</span>
-          <span>ACİL EKONOMİK KARARNAME</span>
-        </button>
-
-        <div class="mt-2">
-          <div class="flex items-center justify-between mb-1.5">
-            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">STRATEJİK BÖLGELER (EYALETLER)</span>
-            <span class="text-[10px] text-primary font-mono">SEÇ VE YÖNET</span>
-          </div>
-          <div class="flex flex-col gap-1.5 max-h-[58vh] overflow-y-auto custom-scroll pr-1" id="provinceListContainer">
-            <!-- Dinamik Eyalet Kartları JS ile üretilir -->
-          </div>
+        <!-- Ülke Listesi -->
+        <div class="flex flex-col gap-1.5 max-h-[62vh] overflow-y-auto custom-scroll pr-1" id="nationListContainer">
+          <!-- JS ile dinamik doldurulur -->
         </div>
       </div>
 
-      <div class="pt-2 border-t border-outline-variant/30 flex flex-col gap-1 text-xs">
-        <div class="flex items-center justify-between px-2 py-1 text-outline font-mono text-[11px]">
-          <span>Enflasyon Endeksi:</span>
-          <span class="text-primary font-bold">%2.4 (Düşük)</span>
-        </div>
+      <div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between font-mono text-[11px] text-outline">
+        <span>Seçili Odak:</span>
+        <span id="leftPanelFocusText" class="text-primary font-bold">TÜRKİYE</span>
       </div>
     </aside>
 
-    <!-- 3. ORTA ALAN: 2D DÜNYA VE TÜRKİYE TIKLANABİLİR HARİTASI -->
-    <div class="flex-1 h-full relative overflow-hidden bg-surface-container-lowest tactical-grid-bg flex flex-col">
-      <!-- Harita Modu Butonları -->
-      <div class="absolute top-4 left-6 z-20 flex items-center gap-1 bg-surface-container-low/90 backdrop-blur-md p-1 border border-outline-variant/50 rounded shadow">
-        <button class="px-2 py-1 text-[11px] font-mono font-bold uppercase rounded bg-primary text-on-primary flex items-center gap-1">
-          <span class="material-symbols-outlined text-xs">public</span>
-          <span>Siyasi Sınırlar</span>
+    <!-- 3. ORTA ALAN: ULTRA DETAYLI 2D VEKTÖREL MODERN DÜNYA HARİTASI -->
+    <div class="flex-1 h-full relative overflow-hidden bg-ocean tactical-grid-bg flex flex-col map-canvas-container" id="mapDragWrapper">
+      
+      <!-- Harita Üstü Butonları (Zoom & Mod) -->
+      <div class="absolute top-4 left-6 z-20 flex items-center gap-2 pointer-events-none">
+        <div class="pointer-events-auto flex items-center gap-1 bg-surface-container-low/90 backdrop-blur-md p-1 border border-outline-variant/50 rounded shadow">
+          <button class="px-2.5 py-1 text-[11px] font-mono font-bold uppercase rounded bg-primary text-on-primary flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">public</span>
+            <span>Jeopolitik Sınırlar</span>
+          </button>
+          <button onclick="resetMapTransform()" class="px-2.5 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">center_focus_strong</span>
+            <span>Merkeze Al</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Zoom Kontrolü (Sol Alt) -->
+      <div class="absolute bottom-6 left-6 z-20 flex flex-col gap-1 bg-surface-container-low/90 backdrop-blur-md p-1 border border-outline-variant/40 rounded shadow-lg">
+        <button onclick="zoomMap(1.25)" class="p-1.5 text-white hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Yakınlaş (+)">
+          <span class="material-symbols-outlined text-sm">add</span>
         </button>
-        <button onclick="alert('Demografik Isı Haritası: Marmara ve Ege bölgesinde yoğun kentsel göç mevcut.')" class="px-2 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1">
-          <span class="material-symbols-outlined text-xs">diversity_3</span>
-          <span>Etnik Dağılım</span>
+        <button onclick="zoomMap(0.8)" class="p-1.5 text-white hover:text-primary hover:bg-surface-container-high rounded transition-colors" title="Uzaklaş (-)">
+          <span class="material-symbols-outlined text-sm">remove</span>
         </button>
       </div>
 
+      <!-- Dinamik Koordinat Göstergesi -->
       <div class="absolute top-4 right-6 z-20 flex items-center gap-2 bg-surface-container-low/90 backdrop-blur-md px-3 py-1 border border-outline-variant/40 rounded text-xs font-mono">
         <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-        <span id="activeSectorCoordinates" class="text-primary font-bold">41°00'N 28°58'E</span>
+        <span id="activeMapCoords" class="text-primary font-bold">39°00'N 35°00'E</span>
         <span class="text-outline">|</span>
-        <span id="activeSectorBadge" class="uppercase font-semibold text-white">Marmara Bölgesi</span>
+        <span id="activeMapCountryBadge" class="uppercase font-semibold text-white">TÜRKİYE CUMHURİYETİ</span>
       </div>
 
-      <!-- TIKLANABİLİR VEKTÖREL HARİTA -->
-      <div class="w-full h-full relative flex items-center justify-center p-4">
-        <svg class="w-full h-full max-h-[82vh] filter drop-shadow-[0_0_20px_rgba(6,182,212,0.1)]" viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg">
+      <!-- HARİTA SVG ÇERÇEVESİ (2000 x 1000 EKRAN ORANI, YÜKSEK DETAY POLİGONLAR) -->
+      <div class="w-full h-full flex items-center justify-center p-2" id="svgTransformHolder">
+        <svg id="worldSvg" class="w-full h-full max-h-[88vh]" viewBox="0 0 2000 1000" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <filter id="turkey-glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#06b6d4" flood-opacity="0.7"/>
+            <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#38bdf8" flood-opacity="0.8"/>
             </filter>
-            <pattern id="tactical-dots" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="0.8" fill="#3d494c" opacity="0.3"></circle>
+            <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#f59e0b" flood-opacity="0.9"/>
+            </filter>
+            <pattern id="marine-dots" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="0.75" fill="#334155" opacity="0.35"/>
             </pattern>
           </defs>
 
-          <rect width="1100" height="600" fill="url(#tactical-dots)"></rect>
+          <!-- Okyanus Izgarası -->
+          <rect width="2000" height="1000" fill="url(#marine-dots)"></rect>
 
-          <!-- Meridyen ve Koordinat Çizgileri -->
-          <line x1="0" y1="300" x2="1100" y2="300" stroke="#3d494c" stroke-width="0.8" stroke-dasharray="4 6" opacity="0.4"/>
-          <line x1="550" y1="0" x2="550" y2="600" stroke="#3d494c" stroke-width="0.8" stroke-dasharray="4 6" opacity="0.4"/>
+          <!-- Ekvator ve Referans Meridyenleri -->
+          <line x1="0" y1="500" x2="2000" y2="500" stroke="#1e293b" stroke-width="1.2" stroke-dasharray="6 6"/>
+          <line x1="1000" y1="0" x2="1000" y2="1000" stroke="#1e293b" stroke-width="1.2" stroke-dasharray="6 6"/>
+          <line x1="500" y1="0" x2="500" y2="1000" stroke="#1e293b" stroke-width="0.8" stroke-dasharray="3 6"/>
+          <line x1="1500" y1="0" x2="1500" y2="1000" stroke="#1e293b" stroke-width="0.8" stroke-dasharray="3 6"/>
 
-          <!-- Dünya Arka Plan Karaları (Modern Güçler) -->
-          <path d="M 120 120 L 250 110 L 290 150 L 260 220 L 210 260 L 170 250 L 140 180 Z" fill="#161b2a" stroke="#3d494c" stroke-width="1"/>
-          <text x="180" y="190" fill="#869397" font-family="JetBrains Mono" font-size="10">USA</text>
+          <!-- Uluslararası Ticaret ve Deniz İkmal Koridorları -->
+          <path d="M 460,430 L 910,380 L 1080,480 L 1260,540 L 1550,680 L 1680,460" fill="none" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.4"/>
 
-          <path d="M 470 160 L 530 155 L 540 210 L 490 230 L 460 190 Z" fill="#1c2233" stroke="#3d494c" stroke-width="1"/>
-          <text x="480" y="190" fill="#869397" font-family="JetBrains Mono" font-size="9">AVRUPA BİRLİĞİ</text>
-
-          <path d="M 560 110 L 890 90 L 920 180 L 760 210 L 620 180 Z" fill="#161b2a" stroke="#3d494c" stroke-width="1"/>
-          <text x="700" y="145" fill="#869397" font-family="JetBrains Mono" font-size="11">RUSYA</text>
-
-          <path d="M 720 220 L 870 210 L 860 310 L 780 340 L 710 280 Z" fill="#1c2233" stroke="#3d494c" stroke-width="1"/>
-          <text x="770" y="270" fill="#869397" font-family="JetBrains Mono" font-size="11">ÇİN</text>
-
-          <!-- TIKLANABİLİR TÜRKİYE EYALETLERİ (POLİGONLAR) -->
-          <g id="provincesSvgGroup" filter="url(#turkey-glow)">
-            <!-- 1. Marmara Bölgesi -->
-            <polygon id="svg_marmara" class="province-path active" points="560,242 585,240 590,258 565,260" fill="#06b6d4" fill-opacity="0.4" stroke="#4cd7f6" stroke-width="1.8" onclick="selectProvince('marmara')"/>
-            <!-- 2. İç Anadolu Bölgesi -->
-            <polygon id="svg_icanadolu" class="province-path" points="585,240 615,238 618,262 590,265" fill="#06b6d4" fill-opacity="0.25" stroke="#4cd7f6" stroke-width="1.2" onclick="selectProvince('icanadolu')"/>
-            <!-- 3. Ege Bölgesi -->
-            <polygon id="svg_ege" class="province-path" points="555,258 578,256 575,278 550,274" fill="#06b6d4" fill-opacity="0.25" stroke="#4cd7f6" stroke-width="1.2" onclick="selectProvince('ege')"/>
-            <!-- 4. Akdeniz Bölgesi -->
-            <polygon id="svg_akdeniz" class="province-path" points="575,276 618,272 615,290 570,288" fill="#06b6d4" fill-opacity="0.25" stroke="#4cd7f6" stroke-width="1.2" onclick="selectProvince('akdeniz')"/>
-            <!-- 5. Güneydoğu / Doğu Bölgesi -->
-            <polygon id="svg_guneydogu" class="province-path" points="615,240 645,242 642,282 615,275" fill="#06b6d4" fill-opacity="0.25" stroke="#4cd7f6" stroke-width="1.2" onclick="selectProvince('guneydogu')"/>
+          <!-- 1. KUZEY AMERİKA (ABD & KANADA) -->
+          <g id="nation_usa" onclick="selectNation('usa')">
+            <!-- Alaska -->
+            <path class="nation-path" d="M 120,90 C 180,70 240,80 230,140 C 190,160 140,165 110,130 Z" fill="#1e293b" stroke="#334155" stroke-width="1.2"/>
+            <!-- Grönland -->
+            <path class="nation-path" d="M 680,60 C 760,40 820,90 810,170 C 780,230 710,230 670,160 Z" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+            <!-- Kanada & ABD Ana Karası -->
+            <path id="path_usa" class="nation-path" d="M 230,150 C 340,130 540,140 590,210 C 620,290 600,410 490,460 C 430,490 380,510 340,430 C 290,380 230,340 210,250 Z" fill="#131b2e" stroke="#475569" stroke-width="1.4"/>
+            <!-- Florida & Karayipler -->
+            <circle cx="510" cy="460" r="6" fill="#38bdf8" opacity="0.6"/>
+            <text x="380" y="310" fill="#94a3b8" font-family="JetBrains Mono" font-size="16" font-weight="700" letter-spacing="2">UNITED STATES</text>
           </g>
 
-          <!-- Metropol Şehir Noktaları -->
-          <g transform="translate(575, 248)" class="cursor-pointer" onclick="selectProvince('marmara')">
-            <circle cx="0" cy="0" r="10" fill="none" stroke="#f59e0b" stroke-width="1" class="animate-ping" opacity="0.75"/>
-            <circle cx="0" cy="0" r="4" fill="#f59e0b"/>
-            <text x="8" y="-4" fill="#f59e0b" font-family="JetBrains Mono" font-size="9" font-weight="bold">★ İSTANBUL</text>
+          <!-- 2. GÜNEY AMERİKA (BREZİLYA & LATAM) -->
+          <g id="nation_latam" onclick="selectNation('latam')">
+            <path id="path_latam" class="nation-path" d="M 450,510 C 560,480 670,570 710,680 C 730,780 620,910 570,960 C 530,970 490,880 470,780 C 440,680 420,580 450,510 Z" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+            <text x="560" y="720" fill="#64748b" font-family="JetBrains Mono" font-size="14" font-weight="600">BRAZIL / LATAM</text>
           </g>
 
-          <g transform="translate(600, 252)" class="cursor-pointer" onclick="selectProvince('icanadolu')">
-            <circle cx="0" cy="0" r="3" fill="#4cd7f6"/>
-            <text x="6" y="-2" fill="#dee2f6" font-family="JetBrains Mono" font-size="8">Ankara</text>
+          <!-- 3. AVRUPA BİRLİĞİ (ALMANYA, FRANSA, İNGİLTERE, İTALYA) -->
+          <g id="nation_eu" onclick="selectNation('eu')">
+            <!-- İskandinavya -->
+            <path class="nation-path" d="M 980,110 C 1030,90 1070,140 1050,230 C 1010,250 970,220 980,110 Z" fill="#1a233a" stroke="#334155" stroke-width="1"/>
+            <!-- Britanya & İrlanda -->
+            <path class="nation-path" d="M 890,190 C 930,170 950,220 920,260 C 890,265 870,225 890,190 Z" fill="#1a233a" stroke="#334155" stroke-width="1"/>
+            <!-- Batı/Orta Avrupa Karası -->
+            <path id="path_eu" class="nation-path" d="M 900,280 C 970,250 1060,250 1110,280 C 1120,350 1070,410 1010,415 C 960,425 910,380 890,320 Z" fill="#1a233a" stroke="#818cf8" stroke-width="1.4"/>
+            <!-- İtalya Çizmesi & Yunanistan -->
+            <path class="nation-path" d="M 985,390 L 1005,450 L 985,460 Z" fill="#818cf8" opacity="0.7"/>
+            <text x="960" y="325" fill="#818cf8" font-family="JetBrains Mono" font-size="13" font-weight="700">EUROPEAN UNION</text>
           </g>
 
-          <g transform="translate(562, 268)" class="cursor-pointer" onclick="selectProvince('ege')">
-            <circle cx="0" cy="0" r="3" fill="#4cd7f6"/>
-            <text x="6" y="2" fill="#dee2f6" font-family="JetBrains Mono" font-size="8">İzmir</text>
+          <!-- 4. RUSYA FEDERASYONU & SİBİRYA -->
+          <g id="nation_russia" onclick="selectNation('russia')">
+            <path id="path_russia" class="nation-path" d="M 1120,130 C 1310,90 1670,80 1880,140 C 1920,220 1840,320 1710,350 C 1580,380 1420,360 1280,310 C 1170,290 1110,210 1120,130 Z" fill="#111827" stroke="#475569" stroke-width="1.3"/>
+            <text x="1450" y="210" fill="#94a3b8" font-family="JetBrains Mono" font-size="18" font-weight="700" letter-spacing="3">RUSSIA</text>
           </g>
+
+          <!-- 5. ÇİN HALK CUMHURİYETİ & DOĞU ASYA -->
+          <g id="nation_china" onclick="selectNation('china')">
+            <path id="path_china" class="nation-path" d="M 1460,340 C 1620,330 1780,330 1810,430 C 1820,530 1720,590 1600,590 C 1510,590 1440,510 1430,420 Z" fill="#182032" stroke="#64748b" stroke-width="1.4"/>
+            <!-- Japon Takımadaları -->
+            <path class="nation-path" d="M 1830,360 C 1860,350 1870,420 1850,470 C 1830,460 1820,400 1830,360 Z" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+            <text x="1580" y="450" fill="#94a3b8" font-family="JetBrains Mono" font-size="16" font-weight="700" letter-spacing="2">CHINA</text>
+          </g>
+
+          <!-- 6. HİNDİSTAN & GÜNEY ASYA -->
+          <g id="nation_india" onclick="selectNation('india')">
+            <path id="path_india" class="nation-path" d="M 1360,420 C 1450,420 1490,470 1460,570 C 1430,640 1380,640 1350,550 Z" fill="#141c2e" stroke="#475569" stroke-width="1.2"/>
+            <text x="1380" y="520" fill="#64748b" font-family="JetBrains Mono" font-size="13" font-weight="600">INDIA</text>
+          </g>
+
+          <!-- 7. ORTA DOĞU & KUZEY AFRİKA (MISIR, SUUDİ ARABİSTAN, İRAN) -->
+          <g id="nation_mena" onclick="selectNation('mena')">
+            <!-- Arap Yarımadası & İran -->
+            <path id="path_mena" class="nation-path" d="M 1160,420 C 1280,410 1340,460 1330,560 C 1290,620 1200,610 1150,520 Z" fill="#101726" stroke="#334155" stroke-width="1.2"/>
+            <text x="1210" y="520" fill="#64748b" font-family="JetBrains Mono" font-size="12" font-weight="600">MENA / GULF</text>
+          </g>
+
+          <!-- 8. AFRİKA ANA KARASI -->
+          <g>
+            <path class="nation-path" d="M 910,440 C 1090,420 1140,510 1150,620 C 1170,760 1090,890 1020,920 C 970,930 920,840 890,720 C 860,630 870,520 910,440 Z" fill="#0b101c" stroke="#1e293b" stroke-width="1"/>
+            <!-- Madagaskar -->
+            <path d="M 1190,750 C 1210,740 1220,800 1200,840 Z" fill="#0b101c" stroke="#1e293b"/>
+          </g>
+
+          <!-- 9. AVUSTRALYA / OKYANUSYA -->
+          <g>
+            <path class="nation-path" d="M 1620,710 C 1740,670 1820,740 1810,830 C 1780,890 1670,890 1620,830 Z" fill="#0d1424" stroke="#1e293b" stroke-width="1"/>
+          </g>
+
+          <!-- ================================================================= -->
+          <!-- 10. OYUNCU EGEMEN DEVLETİ: TÜRKİYE CUMHURİYETİ & DOĞU AKDENİZ   -->
+          <!-- ================================================================= -->
+          <g id="nation_turkey" class="cursor-pointer" onclick="selectNation('turkey')">
+            <!-- Anadolu & Trakya Ana Karası (Ultra Detaylı Kıvrımlar) -->
+            <path id="path_turkey" class="nation-path active-nation" 
+              d="M 1060,370 
+                 C 1075,365 1105,360 1140,360 
+                 C 1170,362 1190,375 1205,385 
+                 C 1195,410 1165,420 1130,420 
+                 C 1090,422 1070,410 1055,395 
+                 Z" 
+              fill="#0284c7" fill-opacity="0.5" stroke="#38bdf8" stroke-width="2.5" filter="url(#glow-cyan)"/>
+            
+            <!-- Kıbrıs Adası (Stratejik Donanma ve İkmal Üssü) -->
+            <path d="M 1115,425 C 1130,422 1140,430 1132,434 C 1120,436 1112,430 1115,425 Z" 
+                  fill="#f59e0b" stroke="#f59e0b" stroke-width="1.2" filter="url(#glow-gold)"/>
+            
+            <!-- İstanbul Boğazı & Başkent Ankara Taktik Çemberi -->
+            <g transform="translate(1085, 378)">
+              <circle cx="0" cy="0" r="14" fill="none" stroke="#f59e0b" stroke-width="1.5" class="animate-ping" opacity="0.8"/>
+              <circle cx="0" cy="0" r="5" fill="#f59e0b"/>
+              <!-- Taktik Çağrı Hattı -->
+              <polyline points="4,-4 25,-25 110,-25" fill="none" stroke="#f59e0b" stroke-width="1.2"/>
+              <rect x="110" y="-38" width="150" height="26" fill="#080c17" stroke="#f59e0b" stroke-width="1.2" rx="3"/>
+              <text x="118" y="-21" fill="#f59e0b" font-family="JetBrains Mono" font-size="11" font-weight="800">★ TÜRKİYE [KOMUTA]</text>
+            </g>
+
+            <!-- Kıbrıs Taktik Radar Çemberi -->
+            <g transform="translate(1125, 430)">
+              <circle cx="0" cy="0" r="2.5" fill="#38bdf8"/>
+              <text x="8" y="3" fill="#38bdf8" font-family="JetBrains Mono" font-size="8" font-weight="700">KIBRIS SEKTÖRÜ</text>
+            </g>
+          </g>
+
+          <!-- GLOBAL METROPOLLER (DÜNYA BAŞKENTLERİ) -->
+          <!-- Washington -->
+          <circle cx="490" cy="310" r="3.5" fill="#94a3b8"/>
+          <text x="500" y="315" fill="#64748b" font-family="JetBrains Mono" font-size="10">Washington</text>
+
+          <!-- Londra / Berlin -->
+          <circle cx="910" cy="230" r="3" fill="#818cf8"/>
+          <circle cx="980" cy="270" r="3" fill="#818cf8"/>
+          <text x="990" y="275" fill="#818cf8" font-family="JetBrains Mono" font-size="9">Berlin</text>
+
+          <!-- Moskova -->
+          <circle cx="1160" cy="220" r="3.5" fill="#94a3b8"/>
+          <text x="1170" y="225" fill="#94a3b8" font-family="JetBrains Mono" font-size="10">Moskova</text>
+
+          <!-- Pekin -->
+          <circle cx="1680" cy="370" r="4" fill="#94a3b8"/>
+          <text x="1690" y="375" fill="#94a3b8" font-family="JetBrains Mono" font-size="10">Pekin</text>
         </svg>
       </div>
 
-      <!-- 5. ALT STRATEJİK KARAR KARTI (PAX STORY DİLEMMA EVENT) -->
-      <div class="absolute bottom-4 left-6 right-6 z-30 pointer-events-auto">
+      <!-- 4. ALT STRATEJİK KARAR KARTI (PAX STORY DILEMMA) -->
+      <div class="absolute bottom-4 left-20 right-20 z-30 pointer-events-auto">
         <div class="bg-surface-container-high/95 backdrop-blur-2xl border border-primary/40 rounded-xl p-3 shadow-2xl corner-bracket">
           <div class="flex items-center justify-between pb-1 border-b border-outline-variant/30">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-primary text-base animate-pulse">crisis_alert</span>
-              <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">MİLLİ GÜVENLİK VE EKONOMİ KURULU KARARNAMESİ #104</span>
-              <span class="px-2 py-0.2 text-[9px] bg-tertiary/20 text-tertiary border border-tertiary/40 font-mono font-bold rounded">STRATEJİK İKİLEM</span>
+              <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">MİLLİ JEOPOLİTİK DİREKTİF KARTI #208</span>
+              <span class="px-2 py-0.2 text-[9px] bg-tertiary/20 text-tertiary border border-tertiary/40 font-mono font-bold rounded">KÜRESEL DENGELER</span>
             </div>
-            <span class="text-outline font-mono text-[10px]">YÜRÜTME ONAYI BEKLENİYOR</span>
+            <span class="text-outline font-mono text-[10px]">İCRA ONAYI BEKLENİYOR</span>
           </div>
 
           <div class="py-2 grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
             <div class="md:col-span-8">
               <h4 id="eventTitle" class="font-headline text-sm font-bold text-primary mb-0.5">
-                Enerji Dönüşümü ve Doğalgaz Boru Hattı Entegrasyonu
+                Doğu Akdeniz Enerji Koridoru & Kıbrıs Deniz Yetki Alanı Anlaşması
               </h4>
-              <p id="eventDesc" class="text-xs text-[#bcc9cd] leading-relaxed">
-                Marmara ve Ege sanayi havzalarında elektrik talebi rekor seviyeye ulaştı. Doğalgaz anlaşmalarının süresi dolarken yeşil enerjiye geçiş ve yerli nükleer reaktör yatırımları için acil bir stratejik tercih yapılması gerekiyor.
+              <p id="eventDesc" class="text-xs text-[#94a3b8] leading-relaxed">
+                Kıbrıs açıklarındaki yeni hidrokarbon ve açık deniz rüzgar sahaları, uluslararası konsorsiyumların ilgisini çekiyor. Avrupa ve bölgesel güçler ortak arama lisansı teklif ederken, savunma sanayii yerli sondaj ve korvet refakatinde ısrarcı.
               </p>
             </div>
             <div class="md:col-span-4 bg-surface-container-low/80 p-2 rounded border border-outline-variant/30 text-[10px] font-mono">
               <div class="flex justify-between text-outline">
-                <span>Pik Güç Açığı:</span>
-                <span class="text-error font-bold">-12.4 GW</span>
+                <span>Stratejik Özerklik:</span>
+                <span class="text-primary font-bold">+%18 Yükseliş</span>
               </div>
               <div class="flex justify-between text-outline">
-                <span>Hazineye Etkisi:</span>
-                <span class="text-primary font-bold">Kritik Eşik</span>
+                <span>Yaptırım Riski:</span>
+                <span class="text-tertiary font-bold">Dengede</span>
               </div>
             </div>
           </div>
 
           <!-- Seçenek Butonları -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1" id="eventOptionsContainer">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1">
             <button onclick="resolveDilemma('A')" class="p-2 rounded bg-surface-container-low border border-primary/40 hover:border-primary hover:bg-surface-container-highest transition-all text-left">
-              <div class="flex justify-between text-xs font-mono font-bold text-primary">A: SMR Modüler Nükleer & Yeşil Tahvil</div>
-              <p class="text-[10px] text-outline mt-0.5">14 Milyar $ yeşil tahvil fonu çıkartarak 4 reaktör inşa et.</p>
-              <div class="mt-1 text-[9px] font-mono text-emerald-400 font-bold">+%20 Enerji Bağımsızlığı | -$14B Hazine</div>
+              <div class="flex justify-between text-xs font-mono font-bold text-primary">A: Milli Filo & Bağımsız Sondaj</div>
+              <p class="text-[10px] text-outline mt-0.5">Yerli sismik gemileri donanma refakatiyle sahaya sür.</p>
+              <div class="mt-1 text-[9px] font-mono text-emerald-400 font-bold">+$12B Rezerv | +%15 Milli Gurur</div>
             </button>
             <button onclick="resolveDilemma('B')" class="p-2 rounded bg-surface-container-low border border-outline-variant/40 hover:border-secondary hover:bg-surface-container-highest transition-all text-left">
-              <div class="flex justify-between text-xs font-mono font-bold text-secondary">B: Hazar Doğalgaz Boru Hattı Anlaşması</div>
-              <p class="text-[10px] text-outline mt-0.5">15 yıllık uzun vadeli gaz tedarik paktı imzala.</p>
-              <div class="mt-1 text-[9px] font-mono text-tertiary font-bold">+Hızlı Büyüme | -$4B/Yıl Bütçe</div>
+              <div class="flex justify-between text-xs font-mono font-bold text-secondary">B: Çok Uluslu Enerji Konsorsiyumu</div>
+              <p class="text-[10px] text-outline mt-0.5">AB ve Körfez fonlarıyla ortak gelir paylaşımı anlaşması yap.</p>
+              <div class="mt-1 text-[9px] font-mono text-secondary font-bold">+$22B Sıcak Para | -%5 Özerklik</div>
             </button>
             <button onclick="resolveDilemma('C')" class="p-2 rounded bg-surface-container-low border border-outline-variant/40 hover:border-error hover:bg-surface-container-highest transition-all text-left">
-              <div class="flex justify-between text-xs font-mono font-bold text-error">C: Sanayide Enerji Kotası ve Tasarruf</div>
-              <p class="text-[10px] text-outline mt-0.5">Mali harcama yapmadan fabrikalara kısıtlama uygula.</p>
-              <div class="mt-1 text-[9px] font-mono text-error font-bold">$0 Maliyet | -%4 Sanayi Büyümesi</div>
+              <div class="flex justify-between text-xs font-mono font-bold text-error">C: Hukuki Dondurma ve Müzakere</div>
+              <p class="text-[10px] text-outline mt-0.5">Gerilimi azaltmak için sondaj faaliyetlerini 6 ay ertele.</p>
+              <div class="mt-1 text-[9px] font-mono text-tertiary font-bold">$0 Harcama | -%8 Askeri Moral</div>
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 4. SAĞ PANEL: SEÇİLİ EYALET YÖNETİMİ, ETNİK GRUPLAR VE YATIRIMLAR -->
+    <!-- 5. SAĞ PANEL: SEÇİLİ DEVLET VE DEMOGRAFİK MATRİS -->
     <aside class="w-96 bg-surface-container-low/95 backdrop-blur-xl border-l border-outline-variant/30 flex flex-col justify-between py-3 px-3 shadow-2xl custom-scroll overflow-y-auto shrink-0 z-30">
       <div class="flex flex-col gap-3">
-        <!-- Eyalet Başlığı -->
+        <!-- Başlık -->
         <div class="pb-2 border-b border-outline-variant/30 flex items-start justify-between">
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">location_city</span>
-              <span class="font-mono text-[10px] text-tertiary font-bold tracking-widest uppercase">BÖLGESEL İDARİ DOSYA</span>
+              <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">flag</span>
+              <span class="font-mono text-[10px] text-tertiary font-bold tracking-widest uppercase">DEVLET DOSYASI</span>
             </div>
-            <h2 id="provinceName" class="font-headline font-bold text-white text-base mt-0.5">MARMARA BÖLGESİ</h2>
+            <h2 id="nationName" class="font-headline font-bold text-white text-base mt-0.5">TÜRKİYE CUMHURİYETİ</h2>
             <div class="flex items-center gap-2 mt-0.5">
-              <span id="provinceCapital" class="font-mono text-xs text-primary font-semibold">İstanbul & Kocaeli Havzası</span>
-              <span id="provinceTier" class="px-1.5 py-0.2 text-[9px] bg-primary/20 text-primary border border-primary/40 rounded uppercase font-mono">1. Kademe Megakent</span>
+              <span id="nationBloc" class="font-mono text-xs text-primary font-semibold">Bağımsız Avrasya Gücü</span>
+              <span id="nationStatus" class="px-1.5 py-0.2 text-[9px] bg-primary/20 text-primary border border-primary/40 rounded uppercase font-mono">Egemen Oyuncu</span>
             </div>
           </div>
         </div>
 
-        <!-- Yapay Zekalı Vali Kartı (Procedural AI Governor) -->
+        <!-- Yapay Zekalı Lider / Vali Profili -->
         <div class="bg-surface-container/70 border border-outline-variant/40 rounded p-2.5 corner-bracket">
           <div class="flex items-center gap-2.5">
             <div class="w-11 h-11 rounded bg-surface-container-high border border-primary/50 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-primary text-2xl">account_circle</span>
+              <span class="material-symbols-outlined text-primary text-2xl">shield_person</span>
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
-                <h3 id="govName" class="font-bold text-xs text-white truncate">Dr. Selim Aras</h3>
-                <span class="text-[9px] text-primary font-mono font-semibold">AI VALİ</span>
+                <h3 id="leaderName" class="font-bold text-xs text-white truncate">Dr. Selim Aras</h3>
+                <span class="text-[9px] text-primary font-mono font-semibold">BAŞKANLIK</span>
               </div>
-              <p id="govRole" class="font-mono text-[10px] text-outline truncate">Bölge Genel Sekreteri & Teknokrat</p>
-              <div class="flex flex-wrap gap-1 mt-1" id="govTraits">
-                <span class="px-1 py-0.2 text-[9px] bg-secondary/20 text-secondary rounded font-mono">Reformist</span>
-                <span class="px-1 py-0.2 text-[9px] bg-emerald-500/20 text-emerald-300 rounded font-mono">Mali Disiplin</span>
+              <p id="leaderTitle" class="font-mono text-[10px] text-outline truncate">Milli Güvenlik ve Strateji Direktörü</p>
+              <div class="flex flex-wrap gap-1 mt-1" id="leaderTraits">
+                <span class="px-1 py-0.2 text-[9px] bg-secondary/20 text-secondary rounded font-mono">Teknokrat</span>
+                <span class="px-1 py-0.2 text-[9px] bg-emerald-500/20 text-emerald-300 rounded font-mono">Jeopolitik Uzlaşmacı</span>
               </div>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-outline-variant/30 text-center font-mono">
             <div class="bg-surface-container-lowest p-1 rounded">
-              <span class="block text-[9px] text-outline uppercase">Bürokratik Verim</span>
-              <span id="govEff" class="text-primary font-bold text-xs">%86 Optimal</span>
+              <span class="block text-[9px] text-outline uppercase">Bürokratik Kapasite</span>
+              <span id="leaderEff" class="text-primary font-bold text-xs">%88 Optimal</span>
             </div>
             <div class="bg-surface-container-lowest p-1 rounded">
-              <span class="block text-[9px] text-outline uppercase">Halk Desteği</span>
-              <span id="govApproval" class="text-secondary font-bold text-xs">%74 Olumlu</span>
+              <span class="block text-[9px] text-outline uppercase">Milli Destek</span>
+              <span id="leaderApproval" class="text-secondary font-bold text-xs">%78 Olumlu</span>
             </div>
           </div>
         </div>
@@ -396,400 +497,419 @@
         <!-- Demografik & Etnik Kültürel Matris -->
         <div class="flex flex-col gap-1.5">
           <div class="flex items-center justify-between">
-            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">Demografik ve Kültürel Dağılım</span>
-            <span id="provincePopulationText" class="font-mono text-xs text-white font-bold">15.9M Sakin</span>
+            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">Demografik Nüfus Dağılımı</span>
+            <span id="nationPopulationText" class="font-mono text-xs text-white font-bold">85.8M Vatandaş</span>
           </div>
 
-          <!-- Çok Renkli Dinamik Nüfus Çubuğu -->
-          <div class="h-2.5 w-full bg-surface-container-lowest rounded-sm overflow-hidden flex p-0.5 border border-outline-variant/30" id="demographicBar">
-            <!-- JS doldurur -->
-          </div>
+          <div class="h-2.5 w-full bg-surface-container-lowest rounded-sm overflow-hidden flex p-0.5 border border-outline-variant/30" id="nationDemographicBar"></div>
+          <div class="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[10px] text-outline mt-0.5" id="nationDemographicLegend"></div>
 
-          <!-- Etnik Lejant -->
-          <div class="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[10px] text-outline mt-0.5" id="demographicLegend">
-            <!-- JS doldurur -->
-          </div>
-
-          <!-- Sosyal Uyum & Sürtünme -->
           <div class="flex items-center justify-between p-1.5 bg-surface-container/60 rounded text-xs font-mono mt-1 border border-outline-variant/20">
             <div>
-              <span class="text-outline text-[10px]">Sosyal Uyum:</span>
-              <span id="socialCohesion" class="text-primary font-bold ml-1">%78</span>
+              <span class="text-outline text-[10px]">Sosyal Bütünleşme:</span>
+              <span id="nationCohesion" class="text-primary font-bold ml-1">%82</span>
             </div>
             <div>
-              <span class="text-outline text-[10px]">Huzursuzluk/İsyan:</span>
-              <span id="unrestRisk" class="text-tertiary font-bold ml-1">%14 (Düşük)</span>
+              <span class="text-outline text-[10px]">Ayrılıkçılık/Risk:</span>
+              <span id="nationUnrest" class="text-tertiary font-bold ml-1">%12 (Stabil)</span>
             </div>
-          </div>
-
-          <!-- Entegrasyon Politikası Butonları -->
-          <div class="flex flex-col gap-1 mt-1 text-[11px] font-mono">
-            <label class="flex items-center justify-between p-1.5 bg-surface-container/40 rounded cursor-pointer hover:bg-surface-container transition-colors">
-              <span>Hızlı Nitelikli Yetenek Vizesi</span>
-              <input type="checkbox" checked onchange="togglePolicy('talent')" class="w-3.5 h-3.5 rounded bg-surface-container-high border-outline text-primary focus:ring-0">
-            </label>
-            <label class="flex items-center justify-between p-1.5 bg-surface-container/40 rounded cursor-pointer hover:bg-surface-container transition-colors">
-              <span>Kültürel Entegrasyon & Dil Desteği</span>
-              <input type="checkbox" checked onchange="togglePolicy('integration')" class="w-3.5 h-3.5 rounded bg-surface-container-high border-outline text-primary focus:ring-0">
-            </label>
           </div>
         </div>
 
-        <!-- 21. YÜZYIL STRATEJİK ŞEHİR YATIRIMLARI (Tıklanabilir ve Geliştirilebilir) -->
+        <!-- Stratejik Altyapı Yatırımları (Tıklanabilir) -->
         <div class="flex flex-col gap-1.5">
           <div class="flex items-center justify-between border-t border-outline-variant/30 pt-2">
-            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">STRATEJİK ALTYAPI VE ŞEHİR YATIRIMLARI</span>
-            <span class="text-[10px] text-primary font-mono">TIKLA VE GELİŞTİR</span>
+            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">STRATEJİK MİLLİ PROJELER</span>
+            <span class="text-[10px] text-primary font-mono">GELİŞTİR</span>
           </div>
 
-          <!-- Yatırım 1: Yüksek Hızlı Tren -->
-          <div onclick="upgradeInfrastructure('rail')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-primary transition-all cursor-pointer group">
+          <div onclick="upgradeNationalProject('rail')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-primary transition-all cursor-pointer group">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-primary text-sm">train</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-primary">Yüksek Hızlı Demiryolu</span>
+                <span class="font-mono text-xs font-bold text-white group-hover:text-primary">Kalkınma Yolu & Hızlı Tren</span>
               </div>
               <span id="lvl_rail" class="text-[10px] text-primary font-mono font-bold">LVL 4/5</span>
             </div>
             <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
               <div id="bar_rail" class="bg-primary h-full rounded-full" style="width: 80%;"></div>
             </div>
-            <div class="flex items-center justify-between text-[10px] font-mono mt-1 text-outline">
-              <span class="text-primary">+%24 Ticaret Hızı</span>
-              <span class="text-white group-hover:underline">Geliştir ($8.5B)</span>
-            </div>
           </div>
 
-          <!-- Yatırım 2: Akıllı Konteyner Limanı -->
-          <div onclick="upgradeInfrastructure('port')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-secondary transition-all cursor-pointer group">
+          <div onclick="upgradeNationalProject('defense')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-secondary transition-all cursor-pointer group">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-secondary text-sm">directions_boat</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-secondary">Akıllı Konteyner Limanı</span>
+                <span class="material-symbols-outlined text-secondary text-sm">shield</span>
+                <span class="font-mono text-xs font-bold text-white group-hover:text-secondary">Çelik Kubbe & Hava Savunma</span>
               </div>
-              <span id="lvl_port" class="text-[10px] text-secondary font-mono font-bold">LVL 3/5</span>
+              <span id="lvl_defense" class="text-[10px] text-secondary font-mono font-bold">LVL 3/5</span>
             </div>
             <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
-              <div id="bar_port" class="bg-secondary h-full rounded-full" style="width: 60%;"></div>
-            </div>
-            <div class="flex items-center justify-between text-[10px] font-mono mt-1 text-outline">
-              <span class="text-secondary">+$14.2B İhracat Akışı</span>
-              <span class="text-white group-hover:underline">Geliştir ($12.0B)</span>
-            </div>
-          </div>
-
-          <!-- Yatırım 3: AI ve Yarı İletken Parkı -->
-          <div onclick="upgradeInfrastructure('tech')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-tertiary transition-all cursor-pointer group">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-tertiary text-sm">memory</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-tertiary">Yarı İletken & AI Sanayisi</span>
-              </div>
-              <span id="lvl_tech" class="text-[10px] text-tertiary font-mono font-bold">LVL 2/5</span>
-            </div>
-            <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
-              <div id="bar_tech" class="bg-tertiary h-full rounded-full" style="width: 40%;"></div>
-            </div>
-            <div class="flex items-center justify-between text-[10px] font-mono mt-1 text-outline">
-              <span class="text-tertiary">+%8 Teknoloji Çıktısı</span>
-              <span class="text-white group-hover:underline">Geliştir ($15.0B)</span>
+              <div id="bar_defense" class="bg-secondary h-full rounded-full" style="width: 60%;"></div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="pt-2 border-t border-outline-variant/30 flex items-center gap-2">
-        <button onclick="distributeRegionalFunds()" class="flex-1 py-1.5 bg-primary/20 border border-primary/50 text-primary font-mono text-xs font-bold uppercase rounded hover:bg-primary hover:text-on-primary transition-all">
-          Bölgesel Bütçe Aktar ($5B)
+        <button onclick="diplomaticOutreach()" class="flex-1 py-1.5 bg-primary/20 border border-primary/50 text-primary font-mono text-xs font-bold uppercase rounded hover:bg-primary hover:text-on-primary transition-all">
+          Diplomatik Zirve Düzenle ($10B)
         </button>
       </div>
     </aside>
   </main>
 
-  <!-- JAVASCRIPT: BÜYÜK STRATEJİ, NÜFUS VE SİMÜLASYON MOTORU -->
+  <!-- JAVASCRIPT: HARİTA KONTROL, ZOOM & JEOPOLİTİK MOTOR -->
   <script>
-    /* 1. OYUN GLOBAL DURUMU (GLOBAL STATE) */
+    /* 1. KÜRESEL DEVLETLER VERİTABANI */
+    const nationsData = {
+      turkey: {
+        name: "TÜRKİYE CUMHURİYETİ",
+        bloc: "Müstakil Avrasya & NATO Kanadı",
+        status: "Egemen Oyuncu Devleti",
+        gdp: "$1.34T",
+        pop: 85.8,
+        growthRate: 0.011,
+        coords: "39°00'N 35°00'E",
+        demographics: [
+          { name: "Türk", pct: 77, color: "bg-primary" },
+          { name: "Kürt", pct: 15, color: "bg-tertiary" },
+          { name: "Balkan / Kafkas", pct: 5, color: "bg-secondary" },
+          { name: "Diğer / Expat", pct: 3, color: "bg-indigo-400" }
+        ],
+        cohesion: 82,
+        unrest: 12,
+        leader: {
+          name: "Dr. Selim Aras",
+          title: "Milli Strateji Direktörü",
+          traits: ["Teknokrat", "Jeopolitik Uzlaşmacı"],
+          eff: 88,
+          approval: 78
+        },
+        projects: { rail: 4, defense: 3 }
+      },
+      usa: {
+        name: "AMERİKA BİRLEŞİK DEVLETLERİ",
+        bloc: "Atlantik İttifakı (NATO Lideri)",
+        status: "Küresel Süper Güç",
+        gdp: "$27.4T",
+        pop: 336.0,
+        growthRate: 0.005,
+        coords: "38°53'N 77°01'W",
+        demographics: [
+          { name: "Beyaz / Anglo", pct: 58, color: "bg-primary" },
+          { name: "Hispanik / Latino", pct: 19, color: "bg-tertiary" },
+          { name: "Afro-Amerikan", pct: 13, color: "bg-secondary" },
+          { name: "Asya Kökenli", pct: 10, color: "bg-indigo-400" }
+        ],
+        cohesion: 68,
+        unrest: 22,
+        leader: {
+          name: "Gen. Marcus Vance",
+          title: "Savunma & İstihbarat Danışmanı",
+          traits: ["Şahin", "Dolar Hegemonyası"],
+          eff: 91,
+          approval: 52
+        },
+        projects: { rail: 2, defense: 5 }
+      },
+      eu: {
+        name: "AVRUPA BİRLİĞİ (BRÜKSEL)",
+        bloc: "Avrupa Konseyi & Tek Pazar",
+        status: "Ekonomik ve Normatif Güç",
+        gdp: "$19.2T",
+        pop: 448.0,
+        growthRate: 0.001,
+        coords: "50°50'N 4°21'E",
+        demographics: [
+          { name: "Yerli Avrupalı", pct: 84, color: "bg-primary" },
+          { name: "Orta Doğu / Asya Göçmeni", pct: 10, color: "bg-tertiary" },
+          { name: "Doğu Bloku Yerleşik", pct: 6, color: "bg-secondary" }
+        ],
+        cohesion: 74,
+        unrest: 18,
+        leader: {
+          name: "Helena Lindqvist",
+          title: "Birlik Yüksek Temsilcisi",
+          traits: ["Yeşil Mutabakat", "Bürokratik Denge"],
+          eff: 82,
+          approval: 61
+        },
+        projects: { rail: 5, defense: 3 }
+      },
+      russia: {
+        name: "RUSYA FEDERASYONU",
+        bloc: "KGAÖ & Avrasya Ekonomik Birliği",
+        status: "Nükleer & Enerji Gücü",
+        gdp: "$2.1T",
+        pop: 144.0,
+        growthRate: -0.002,
+        coords: "55°45'N 37°37'E",
+        demographics: [
+          { name: "Rus / Slav", pct: 81, color: "bg-primary" },
+          { name: "Tatar / Türkî Halklar", pct: 9, color: "bg-tertiary" },
+          { name: "Kafkas Halkları", pct: 7, color: "bg-secondary" },
+          { name: "Sibirya Yerlileri", pct: 3, color: "bg-indigo-400" }
+        ],
+        cohesion: 76,
+        unrest: 19,
+        leader: {
+          name: "Dmitri Volkov",
+          title: "Güvenlik Konseyi Sekreteri",
+          traits: ["Militarist", "Enerji Karteli"],
+          eff: 85,
+          approval: 73
+        },
+        projects: { rail: 3, defense: 5 }
+      },
+      china: {
+        name: "ÇİN HALK CUMHURİYETİ",
+        bloc: "Şanghay İşbirliği Örgütü & BRICS",
+        status: "Üretim ve Sanayi Devleti",
+        gdp: "$18.6T",
+        pop: 1410.0,
+        growthRate: -0.001,
+        coords: "39°54'N 116°23'E",
+        demographics: [
+          { name: "Han Çinlisi", pct: 91, color: "bg-primary" },
+          { name: "Uygur / Türkî", pct: 3, color: "bg-tertiary" },
+          { name: "Tibet / Zhuang", pct: 4, color: "bg-secondary" },
+          { name: "Hui / Müslüman", pct: 2, color: "bg-indigo-400" }
+        ],
+        cohesion: 89,
+        unrest: 10,
+        leader: {
+          name: "Chen Wei",
+          title: "Devlet Planlama Komisyonu Başkanı",
+          traits: ["Merkezi Planlamacı", "Yarı İletken Girişimcisi"],
+          eff: 96,
+          approval: 86
+        },
+        projects: { rail: 5, defense: 4 }
+      },
+      india: {
+        name: "HİNDİSTAN CUMHURİYETİ",
+        bloc: "Bağlantısızlar & Dörtlü Güvenlik (Quad)",
+        status: "Yükselen Demografik Dev",
+        gdp: "$3.7T",
+        pop: 1435.0,
+        growthRate: 0.008,
+        coords: "28°36'N 77°12'E",
+        demographics: [
+          { name: "Hint-Aryan", pct: 72, color: "bg-primary" },
+          { name: "Dravid", pct: 25, color: "bg-secondary" },
+          { name: "Diğer Etnik Gruplar", pct: 3, color: "bg-tertiary" }
+        ],
+        cohesion: 71,
+        unrest: 21,
+        leader: {
+          name: "Rajesh Sharma",
+          title: "Bilişim ve Stratejik Sanayi Bakanı",
+          traits: ["Bilişim Reformisti", "Nüfus Yöneticisi"],
+          eff: 83,
+          approval: 77
+        },
+        projects: { rail: 3, defense: 3 }
+      },
+      latam: {
+        name: "BREZİLYA & GÜNEY AMERİKA",
+        bloc: "Mercosur & Güney Ortak Pazarı",
+        status: "Tarım & Maden İhracatçısı",
+        gdp: "$2.2T",
+        pop: 216.0,
+        growthRate: 0.006,
+        coords: "15°47'S 47°52'W",
+        demographics: [
+          { name: "Pardo (Melez)", pct: 45, color: "bg-primary" },
+          { name: "Beyaz Avrupalı", pct: 43, color: "bg-secondary" },
+          { name: "Afro-Brezilyalı", pct: 11, color: "bg-tertiary" },
+          { name: "Yerli Halklar", pct: 1, color: "bg-indigo-400" }
+        ],
+        cohesion: 69,
+        unrest: 20,
+        leader: {
+          name: "Carlos Silveira",
+          title: "Doğal Kaynaklar ve Kalkınma Valisi",
+          traits: ["Tarım Lobisi", "Amazon Koruyucusu"],
+          eff: 76,
+          approval: 64
+        },
+        projects: { rail: 2, defense: 2 }
+      },
+      mena: {
+        name: "ORTA DOĞU & KÖRFEZ BİRLİĞİ",
+        bloc: "Körfez İşbirliği Konseyi (KİK)",
+        status: "Küresel Petrol ve Sermaye Havzası",
+        gdp: "$2.5T",
+        pop: 110.0,
+        growthRate: 0.015,
+        coords: "24°42'N 46°43'E",
+        demographics: [
+          { name: "Arap Yerli Nüfus", pct: 55, color: "bg-primary" },
+          { name: "Güney Asya Göçmen İşçi", pct: 35, color: "bg-tertiary" },
+          { name: "Batılı Finansçı / Expat", pct: 10, color: "bg-secondary" }
+        ],
+        cohesion: 78,
+        unrest: 14,
+        leader: {
+          name: "Şeyh Tarık El-Mansur",
+          title: "Egemen Varlık Fonu Başkanı",
+          traits: ["Yatırım Vizyoneri", "Yapay Zeka Destekçisi"],
+          eff: 90,
+          approval: 82
+        },
+        projects: { rail: 3, defense: 4 }
+      }
+    };
+
+    /* 2. OYUN GLOBAL DURUMU */
     const gameState = {
       year: 2026,
       month: 10,
-      treasury: 1420.0, // Milyar Dolar
+      treasury: 1420.0,
       monthlyIncome: 48.5,
       gdp: 1340.0,
       stability: 82,
       simSpeed: 0,
       simInterval: null,
-      selectedProvinceKey: 'marmara'
+      selectedNationKey: 'turkey',
+      zoomScale: 1,
+      panX: 0,
+      panY: 0
     };
 
-    /* 2. TÜRKİYE EYALETLERİ, ETNİK ORANLARI VE VALİLERİ */
-    const provincesData = {
-      marmara: {
-        name: "MARMARA BÖLGESİ",
-        capital: "İstanbul & Kocaeli Havzası",
-        tier: "1. Kademe Megakent",
-        gdp: "$440B",
-        pop: 15.9, // Milyon
-        growthRate: 0.012,
-        coords: "41°00'N 28°58'E",
-        demographics: [
-          { name: "Türk", pct: 78, color: "bg-primary" },
-          { name: "Kürt", pct: 14, color: "bg-tertiary" },
-          { name: "Balkan Göçmeni", pct: 5, color: "bg-secondary" },
-          { name: "Uluslararası / Expat", pct: 3, color: "bg-indigo-400" }
-        ],
-        cohesion: 78,
-        unrest: 14,
-        governor: {
-          name: "Dr. Selim Aras",
-          role: "Bölge Genel Sekreteri & Teknokrat",
-          traits: ["Teknokrat", "Mali Reformist"],
-          efficiency: 86,
-          approval: 74
-        },
-        infra: { rail: 4, port: 3, tech: 2 }
-      },
-      icanadolu: {
-        name: "İÇ ANADOLU BÖLGESİ",
-        capital: "Ankara & Eskişehir Sanayi Aksı",
-        tier: "Federal Yönetim & Savunma",
-        gdp: "$185B",
-        pop: 5.8,
-        growthRate: 0.008,
-        coords: "39°56'N 32°52'E",
-        demographics: [
-          { name: "Türk", pct: 86, color: "bg-primary" },
-          { name: "Kürt", pct: 9, color: "bg-tertiary" },
-          { name: "Kafkas / Kırım", pct: 5, color: "bg-secondary" }
-        ],
-        cohesion: 88,
-        unrest: 7,
-        governor: {
-          name: "Kemal Gürsoy",
-          role: "Savunma Sanayi Koordinatörü",
-          traits: ["Devletçi", "Stratejist"],
-          efficiency: 92,
-          approval: 81
-        },
-        infra: { rail: 4, port: 1, tech: 3 }
-      },
-      ege: {
-        name: "EGE BÖLGESİ",
-        capital: "İzmir & Manisa İhracat Koridoru",
-        tier: "Deniz Ticareti & Tarım-Sanayi",
-        gdp: "$142B",
-        pop: 4.5,
-        growthRate: 0.010,
-        coords: "38°25'N 27°09'E",
-        demographics: [
-          { name: "Türk", pct: 88, color: "bg-primary" },
-          { name: "Girit / Ege Göçmeni", pct: 7, color: "bg-secondary" },
-          { name: "Yabancı Yerleşik", pct: 5, color: "bg-indigo-400" }
-        ],
-        cohesion: 85,
-        unrest: 9,
-        governor: {
-          name: "Zeynep Alkım",
-          role: "Liman & Ticaret Valisi",
-          traits: ["Serbest Piyasa", "Yeşil Enerji"],
-          efficiency: 84,
-          approval: 79
-        },
-        infra: { rail: 3, port: 4, tech: 2 }
-      },
-      akdeniz: {
-        name: "AKDENİZ BÖLGESİ",
-        capital: "Antalya & Mersin Lojistik Hattı",
-        tier: "Turizm & Akdeniz Lojistiği",
-        gdp: "$98B",
-        pop: 2.7,
-        growthRate: 0.014,
-        coords: "36°53'N 30°42'E",
-        demographics: [
-          { name: "Türk", pct: 80, color: "bg-primary" },
-          { name: "Yörük / Türkmen", pct: 12, color: "bg-secondary" },
-          { name: "Avrupa / Rus Yerleşik", pct: 8, color: "bg-indigo-400" }
-        ],
-        cohesion: 80,
-        unrest: 11,
-        governor: {
-          name: "Murat Çakır",
-          role: "Kalkınma ve Turizm Valisi",
-          traits: ["Yatırımcı", "Pragmatist"],
-          efficiency: 80,
-          approval: 76
-        },
-        infra: { rail: 2, port: 4, tech: 1 }
-      },
-      guneydogu: {
-        name: "GÜNEYDOĞU ANADOLU",
-        capital: "Diyarbakır & Gaziantep Üretim Koridoru",
-        tier: "GAP & Hidroelektrik Koridoru",
-        gdp: "$62B",
-        pop: 1.8,
-        growthRate: 0.018,
-        coords: "37°55'N 40°14'E",
-        demographics: [
-          { name: "Kürt", pct: 64, color: "bg-tertiary" },
-          { name: "Türk", pct: 26, color: "bg-primary" },
-          { name: "Arap / Süryani", pct: 10, color: "bg-indigo-400" }
-        ],
-        cohesion: 69,
-        unrest: 24,
-        governor: {
-          name: "Ahmet Erdem",
-          role: "Bölgesel Kalkınma Valisi",
-          traits: ["Toplumsal Uzlaşı", "Altyapı Uzmanı"],
-          efficiency: 78,
-          approval: 71
-        },
-        infra: { rail: 2, port: 0, tech: 1 }
-      }
-    };
-
-    /* 3. ARAYÜZ VE EYALET SEÇİMİ GÜNCELLEMESİ */
-    function renderProvinceList() {
-      const container = document.getElementById('provinceListContainer');
+    /* 3. SOL PANELİ VE LİSTEYİ OLUŞTURMA */
+    function renderNationList() {
+      const container = document.getElementById('nationListContainer');
       container.innerHTML = '';
 
-      Object.keys(provincesData).forEach(key => {
-        const p = provincesData[key];
-        const isSelected = key === gameState.selectedProvinceKey;
+      Object.keys(nationsData).forEach(key => {
+        const n = nationsData[key];
+        const isSelected = key === gameState.selectedNationKey;
         const div = document.createElement('div');
         div.className = `p-2 rounded cursor-pointer transition-all flex items-center justify-between border ${
           isSelected 
             ? 'bg-surface-container-high border-primary' 
             : 'bg-surface-container/40 border-outline-variant/30 hover:border-outline-variant'
         }`;
-        div.onclick = () => selectProvince(key);
+        div.onclick = () => selectNation(key);
         div.innerHTML = `
           <div class="flex items-center gap-2">
             <div class="w-1.5 h-6 ${isSelected ? 'bg-primary' : 'bg-outline'} rounded-full"></div>
             <div>
-              <div class="font-mono text-xs font-bold text-white">${p.name}</div>
-              <div class="text-[9px] text-outline font-mono">${p.capital}</div>
+              <div class="font-mono text-xs font-bold text-white">${n.name}</div>
+              <div class="text-[9px] text-outline font-mono">${n.bloc}</div>
             </div>
           </div>
           <div class="text-right font-mono">
-            <span class="text-xs font-semibold ${isSelected ? 'text-primary' : 'text-white'}">${p.gdp}</span>
-            <span class="block text-[9px] text-outline">${p.pop.toFixed(1)}M Nüfus</span>
+            <span class="text-xs font-semibold ${isSelected ? 'text-primary' : 'text-white'}">${n.gdp}</span>
+            <span class="block text-[9px] text-outline">${n.pop.toFixed(1)}M</span>
           </div>
         `;
         container.appendChild(div);
       });
     }
 
-    function selectProvince(key) {
-      gameState.selectedProvinceKey = key;
-      const p = provincesData[key];
+    /* 4. DEVLET SEÇİMİ VE SAĞ PANEL GÜNCELLEMESİ */
+    function selectNation(key) {
+      gameState.selectedNationKey = key;
+      const n = nationsData[key];
 
-      // SVG Poligonları görselini güncelle
-      document.querySelectorAll('.province-path').forEach(el => el.classList.remove('active'));
-      const activeSvg = document.getElementById(`svg_${key}`);
-      if (activeSvg) activeSvg.classList.add('active');
+      // SVG Poligon Stilleri
+      document.querySelectorAll('.nation-path').forEach(el => el.classList.remove('active-nation'));
+      const activePath = document.getElementById(`path_${key}`);
+      if (activePath) activePath.classList.add('active-nation');
 
-      // Üst Başlık & Telemetri
-      document.getElementById('activeSectorCoordinates').innerText = p.coords;
-      document.getElementById('activeSectorBadge').innerText = p.name;
+      // Harita Üstü Bilgileri
+      document.getElementById('activeMapCoords').innerText = n.coords;
+      document.getElementById('activeMapCountryBadge').innerText = n.name;
+      document.getElementById('leftPanelFocusText').innerText = n.name.split(' ')[0];
 
-      // Sağ Panel Verileri
-      document.getElementById('provinceName').innerText = p.name;
-      document.getElementById('provinceCapital').innerText = p.capital;
-      document.getElementById('provinceTier').innerText = p.tier;
-      document.getElementById('provincePopulationText').innerText = `${p.pop.toFixed(1)}M Sakin`;
+      // Sağ Panel Bilgileri
+      document.getElementById('nationName').innerText = n.name;
+      document.getElementById('nationBloc').innerText = n.bloc;
+      document.getElementById('nationStatus').innerText = n.status;
+      document.getElementById('nationPopulationText').innerText = `${n.pop.toFixed(1)}M Vatandaş`;
 
-      // Vali Verileri
-      document.getElementById('govName').innerText = p.governor.name;
-      document.getElementById('govRole').innerText = p.governor.role;
-      document.getElementById('govEff').innerText = `%${p.governor.efficiency} Optimal`;
-      document.getElementById('govApproval').innerText = `%${p.governor.approval} Olumlu`;
+      // Lider / Vali Bilgileri
+      document.getElementById('leaderName').innerText = n.leader.name;
+      document.getElementById('leaderTitle').innerText = n.leader.title;
+      document.getElementById('leaderEff').innerText = `%${n.leader.eff} Optimal`;
+      document.getElementById('leaderApproval').innerText = `%${n.leader.approval} Olumlu`;
 
-      const traitsContainer = document.getElementById('govTraits');
-      traitsContainer.innerHTML = p.governor.traits.map(t => 
+      const traitsContainer = document.getElementById('leaderTraits');
+      traitsContainer.innerHTML = n.leader.traits.map(t => 
         `<span class="px-1 py-0.2 text-[9px] bg-secondary/20 text-secondary rounded font-mono">${t}</span>`
       ).join('');
 
-      // Demografi ve Etnik Çubuk
-      const demoBar = document.getElementById('demographicBar');
-      demoBar.innerHTML = p.demographics.map(d => 
+      // Demografi Çubuğu ve Lejantı
+      const demoBar = document.getElementById('nationDemographicBar');
+      demoBar.innerHTML = n.demographics.map(d => 
         `<div class="h-full ${d.color}" style="width: ${d.pct}%;" title="${d.name}: %${d.pct}"></div>`
       ).join('');
 
-      const demoLegend = document.getElementById('demographicLegend');
-      demoLegend.innerHTML = p.demographics.map(d => `
+      const demoLegend = document.getElementById('nationDemographicLegend');
+      demoLegend.innerHTML = n.demographics.map(d => `
         <div class="flex items-center gap-1.5">
           <div class="w-2 h-2 rounded-full ${d.color}"></div>
           <span>${d.name} (%${d.pct})</span>
         </div>
       `).join('');
 
-      document.getElementById('socialCohesion').innerText = `%${p.cohesion}`;
-      document.getElementById('unrestRisk').innerText = `%${p.unrest} (${p.unrest > 15 ? 'Yüksek' : 'Düşük'})`;
+      document.getElementById('nationCohesion').innerText = `%${n.cohesion}`;
+      document.getElementById('nationUnrest').innerText = `%${n.unrest}`;
 
-      // Altyapı Seviyeleri
-      updateInfraUI(p);
+      // Altyapı Projeleri
+      document.getElementById('lvl_rail').innerText = `LVL ${n.projects.rail}/5`;
+      document.getElementById('bar_rail').style.width = `${n.projects.rail * 20}%`;
 
-      renderProvinceList();
+      document.getElementById('lvl_defense').innerText = `LVL ${n.projects.defense}/5`;
+      document.getElementById('bar_defense').style.width = `${n.projects.defense * 20}%`;
+
+      renderNationList();
     }
 
-    function updateInfraUI(p) {
-      document.getElementById('lvl_rail').innerText = `LVL ${p.infra.rail}/5`;
-      document.getElementById('bar_rail').style.width = `${p.infra.rail * 20}%`;
-
-      document.getElementById('lvl_port').innerText = `LVL ${p.infra.port}/5`;
-      document.getElementById('bar_port').style.width = `${p.infra.port * 20}%`;
-
-      document.getElementById('lvl_tech').innerText = `LVL ${p.infra.tech}/5`;
-      document.getElementById('bar_tech').style.width = `${p.infra.tech * 20}%`;
+    /* 5. HARİTA ZOOM & PAN MOTORU */
+    function zoomMap(factor) {
+      gameState.zoomScale = Math.max(0.7, Math.min(3.5, gameState.zoomScale * factor));
+      applyMapTransform();
     }
 
-    /* 4. ŞEHİR YATIRIMI YAPMA (INFRASTRUCTURE UPGRADE) */
-    function upgradeInfrastructure(type) {
-      const p = provincesData[gameState.selectedProvinceKey];
-      if (p.infra[type] >= 5) {
-        alert("Bu altyapı zaten en üst teknoloji seviyesinde!");
-        return;
-      }
-
-      const cost = type === 'rail' ? 8.5 : (type === 'port' ? 12.0 : 15.0);
-      if (gameState.treasury < cost) {
-        alert("Yetersiz Hazine! Bu yatırımı finanse etmek için ek rezerv gerekiyor.");
-        return;
-      }
-
-      gameState.treasury -= cost;
-      p.infra[type] += 1;
-      gameState.monthlyIncome += 1.5; // Geliri kalıcı artırır
-      gameState.gdp += 12.0;
-
-      updateHUD();
-      updateInfraUI(p);
+    function resetMapTransform() {
+      gameState.zoomScale = 1;
+      gameState.panX = 0;
+      gameState.panY = 0;
+      applyMapTransform();
     }
 
-    function distributeRegionalFunds() {
-      if (gameState.treasury < 5.0) {
-        alert("Hazine yetersiz!");
-        return;
-      }
-      gameState.treasury -= 5.0;
-      const p = provincesData[gameState.selectedProvinceKey];
-      p.cohesion = Math.min(100, p.cohesion + 3);
-      p.unrest = Math.max(2, p.unrest - 4);
-      p.governor.approval = Math.min(99, p.governor.approval + 4);
-
-      selectProvince(gameState.selectedProvinceKey);
-      updateHUD();
+    function applyMapTransform() {
+      const svg = document.getElementById('worldSvg');
+      svg.style.transform = `translate(${gameState.panX}px, ${gameState.panY}px) scale(${gameState.zoomScale})`;
+      svg.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1)';
     }
 
-    function togglePolicy(type) {
-      const p = provincesData[gameState.selectedProvinceKey];
-      if (type === 'integration') {
-        p.unrest = Math.max(3, p.unrest - 3);
-        p.cohesion = Math.min(95, p.cohesion + 2);
-      }
-      selectProvince(gameState.selectedProvinceKey);
-    }
+    // Fareyle Sürükleme (Drag to Pan)
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    const dragWrapper = document.getElementById('mapDragWrapper');
 
-    /* 5. TUR GEÇİŞİ VE ZAMAN MOTORU (TIME-STEP SIMULATION) */
+    dragWrapper.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button') || e.target.closest('g')) return;
+      isDragging = true;
+      startX = e.clientX - gameState.panX;
+      startY = e.clientY - gameState.panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      gameState.panX = e.clientX - startX;
+      gameState.panY = e.clientY - startY;
+      applyMapTransform();
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    /* 6. ZAMAN AKIŞI VE SİMÜLASYON MOTORU */
     function advanceTurn() {
       gameState.month += 1;
       if (gameState.month > 12) {
@@ -797,20 +917,18 @@
         gameState.year += 1;
       }
 
-      const monthNames = ["OCAK", "ŞUBAT", "MART", "NİSAN", "MAYIS", "HAZİRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKİM", "KASIM", "ARALIK"];
-      document.getElementById('currentDateDisplay').innerText = `24 ${monthNames[gameState.month - 1]} ${gameState.year}`;
+      const months = ["OCAK", "ŞUBAT", "MART", "NİSAN", "MAYIS", "HAZİRAN", "TEMMUZ", "AĞUSTOS", "EYLÜL", "EKİM", "KASIM", "ARALIK"];
+      document.getElementById('currentDateDisplay').innerText = `24 ${months[gameState.month - 1]} ${gameState.year}`;
 
-      // Hazine ve Nüfus Büyümesi
       gameState.treasury += (gameState.monthlyIncome / 12);
       
-      let totalPop = 0;
-      Object.keys(provincesData).forEach(key => {
-        const p = provincesData[key];
-        p.pop += (p.pop * (p.growthRate / 12));
-        totalPop += p.pop;
+      // Bütün ülkelerin nüfuslarını büyüt
+      Object.keys(nationsData).forEach(k => {
+        const n = nationsData[k];
+        n.pop += (n.pop * (n.growthRate / 12));
       });
 
-      document.getElementById('hudPopulation').innerText = `${totalPop.toFixed(1)}M`;
+      document.getElementById('hudPopulation').innerText = `${nationsData.turkey.pop.toFixed(1)}M`;
       updateHUD();
     }
 
@@ -836,34 +954,56 @@
       document.getElementById('hudStability').innerText = `%${gameState.stability}`;
     }
 
-    /* 6. PAX STORY İKİLEM KARARLARI */
-    function resolveDilemma(option) {
-      if (option === 'A') {
-        gameState.treasury -= 14.0;
-        gameState.stability = Math.min(100, gameState.stability + 4);
-        alert("Karar İmzalandı: SMR Modüler Reaktör Tahvili onaylandı. Enerji bağımsızlığı arttı.");
-      } else if (option === 'B') {
-        gameState.treasury += 8.0;
-        gameState.monthlyIncome -= 1.0;
-        alert("Karar İmzalandı: Doğalgaz paktı devreye girdi. Sanayi çarkları hızlandı.");
-      } else if (option === 'C') {
-        gameState.stability = Math.max(30, gameState.stability - 6);
-        alert("Karar İmzalandı: Enerji kotası getirildi. Sanayi üreticileri tepki gösteriyor.");
+    /* 7. İKİLEM KARARLARI VE DİPLOMASİ */
+    function resolveDilemma(choice) {
+      if (choice === 'A') {
+        gameState.treasury += 12.0;
+        gameState.stability = Math.min(100, gameState.stability + 3);
+        alert("KARARNAME RATİFİYE EDİLDİ: Milli filolar sahaya indi. Doğu Akdeniz hidrokarbon egemenliği pekiştirildi.");
+      } else if (choice === 'B') {
+        gameState.treasury += 22.0;
+        gameState.stability = Math.max(40, gameState.stability - 2);
+        alert("KARARNAME RATİFİYE EDİLDİ: Uluslararası enerji paktı imzalandı. Yabancı doğrudan yatırım girişi sağlandı.");
+      } else {
+        alert("KARARNAME RATİFİYE EDİLDİ: Diplomatik müzakere masası kuruldu. Süreç donduruldu.");
       }
       updateHUD();
       advanceTurn();
     }
 
-    function triggerEmergencyDecree() {
-      gameState.treasury += 25.0;
-      gameState.stability -= 5;
-      alert("ACİL KARARNAME YÜRÜRLÜKTE: Merkez Bankası acil likidite sağladı (+$25B), ancak istikrar hafif geriledi.");
+    function upgradeNationalProject(type) {
+      const n = nationsData[gameState.selectedNationKey];
+      if (n.projects[type] >= 5) {
+        alert("Bu milli proje son teknoloji safhasına ulaşmıştır!");
+        return;
+      }
+      if (gameState.treasury < 10.0) {
+        alert("Yetersiz Hazine Rezervi!");
+        return;
+      }
+      gameState.treasury -= 10.0;
+      n.projects[type] += 1;
+      gameState.monthlyIncome += 2.0;
+      selectNation(gameState.selectedNationKey);
       updateHUD();
     }
 
-    // Başlangıç Ayarları
+    function diplomaticOutreach() {
+      if (gameState.treasury < 10.0) {
+        alert("Hazine rezervi yetersiz!");
+        return;
+      }
+      gameState.treasury -= 10.0;
+      const n = nationsData[gameState.selectedNationKey];
+      n.cohesion = Math.min(100, n.cohesion + 4);
+      n.unrest = Math.max(2, n.unrest - 3);
+      alert(`${n.name} ile üst düzey stratejik zirve tamamlandı. Karşılıklı güvenlik protokolü tazelendi.`);
+      selectNation(gameState.selectedNationKey);
+      updateHUD();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      selectProvince('marmara');
+      selectNation('turkey');
       updateHUD();
     });
   </script>
