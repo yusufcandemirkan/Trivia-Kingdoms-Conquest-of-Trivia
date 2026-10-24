@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>GEO-STRAT: Total Geopolitical & Economic Dominion</title>
+  <title>GEO-STRAT: Modern Geopolitical Dominion (AoH3 Style)</title>
   
-  <!-- Material Symbols & Fonts -->
+  <!-- Material Symbols -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  
+  <!-- EU4 & Age of History 3 Resmi Tipografi Ailesi (Cinzel, EB Garamond, Marcellus) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&display=swap" rel="stylesheet"/>
   
   <!-- Leaflet Harita Altyapısı -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -22,175 +24,174 @@
       theme: {
         extend: {
           colors: {
-            "surface-dim": "#070b14",
-            "surface-container-lowest": "#04070d",
-            "surface-container-low": "#0b111e",
-            "surface-container": "#10182b",
-            "surface-container-high": "#18233c",
-            "surface-container-highest": "#223152",
-            "primary": "#38bdf8",
-            "primary-container": "#0284c7",
-            "on-primary": "#031525",
-            "secondary": "#818cf8",
-            "tertiary": "#f59e0b",
-            "outline": "#64748b",
-            "outline-variant": "#334155",
-            "error": "#ef4444",
-            "success": "#10b981",
-            "gold": "#fbbf24"
+            "surface-dim": "#0a0e17",
+            "surface-container-lowest": "#060910",
+            "surface-container-low": "#0d131f",
+            "surface-container": "#121a2b",
+            "surface-container-high": "#192338",
+            "surface-container-highest": "#222f4a",
+            
+            // AoH3 & EU4 Yumuşak Parşömen & Altın Tonları
+            "parchment": "#e4dbc5",
+            "parchment-muted": "#b8ad94",
+            "imperial-gold": "#cba052",
+            "imperial-gold-bright": "#e6be6e",
+            "royal-navy": "#3b82f6",
+            "outline-amber": "#3d2e18",
+            "outline-soft": "#2d3748",
+            "blood-banner": "#8f1d1d",
+            "success-soft": "#34d399",
+            "error-soft": "#f87171"
           },
           fontFamily: {
-            headline: ["Space Grotesk", "sans-serif"],
-            mono: ["JetBrains Mono", "monospace"],
-            body: ["Inter", "sans-serif"]
+            imperial: ["Cinzel", "serif"],
+            parchment: ["EB Garamond", "serif"],
+            hud: ["Marcellus", "serif"]
           }
         }
       }
     }
   </script>
   <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
       display: inline-block; vertical-align: middle; line-height: 1;
     }
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
-    .custom-scroll::-webkit-scrollbar-track { background: rgba(11, 17, 30, 0.7); }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
-    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
-    .corner-bracket { position: relative; }
-    .corner-bracket::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 6px;
-      border-top: 1.5px solid #38bdf8; border-left: 1.5px solid #38bdf8; pointer-events: none;
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(10, 14, 23, 0.7); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #3d2e18; border-radius: 2px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #cba052; }
+    
+    /* AoH3 Tarzı Yumuşak Kenarlıklar ve Köşe İşaretleri */
+    .imperial-frame {
+      border: 1px solid rgba(203, 160, 82, 0.35);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 4px 20px rgba(0, 0, 0, 0.5);
     }
-    .corner-bracket::after {
-      content: ''; position: absolute; bottom: 0; right: 0; width: 6px; height: 6px;
-      border-bottom: 1.5px solid #38bdf8; border-right: 1.5px solid #38bdf8; pointer-events: none;
+    .corner-crest { position: relative; }
+    .corner-crest::before {
+      content: '◆'; position: absolute; top: -5px; left: -5px; font-size: 8px; color: #cba052;
     }
-    #geoMap { width: 100%; height: 100%; background: #04070d; }
-    .leaflet-container { background: #04070d !important; font-family: 'JetBrains Mono', monospace !important; }
+    .corner-crest::after {
+      content: '◆'; position: absolute; bottom: -5px; right: -5px; font-size: 8px; color: #cba052;
+    }
+    
+    #geoMap { width: 100%; height: 100%; background: #060910; }
+    .leaflet-container { background: #060910 !important; font-family: 'Marcellus', serif !important; }
     .leaflet-bar a {
-      background-color: #0b111e !important; color: #38bdf8 !important; border-color: #334155 !important;
+      background-color: #0d131f !important; color: #cba052 !important; border-color: #3d2e18 !important;
     }
-    .leaflet-bar a:hover { background-color: #18233c !important; color: #ffffff !important; }
+    .leaflet-bar a:hover { background-color: #192338 !important; color: #e4dbc5 !important; }
+    
     @keyframes tickerScroll {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
     .animate-ticker {
-      display: inline-block; white-space: nowrap; animation: tickerScroll 35s linear infinite;
+      display: inline-block; white-space: nowrap; animation: tickerScroll 40s linear infinite;
     }
-    /* VFX Katmanı */
-    @keyframes pulseAura {
-      0% { transform: scale(0.9); opacity: 0.9; }
-      50% { transform: scale(1.4); opacity: 0; }
-      100% { transform: scale(0.9); opacity: 0; }
-    }
-    .vfx-shockwave {
-      animation: pulseAura 1.4s ease-out infinite;
-    }
-    @keyframes goldFlash {
-      0% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
-      50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.8); }
-      100% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
-    }
-    .flash-gold { animation: goldFlash 0.8s ease-in-out; }
   </style>
 </head>
 
-<body class="bg-surface-dim text-[#f1f5f9] select-none font-body overflow-hidden h-screen w-screen flex flex-col">
+<body class="bg-surface-dim text-parchment select-none font-hud overflow-hidden h-screen w-screen flex flex-col">
 
-  <!-- DİPLOMATİK VFX AURA VE HOLOGRAM BANNER (Pop-up) -->
+  <!-- DİPLOMATİK HOLOGRAM BANNER (Aura Pop-up) -->
   <div id="vfxBanner" class="fixed inset-0 z-[5000] pointer-events-none flex items-center justify-center opacity-0 transition-opacity duration-300">
-    <div id="vfxBannerCard" class="bg-surface-container-high/95 backdrop-blur-2xl border-2 border-gold p-6 rounded-2xl shadow-[0_0_80px_rgba(245,158,11,0.5)] flex flex-col items-center text-center transform scale-90 transition-transform duration-300">
-      <span id="vfxBannerIcon" class="material-symbols-outlined text-gold text-5xl mb-2 animate-bounce">handshake</span>
-      <h2 id="vfxBannerTitle" class="font-headline font-bold text-2xl text-gold uppercase tracking-wider">STRATEJİK PAKT ONAYLANDI</h2>
-      <p id="vfxBannerDesc" class="font-mono text-xs text-white mt-1 max-w-md">Karşılıklı ticaret ve güvenlik protokolü devreye girdi.</p>
+    <div id="vfxBannerCard" class="bg-surface-container-high/95 backdrop-blur-2xl border border-imperial-gold/60 p-6 rounded shadow-[0_0_60px_rgba(203,160,82,0.4)] flex flex-col items-center text-center transform scale-95 transition-transform duration-300">
+      <span id="vfxBannerIcon" class="material-symbols-outlined text-imperial-gold-bright text-4xl mb-1 animate-pulse">handshake</span>
+      <h2 id="vfxBannerTitle" class="font-imperial font-bold text-xl text-imperial-gold-bright uppercase tracking-widest">STRATEJİK PROTOKOL İMZALANDI</h2>
+      <p id="vfxBannerDesc" class="font-parchment text-sm text-parchment mt-1 max-w-md italic">Karşılıklı uluslararası mutabakat yürürlüğe girdi.</p>
     </div>
   </div>
 
-  <!-- 1. ÜST KOMUTA KONTROL PANELİ (HUD) -->
-  <header class="fixed top-0 left-0 w-full h-12 flex items-center justify-between px-4 z-50 border-b border-outline-variant/40 bg-surface-dim/95 backdrop-blur-md">
+  <!-- 1. ÜST KOMUTA KONTROL PANELİ (HUD - Modern Dünya & AoH3 Estetiği) -->
+  <header class="fixed top-0 left-0 w-full h-12 flex items-center justify-between px-4 z-50 border-b border-imperial-gold/25 bg-surface-dim/95 backdrop-blur-md shadow-md">
     <div class="flex items-center gap-3 shrink-0">
-      <div class="flex items-center gap-1.5 cursor-pointer" onclick="focusCountry('Turkey'); playSound('click');">
-        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">public</span>
-        <span class="font-headline font-bold text-sm tracking-wider text-primary uppercase">AEGIS // TOTAL DOMINION</span>
+      <div class="flex items-center gap-1.5 cursor-pointer group" onclick="focusCountry('Turkey'); playSound('click');">
+        <span class="material-symbols-outlined text-imperial-gold text-2xl group-hover:rotate-45 transition-transform duration-500" style="font-variation-settings: 'FILL' 1;">shield</span>
+        <span class="font-imperial font-bold text-sm tracking-widest text-imperial-gold-bright uppercase">AEGIS GEOPOLITICS</span>
       </div>
-      <div class="h-4 w-[1px] bg-outline-variant/50 hidden md:block"></div>
-      <div class="hidden xl:flex items-center gap-1.5 text-xs font-mono bg-surface-container px-2 py-0.5 rounded border border-outline-variant/30">
-        <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-        <span id="currentDateDisplay" class="font-semibold text-white">24 EKİM 2026</span>
-        <span class="text-primary text-[10px] font-bold tracking-widest pl-1">DÖNEMEL</span>
+      <div class="h-4 w-[1px] bg-imperial-gold/30 hidden md:block"></div>
+      <div class="hidden xl:flex items-center gap-1.5 text-xs font-hud bg-surface-container px-2.5 py-0.5 rounded border border-imperial-gold/20">
+        <span class="material-symbols-outlined text-imperial-gold text-sm" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+        <span id="currentDateDisplay" class="font-imperial font-semibold text-parchment">24 EKİM 2026</span>
+        <span class="text-imperial-gold text-[10px] uppercase tracking-wider pl-1 font-bold">FİSKAL YIL</span>
       </div>
     </div>
 
-    <!-- Telemetri Kapsülleri -->
-    <div class="hidden lg:flex items-center gap-2 font-mono text-xs overflow-x-auto custom-scroll py-1">
-      <!-- Hazine -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+    <!-- Telemetri Kapsülleri (Yumuşak Renkler ve Modern İsimler) -->
+    <div class="hidden lg:flex items-center gap-2 font-hud text-xs overflow-x-auto custom-scroll py-1">
+      <!-- Merkez Bankası Rezervleri -->
+      <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-imperial-gold/25 rounded hover:border-imperial-gold/50 transition-colors">
+        <span class="material-symbols-outlined text-imperial-gold text-base" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Milli Hazine</span>
-          <div class="flex items-center gap-1">
-            <span id="hudTreasury" class="font-bold text-white">$1,420B</span>
-            <span id="hudIncome" class="text-primary text-[10px]">(+$48.5B/Ay)</span>
+          <span class="text-[9px] text-parchment-muted uppercase tracking-wider">Hazine & Döviz Rezervi</span>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="hudTreasury" class="font-imperial font-bold text-parchment text-sm">$1,420B</span>
+            <span id="hudIncome" class="text-imperial-gold-bright text-[10px] font-semibold">(+$48.5B/Ay)</span>
           </div>
         </div>
       </div>
 
-      <!-- GSYİH -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+      <!-- Milli GSYİH -->
+      <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-imperial-gold/25 rounded hover:border-imperial-gold/50 transition-colors">
+        <span class="material-symbols-outlined text-royal-navy text-base" style="font-variation-settings: 'FILL' 1;">trending_up</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Milli GSYİH</span>
-          <div class="flex items-center gap-1">
-            <span id="hudGdp" class="font-bold text-white">$1.34T</span>
-            <span class="text-primary text-[10px] font-semibold">+3.8%</span>
+          <span class="text-[9px] text-parchment-muted uppercase tracking-wider">Milli GSYİH</span>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="hudGdp" class="font-imperial font-bold text-parchment text-sm">$1.34T</span>
+            <span class="text-success-soft text-[10px] font-semibold">+3.8%</span>
           </div>
         </div>
       </div>
 
-      <!-- Ordu -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+      <!-- Silahlı Kuvvetler -->
+      <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-imperial-gold/25 rounded hover:border-imperial-gold/50 transition-colors">
+        <span class="material-symbols-outlined text-imperial-gold text-base" style="font-variation-settings: 'FILL' 1;">military_tech</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Silahlı Güç</span>
-          <div class="flex items-center gap-1">
-            <span id="hudMilitary" class="font-bold text-white">425K</span>
-            <span class="text-tertiary text-[10px]">Tugay</span>
+          <span class="text-[9px] text-parchment-muted uppercase tracking-wider">Aktif TSK Havuzu</span>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="hudMilitary" class="font-imperial font-bold text-parchment text-sm">425K</span>
+            <span class="text-parchment-muted text-[10px]">Tugay</span>
           </div>
         </div>
       </div>
 
       <!-- İstikrar -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-low border border-outline-variant/40 rounded">
-        <span class="material-symbols-outlined text-primary text-sm">shield</span>
+      <div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-imperial-gold/25 rounded hover:border-imperial-gold/50 transition-colors">
+        <span class="material-symbols-outlined text-imperial-gold text-base">shield</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-outline uppercase">Milli İstikrar</span>
-          <div class="flex items-center gap-1">
-            <span id="hudStability" class="text-primary font-bold">82%</span>
-            <span id="hudStabilityLabel" class="text-[9px] text-success bg-surface-container-highest px-1 rounded font-bold">GÜVENLİ</span>
+          <span class="text-[9px] text-parchment-muted uppercase tracking-wider">Milli Birlik & İstikrar</span>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="hudStability" class="font-imperial font-bold text-imperial-gold text-sm">82%</span>
+            <span id="hudStabilityLabel" class="text-[9px] text-success-soft bg-surface-container-highest px-1.5 py-0.2 rounded font-bold">GÜVENLİ</span>
           </div>
         </div>
       </div>
 
-      <!-- DEFCON Seviyesi -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 bg-error/10 border border-error/40 rounded animate-pulse">
-        <span class="material-symbols-outlined text-error text-sm">warning</span>
+      <!-- DEFCON Hazırlık Durumu -->
+      <div class="flex items-center gap-2 px-3 py-1 bg-blood-banner/20 border border-blood-banner/60 rounded">
+        <span class="material-symbols-outlined text-error-soft text-base animate-pulse">crisis_alert</span>
         <div class="flex flex-col leading-none">
-          <span class="text-[9px] text-error uppercase font-bold">DEFCON 2</span>
-          <span class="text-[10px] text-white font-semibold">HARBE HAZIR</span>
+          <span class="text-[9px] text-error-soft uppercase font-bold tracking-wider">DEFCON 2</span>
+          <span class="text-[10px] text-parchment font-semibold">YÜKSEK HAZIRLIK</span>
         </div>
       </div>
     </div>
 
     <!-- Simülasyon Hızı ve Zaman Kontrolleri -->
     <div class="flex items-center gap-2 shrink-0">
-      <div class="flex items-center bg-surface-container-high rounded p-0.5 border border-outline-variant/40">
-        <button onclick="setSimSpeed(0); playSound('click');" id="speedBtn0" class="px-2 py-0.5 text-xs font-mono rounded text-primary bg-surface-container-highest">DURDUR</button>
-        <button onclick="setSimSpeed(1); playSound('click');" id="speedBtn1" class="px-2 py-0.5 text-xs font-mono text-outline hover:text-white">1X</button>
-        <button onclick="setSimSpeed(2); playSound('click');" id="speedBtn2" class="px-2 py-0.5 text-xs font-mono text-outline hover:text-white">3X</button>
+      <div class="flex items-center bg-surface-container-high rounded p-0.5 border border-imperial-gold/20">
+        <button onclick="setSimSpeed(0); playSound('click');" id="speedBtn0" class="px-2.5 py-0.5 text-xs font-hud rounded text-imperial-gold-bright bg-surface-container-highest">DURDUR</button>
+        <button onclick="setSimSpeed(1); playSound('click');" id="speedBtn1" class="px-2 py-0.5 text-xs font-hud text-parchment-muted hover:text-parchment">1X</button>
+        <button onclick="setSimSpeed(2); playSound('click');" id="speedBtn2" class="px-2 py-0.5 text-xs font-hud text-parchment-muted hover:text-parchment">3X</button>
       </div>
-      <button onclick="advanceTurn(); playSound('turn');" class="inline-flex items-center gap-1 px-3 py-1 bg-primary text-on-primary font-mono text-xs font-bold uppercase rounded shadow hover:bg-cyan-300 transition-all active:scale-95">
+      <button onclick="advanceTurn(); playSound('turn');" class="inline-flex items-center gap-1.5 px-3 py-1 bg-imperial-gold text-black font-hud text-xs font-bold uppercase rounded shadow hover:bg-imperial-gold-bright transition-all active:scale-95">
         <span class="material-symbols-outlined text-sm">fast_forward</span>
         <span>TURU GEÇ</span>
       </button>
@@ -200,25 +201,24 @@
   <!-- ANA STRATEJİK ÇALIŞMA ALANI -->
   <main class="relative w-full h-[calc(100vh-3rem)] mt-12 flex overflow-hidden">
 
-    <!-- 2. SOL PANEL: KÜRESEL DEVLETLER & YENİ EKLENEN ÜRETİM/TÜKETİM PANELİ -->
-    <aside class="w-80 flex flex-col justify-between py-3 px-3 border-r border-outline-variant/30 bg-surface-container-low/95 backdrop-blur-xl z-30 shrink-0">
+    <!-- 2. SOL PANEL: DÜNYA DEVLETLERİ VE ÜRETİM / EMTİA PİYASASI -->
+    <aside class="w-80 flex flex-col justify-between py-3 px-3 border-r border-imperial-gold/20 bg-surface-container-low/95 backdrop-blur-xl z-30 shrink-0">
       <div class="flex flex-col gap-2">
         
-        <!-- Sekme Başlıkları: Devletler vs. Sanayi/Emtia -->
-        <div class="grid grid-cols-2 gap-1 bg-surface-container-high p-0.5 rounded border border-outline-variant/40 text-xs font-mono">
-          <button onclick="switchLeftTab('nations'); playSound('click');" id="tabBtnNations" class="py-1 rounded bg-primary text-on-primary font-bold uppercase transition-all">Devletler</button>
-          <button onclick="switchLeftTab('production'); playSound('click');" id="tabBtnProd" class="py-1 rounded text-outline hover:text-white font-bold uppercase transition-all">Üretim / Emtia</button>
+        <!-- Sekme Başlıkları -->
+        <div class="grid grid-cols-2 gap-1 bg-surface-container-high p-0.5 rounded border border-imperial-gold/20 text-xs font-hud">
+          <button onclick="switchLeftTab('nations'); playSound('click');" id="tabBtnNations" class="py-1 rounded bg-imperial-gold text-black font-bold uppercase transition-all">Devletler</button>
+          <button onclick="switchLeftTab('production'); playSound('click');" id="tabBtnProd" class="py-1 rounded text-parchment-muted hover:text-parchment font-bold uppercase transition-all">Sanayi & Emtia</button>
         </div>
 
         <!-- 1. SEKME: DEVLETLER LİSTESİ -->
         <div id="tabContentNations" class="flex flex-col gap-2">
-          <!-- Hızlı Kararnameler -->
           <div class="grid grid-cols-2 gap-1.5">
-            <button onclick="triggerEmergencyDecree()" class="flex items-center justify-center gap-1 py-1.5 bg-primary/20 border border-primary/40 text-primary font-mono text-[11px] font-bold uppercase rounded hover:bg-primary hover:text-on-primary active:scale-95 transition-all">
+            <button onclick="triggerEmergencyDecree()" class="flex items-center justify-center gap-1 py-1.5 bg-imperial-gold/15 border border-imperial-gold/40 text-imperial-gold-bright font-hud text-xs font-bold uppercase rounded hover:bg-imperial-gold hover:text-black active:scale-95 transition-all">
               <span class="material-symbols-outlined text-xs">payments</span>
-              <span>Tahvil Bas</span>
+              <span>Hazine Tahvili</span>
             </button>
-            <button onclick="mobilizeTroops()" class="flex items-center justify-center gap-1 py-1.5 bg-tertiary/20 border border-tertiary/40 text-tertiary font-mono text-[11px] font-bold uppercase rounded hover:bg-tertiary hover:text-black active:scale-95 transition-all">
+            <button onclick="mobilizeTroops()" class="flex items-center justify-center gap-1 py-1.5 bg-blood-banner/30 border border-blood-banner/60 text-error-soft font-hud text-xs font-bold uppercase rounded hover:bg-blood-banner hover:text-white active:scale-95 transition-all">
               <span class="material-symbols-outlined text-xs">shield</span>
               <span>Seferberlik</span>
             </button>
@@ -226,102 +226,101 @@
 
           <div class="mt-1">
             <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-[10px] text-outline uppercase tracking-wider">BÖLGESEL AKTÖRLER</span>
-              <span class="text-[10px] text-primary font-mono">TIKLA VE ODAKLAN</span>
+              <span class="font-hud text-[11px] text-parchment-muted uppercase tracking-wider">KÜRESEL DEVLETLER</span>
+              <span class="text-[10px] text-imperial-gold font-hud">ODAKLAN</span>
             </div>
             <div class="flex flex-col gap-1.5 max-h-[50vh] overflow-y-auto custom-scroll pr-1" id="nationListContainer"></div>
           </div>
         </div>
 
-        <!-- 2. SEKME: ÜRETİM & TÜKETİM EKONOMİSİ (YENİ SİSTEM) -->
+        <!-- 2. SEKME: MODERN SANAYİ VE EMTİA PİYASASI -->
         <div id="tabContentProduction" class="hidden flex-col gap-2 max-h-[60vh] overflow-y-auto custom-scroll pr-1">
-          <div class="p-2 bg-surface-container rounded border border-outline-variant/40 text-xs font-mono">
-            <div class="flex justify-between items-center text-outline pb-1 border-b border-outline-variant/20 mb-2">
-              <span class="font-bold text-white uppercase">MİLLİ EMTİA PİYASASI</span>
-              <span class="text-primary text-[10px]">AYLIK BİLANÇO</span>
+          <div class="p-2.5 bg-surface-container rounded border border-imperial-gold/25 text-xs font-hud imperial-frame">
+            <div class="flex justify-between items-center pb-1.5 border-b border-imperial-gold/20 mb-2">
+              <span class="font-imperial font-bold text-imperial-gold-bright uppercase tracking-wider">STRATEJİK EMTİA HAVUZU</span>
+              <span class="text-parchment-muted text-[10px]">AYLIK RAPOR</span>
             </div>
 
-            <!-- 1. Petrol & Doğalgaz -->
+            <!-- Petrol & Doğalgaz -->
             <div class="mb-3">
               <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                <span class="text-tertiary flex items-center gap-1"><span class="material-symbols-outlined text-xs">local_gas_station</span> Petrol & Gaz</span>
-                <span id="balance_oil" class="text-success">+140K Varil</span>
+                <span class="text-imperial-gold flex items-center gap-1"><span class="material-symbols-outlined text-xs">local_gas_station</span> Petrol & Doğalgaz</span>
+                <span id="balance_oil" class="text-success-soft">+140K Varil</span>
               </div>
-              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex">
-                <div class="bg-tertiary h-full" style="width: 70%;" title="Üretim"></div>
-                <div class="bg-error h-full" style="width: 30%;" title="Tüketim"></div>
+              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex border border-outline-amber">
+                <div class="bg-imperial-gold h-full" style="width: 70%;"></div>
+                <div class="bg-error-soft h-full" style="width: 30%;"></div>
               </div>
-              <div class="flex justify-between text-[9px] text-outline mt-0.5">
+              <div class="flex justify-between text-[9px] text-parchment-muted mt-0.5">
                 <span>Üretim: 520K</span>
                 <span>Tüketim: 380K</span>
               </div>
             </div>
 
-            <!-- 2. Mikroçip & Yarı İletken -->
+            <!-- Mikroçip & Yarı İletken -->
             <div class="mb-3">
               <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                <span class="text-primary flex items-center gap-1"><span class="material-symbols-outlined text-xs">memory</span> Mikroçipler</span>
-                <span id="balance_chips" class="text-success">+25M Birim</span>
+                <span class="text-royal-navy flex items-center gap-1"><span class="material-symbols-outlined text-xs">memory</span> Milli Yarı İletken</span>
+                <span id="balance_chips" class="text-success-soft">+25M Birim</span>
               </div>
-              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex">
-                <div class="bg-primary h-full" style="width: 60%;"></div>
-                <div class="bg-error h-full" style="width: 40%;"></div>
+              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex border border-outline-amber">
+                <div class="bg-royal-navy h-full" style="width: 60%;"></div>
+                <div class="bg-error-soft h-full" style="width: 40%;"></div>
               </div>
-              <div class="flex justify-between text-[9px] text-outline mt-0.5">
+              <div class="flex justify-between text-[9px] text-parchment-muted mt-0.5">
                 <span>Üretim: 65M</span>
                 <span>Tüketim: 40M</span>
               </div>
             </div>
 
-            <!-- 3. Nadir Toprak Elementleri & Çelik -->
+            <!-- Çelik & Ağır Sanayi -->
             <div class="mb-3">
               <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                <span class="text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-xs">construction</span> Çelik & Nadir Maden</span>
-                <span id="balance_steel" class="text-error">-12K Ton (Açık)</span>
+                <span class="text-parchment-muted flex items-center gap-1"><span class="material-symbols-outlined text-xs">construction</span> Çelik & Nadir Element</span>
+                <span id="balance_steel" class="text-error-soft">-12K Ton (Açık)</span>
               </div>
-              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex">
-                <div class="bg-secondary h-full" style="width: 45%;"></div>
-                <div class="bg-error h-full" style="width: 55%;"></div>
+              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex border border-outline-amber">
+                <div class="bg-parchment-muted h-full" style="width: 45%;"></div>
+                <div class="bg-error-soft h-full" style="width: 55%;"></div>
               </div>
-              <div class="flex justify-between text-[9px] text-outline mt-0.5">
+              <div class="flex justify-between text-[9px] text-parchment-muted mt-0.5">
                 <span>Üretim: 90K</span>
                 <span>Tüketim: 102K</span>
               </div>
             </div>
 
-            <!-- 4. Gıda & Tarım Kapasitesi -->
+            <!-- Tarım & Gıda -->
             <div>
               <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                <span class="text-emerald-400 flex items-center gap-1"><span class="material-symbols-outlined text-xs">agriculture</span> Tarım & Gıda</span>
-                <span id="balance_food" class="text-success">+%18 Fazla</span>
+                <span class="text-success-soft flex items-center gap-1"><span class="material-symbols-outlined text-xs">agriculture</span> Tarım ve Tahıl</span>
+                <span id="balance_food" class="text-success-soft">+%18 Fazla</span>
               </div>
-              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex">
-                <div class="bg-emerald-400 h-full" style="width: 78%;"></div>
-                <div class="bg-error h-full" style="width: 22%;"></div>
+              <div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden flex border border-outline-amber">
+                <div class="bg-success-soft h-full" style="width: 78%;"></div>
+                <div class="bg-error-soft h-full" style="width: 22%;"></div>
               </div>
-              <div class="flex justify-between text-[9px] text-outline mt-0.5">
+              <div class="flex justify-between text-[9px] text-parchment-muted mt-0.5">
                 <span>Stok: 1.2M Ton</span>
-                <span>İsyan Riski: Yok</span>
+                <span>Gıda Güvenliği: Tam</span>
               </div>
             </div>
           </div>
 
-          <!-- Stratejik Stok Müdahalesi -->
-          <button onclick="subsidizeCommodities()" class="w-full py-1.5 bg-tertiary/20 border border-tertiary/40 text-tertiary font-mono text-xs font-bold uppercase rounded hover:bg-tertiary hover:text-black transition-all">
-            Stratejik Maden İthal Et ($8B)
+          <button onclick="subsidizeCommodities()" class="w-full py-1.5 bg-imperial-gold/20 border border-imperial-gold/40 text-imperial-gold-bright font-hud text-xs font-bold uppercase rounded hover:bg-imperial-gold hover:text-black transition-all">
+            Stratejik Maden Rezervi Satın Al ($8B)
           </button>
         </div>
       </div>
 
-      <!-- Sol Alt: Doktrin Göstergesi -->
-      <div class="pt-2 border-t border-outline-variant/30 flex flex-col gap-1 text-[11px] font-mono">
-        <div class="flex items-center justify-between text-outline">
-          <span>Stratejik Doktrin:</span>
-          <span class="text-primary font-bold">KORVET & SİHA EGEMENLİĞİ</span>
+      <!-- Sol Alt: Doktrin -->
+      <div class="pt-2 border-t border-imperial-gold/20 flex flex-col gap-1 text-[11px] font-hud">
+        <div class="flex items-center justify-between text-parchment-muted">
+          <span>Milli Savunma Doktrini:</span>
+          <span class="text-imperial-gold font-bold">ÇELİK KUBBE & MAVİ VATAN</span>
         </div>
-        <div class="flex items-center justify-between text-outline">
-          <span>Enflasyon Endeksi:</span>
-          <span class="text-success font-bold">%2.8 (Kontrol Altında)</span>
+        <div class="flex items-center justify-between text-parchment-muted">
+          <span>Yıllık TÜFE / Enflasyon:</span>
+          <span class="text-success-soft font-bold">%2.8 (Kontrol Altında)</span>
         </div>
       </div>
     </aside>
@@ -331,36 +330,36 @@
       
       <!-- Harita Modu Seçici (Üst Sol) -->
       <div class="absolute top-4 left-6 z-[1000] flex items-center gap-2 pointer-events-none">
-        <div class="pointer-events-auto flex items-center gap-1 bg-surface-container-low/95 backdrop-blur-md p-1 border border-outline-variant/50 rounded shadow-xl">
-          <button onclick="switchMapLayer('dark'); playSound('click');" id="layerBtnDark" class="px-2.5 py-1 text-[11px] font-mono font-bold uppercase rounded bg-primary text-on-primary flex items-center gap-1">
+        <div class="pointer-events-auto flex items-center gap-1 bg-surface-container-low/95 backdrop-blur-md p-1 border border-imperial-gold/30 rounded shadow-xl">
+          <button onclick="switchMapLayer('dark'); playSound('click');" id="layerBtnDark" class="px-3 py-1 text-xs font-hud font-bold uppercase rounded bg-imperial-gold text-black flex items-center gap-1">
             <span class="material-symbols-outlined text-xs">dark_mode</span>
-            <span>Taktik Karanlık</span>
+            <span>Taktik Harita</span>
           </button>
-          <button onclick="switchMapLayer('satellite'); playSound('click');" id="layerBtnSat" class="px-2.5 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1">
+          <button onclick="switchMapLayer('satellite'); playSound('click');" id="layerBtnSat" class="px-3 py-1 text-xs font-hud text-parchment-muted hover:text-parchment rounded flex items-center gap-1">
             <span class="material-symbols-outlined text-xs">satellite_alt</span>
-            <span>Google Uydu</span>
+            <span>Uydu Gözlem</span>
           </button>
-          <button onclick="focusCountry('Turkey'); playSound('click');" class="px-2.5 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1">
+          <button onclick="focusCountry('Turkey'); playSound('click');" class="px-3 py-1 text-xs font-hud text-parchment-muted hover:text-parchment rounded flex items-center gap-1">
             <span class="material-symbols-outlined text-xs">center_focus_strong</span>
-            <span>Başkente Dön</span>
+            <span>Ankara / Başkent</span>
           </button>
         </div>
       </div>
 
       <!-- Canlı Koordinat & Bölge Çubuğu (Üst Sağ) -->
-      <div class="absolute top-4 right-6 z-[1000] flex items-center gap-2 bg-surface-container-low/95 backdrop-blur-md px-3 py-1.5 border border-outline-variant/40 rounded text-xs font-mono shadow-xl">
-        <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-        <span id="activeMapCoords" class="text-primary font-bold">39.00°N, 35.00°E</span>
-        <span class="text-outline">|</span>
-        <span id="activeCountryBadge" class="uppercase font-semibold text-white">TÜRKİYE CUMHURİYETİ</span>
+      <div class="absolute top-4 right-6 z-[1000] flex items-center gap-2 bg-surface-container-low/95 backdrop-blur-md px-3 py-1.5 border border-imperial-gold/30 rounded text-xs font-hud shadow-xl">
+        <span class="w-2 h-2 rounded-full bg-imperial-gold animate-ping"></span>
+        <span id="activeMapCoords" class="text-imperial-gold font-bold">39.00°N, 35.00°E</span>
+        <span class="text-parchment-muted">|</span>
+        <span id="activeCountryBadge" class="uppercase font-semibold text-parchment">TÜRKİYE CUMHURİYETİ</span>
       </div>
 
       <!-- Canlı İstihbarat Kayan Bant -->
       <div class="absolute top-16 left-6 right-6 z-[1000] pointer-events-none">
-        <div class="bg-surface-container-low/90 backdrop-blur-md border border-outline-variant/40 px-3 py-1 rounded flex items-center gap-2 overflow-hidden shadow">
-          <span class="px-1.5 py-0.2 bg-error/20 border border-error/40 text-error font-mono text-[9px] font-bold uppercase rounded shrink-0">FLAŞ İSTİHBARAT</span>
-          <div class="w-full overflow-hidden text-xs font-mono text-outline">
-            <span id="newsTickerText" class="animate-ticker text-white">Doğu Akdeniz hidrokarbon yetki alanlarında yeni sismik veriler doğrulandı. Bölgesel donanmalar teyakkuzda.</span>
+        <div class="bg-surface-container-low/90 backdrop-blur-md border border-imperial-gold/25 px-3 py-1 rounded flex items-center gap-2 overflow-hidden shadow">
+          <span class="px-2 py-0.2 bg-blood-banner/40 border border-blood-banner/60 text-error-soft font-hud text-[10px] font-bold uppercase rounded shrink-0">GÜNCEL İSTİHBARAT</span>
+          <div class="w-full overflow-hidden text-xs font-parchment text-parchment italic">
+            <span id="newsTickerText" class="animate-ticker text-parchment">Doğu Akdeniz hidrokarbon sahasında yeni yerli sismik veriler onaylandı. Donanma filoları devriyede.</span>
           </div>
         </div>
       </div>
@@ -368,97 +367,97 @@
       <!-- Harita Tuvali -->
       <div id="geoMap"></div>
 
-      <!-- 4. ALT PAX STORY DALLANAN İKİLEM KARTI -->
+      <!-- 4. ALT PAX STORY DALLANAN İKİLEM KARTI (AoH3 Parşömen Teması) -->
       <div class="absolute bottom-4 left-16 right-16 z-[1000] pointer-events-auto" id="dilemmaCardWrapper">
-        <div class="bg-surface-container-high/95 backdrop-blur-2xl border border-primary/40 rounded-xl p-3 shadow-2xl corner-bracket">
-          <div class="flex items-center justify-between pb-1 border-b border-outline-variant/30">
+        <div class="bg-surface-container-high/95 backdrop-blur-2xl border border-imperial-gold/40 rounded-xl p-3.5 shadow-2xl corner-crest imperial-frame">
+          <div class="flex items-center justify-between pb-1.5 border-b border-imperial-gold/20">
             <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-base animate-pulse">crisis_alert</span>
-              <span id="dilemmaTag" class="font-mono text-xs font-bold text-white uppercase tracking-wider">MİLLİ DİREKTİF #402</span>
-              <span class="px-2 py-0.2 text-[9px] bg-tertiary/20 text-tertiary border border-tertiary/40 font-mono font-bold rounded">KRİTİK KARAR</span>
+              <span class="material-symbols-outlined text-imperial-gold text-base animate-pulse">crisis_alert</span>
+              <span id="dilemmaTag" class="font-imperial text-xs font-bold text-imperial-gold-bright uppercase tracking-wider">CUMHURBAŞKANLIĞI KARARNAMESİ #402</span>
+              <span class="px-2 py-0.2 text-[9px] bg-blood-banner/40 text-error-soft border border-blood-banner/60 font-hud font-bold rounded">KRİTİK İKİLEM</span>
             </div>
-            <span class="text-outline font-mono text-[10px]">İCRA ONAYI BEKLENİYOR</span>
+            <span class="text-parchment-muted font-hud text-[10px]">MİLLİ GÜVENLİK KURULU ONAYI BEKLENİYOR</span>
           </div>
 
           <div class="py-2 grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
             <div class="md:col-span-8">
-              <h4 id="dilemmaTitle" class="font-headline text-sm font-bold text-primary mb-0.5">
-                Kıbrıs & Doğu Akdeniz Mavi Vatan Hidrokarbon Sondaj Krizi
+              <h4 id="dilemmaTitle" class="font-imperial text-sm font-bold text-imperial-gold-bright mb-1">
+                Kıbrıs & Doğu Akdeniz Mavi Vatan Doğalgaz Sondaj Kararnamesi
               </h4>
-              <p id="dilemmaDesc" class="text-xs text-[#94a3b8] leading-relaxed">
-                Akdeniz'deki yeni sondaj kuyusu uluslararası konsorsiyumlar tarafından tartışmaya açıldı. Yerli savunma sanayii fırkateyn eşliğinde sondajın tam kapasite devam etmesini öneriyor.
+              <p id="dilemmaDesc" class="font-parchment text-sm text-parchment leading-relaxed">
+                Akdeniz'deki yeni sondaj sahası yabancı konsorsiyumlar tarafından tartışmaya açıldı. Yerli savunma sanayii fırkateyn ve SİHA refakatinde sondaj faaliyetlerinin tam kapasite sürmesini tavsiye ediyor.
               </p>
             </div>
-            <div class="md:col-span-4 bg-surface-container-low/80 p-2 rounded border border-outline-variant/30 text-[10px] font-mono">
-              <div class="flex justify-between text-outline">
+            <div class="md:col-span-4 bg-surface-container-low/80 p-2 rounded border border-imperial-gold/20 text-xs font-hud">
+              <div class="flex justify-between text-parchment-muted">
                 <span>Stratejik Kazanç:</span>
-                <span id="dilemmaGainText" class="text-primary font-bold">+%15 Enerji Özerkliği</span>
+                <span id="dilemmaGainText" class="text-imperial-gold font-bold">+%15 Enerji Özerkliği</span>
               </div>
-              <div class="flex justify-between text-outline">
-                <span>Yaptırım Riski:</span>
-                <span id="dilemmaRiskText" class="text-tertiary font-bold">Orta / Yönetilebilir</span>
+              <div class="flex justify-between text-parchment-muted mt-0.5">
+                <span>Uluslararası Tepki:</span>
+                <span id="dilemmaRiskText" class="text-imperial-gold-bright font-bold">Orta Risk</span>
               </div>
             </div>
           </div>
 
           <!-- Seçenekler -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1" id="dilemmaOptionsContainer"></div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1.5" id="dilemmaOptionsContainer"></div>
         </div>
       </div>
     </div>
 
-    <!-- 5. SAĞ PANEL: SEÇİLİ DEVLET, ETNİK MATRİS VE DİPLOMATİK EYLEMLER -->
-    <aside class="w-96 bg-surface-container-low/95 backdrop-blur-xl border-l border-outline-variant/30 flex flex-col justify-between py-3 px-3 shadow-2xl custom-scroll overflow-y-auto shrink-0 z-30" id="rightPanel">
+    <!-- 5. SAĞ PANEL: SEÇİLİ DEVLET VE İDARİ BÖLGE DOSYASI -->
+    <aside class="w-96 bg-surface-container-low/95 backdrop-blur-xl border-l border-imperial-gold/25 flex flex-col justify-between py-3 px-3.5 shadow-2xl custom-scroll overflow-y-auto shrink-0 z-30" id="rightPanel">
       <div class="flex flex-col gap-3">
         
         <!-- Ülke Başlığı -->
-        <div class="pb-2 border-b border-outline-variant/30 flex items-start justify-between">
+        <div class="pb-2 border-b border-imperial-gold/20 flex items-start justify-between">
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">flag</span>
-              <span class="font-mono text-[10px] text-tertiary font-bold tracking-widest uppercase">STRATEJİK DEVLET DOSYASI</span>
+              <span class="material-symbols-outlined text-imperial-gold text-sm" style="font-variation-settings: 'FILL' 1;">flag</span>
+              <span class="font-hud text-[10px] text-imperial-gold font-bold tracking-widest uppercase">JEOPOLİTİK DEVLET DOSYASI</span>
             </div>
-            <h2 id="nationName" class="font-headline font-bold text-white text-base mt-0.5">TÜRKİYE CUMHURİYETİ</h2>
+            <h2 id="nationName" class="font-imperial font-bold text-imperial-gold-bright text-lg mt-0.5">TÜRKİYE CUMHURİYETİ</h2>
             <div class="flex items-center gap-2 mt-0.5">
-              <span id="nationBloc" class="font-mono text-xs text-primary font-semibold">Bağımsız Avrasya & NATO Kanadı</span>
-              <span id="nationStatus" class="px-1.5 py-0.2 text-[9px] bg-primary/20 text-primary border border-primary/40 rounded uppercase font-mono">Egemen Oyuncu Devleti</span>
+              <span id="nationBloc" class="font-hud text-xs text-parchment font-semibold">Müstakil Avrasya & NATO Kanadı</span>
+              <span id="nationStatus" class="px-1.5 py-0.2 text-[9px] bg-imperial-gold/20 text-imperial-gold-bright border border-imperial-gold/40 rounded uppercase font-hud">Egemen Oyuncu Devleti</span>
             </div>
           </div>
         </div>
 
-        <!-- Yapay Zekalı Vali / Lider Kartı -->
-        <div class="bg-surface-container/70 border border-outline-variant/40 rounded p-2.5 corner-bracket">
+        <!-- Yapay Zekalı Lider / Vali Kartı -->
+        <div class="bg-surface-container/70 border border-imperial-gold/25 rounded p-2.5 corner-crest imperial-frame">
           <div class="flex items-center gap-2.5">
-            <div class="w-11 h-11 rounded bg-surface-container-high border border-primary/50 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-primary text-2xl">shield_person</span>
+            <div class="w-11 h-11 rounded bg-surface-container-high border border-imperial-gold/40 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-imperial-gold text-2xl">shield_person</span>
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
-                <h3 id="leaderName" class="font-bold text-xs text-white truncate">Dr. Selim Aras</h3>
-                <span class="text-[9px] text-primary font-mono font-semibold" id="leaderBadge">BAŞKAN</span>
+                <h3 id="leaderName" class="font-imperial font-bold text-xs text-parchment truncate">Dr. Selim Aras</h3>
+                <span class="text-[9px] text-imperial-gold font-hud font-semibold" id="leaderBadge">DEVLET BAŞKANI</span>
               </div>
-              <p id="leaderTitle" class="font-mono text-[10px] text-outline truncate">Milli Güvenlik ve Strateji Direktörü</p>
+              <p id="leaderTitle" class="font-parchment text-xs text-parchment-muted truncate">Milli Güvenlik ve Strateji Direktörü</p>
               <div class="flex flex-wrap gap-1 mt-1" id="leaderTraits"></div>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-outline-variant/30 text-center font-mono">
+          <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-imperial-gold/15 text-center font-hud">
             <div class="bg-surface-container-lowest p-1 rounded">
-              <span class="block text-[9px] text-outline uppercase">Bürokratik Kapasite</span>
-              <span id="leaderEff" class="text-primary font-bold text-xs">%88 Optimal</span>
+              <span class="block text-[9px] text-parchment-muted uppercase">Bürokratik Verim</span>
+              <span id="leaderEff" class="text-imperial-gold-bright font-bold text-xs">%88 Optimal</span>
             </div>
             <div class="bg-surface-container-lowest p-1 rounded">
-              <span class="block text-[9px] text-outline uppercase">Lider Sadakati</span>
-              <span id="leaderLoyalty" class="text-success font-bold text-xs">%92 Yüksek</span>
+              <span class="block text-[9px] text-parchment-muted uppercase">Milli Güven</span>
+              <span id="leaderLoyalty" class="text-success-soft font-bold text-xs">%92 Yüksek</span>
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5 mt-2 pt-1 border-t border-outline-variant/20">
-            <button onclick="bribeGovernor()" class="flex-1 py-1 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/40 rounded text-[10px] font-mono text-outline hover:text-white transition-all">
-              Fon Bağla ($5B)
+          <div class="flex items-center gap-1.5 mt-2 pt-1 border-t border-imperial-gold/15">
+            <button onclick="bribeGovernor()" class="flex-1 py-1 bg-surface-container-high hover:bg-surface-container-highest border border-imperial-gold/20 rounded text-[11px] font-hud text-parchment-muted hover:text-parchment transition-all">
+              Bölgesel Teşvik ($5B)
             </button>
-            <button onclick="replaceGovernor()" class="flex-1 py-1 bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/40 rounded text-[10px] font-mono text-outline hover:text-white transition-all">
-              Valiyi Değiştir
+            <button onclick="replaceGovernor()" class="flex-1 py-1 bg-surface-container-high hover:bg-surface-container-highest border border-imperial-gold/20 rounded text-[11px] font-hud text-parchment-muted hover:text-parchment transition-all">
+              Bölge Valisini Değiştir
             </button>
           </div>
         </div>
@@ -466,86 +465,86 @@
         <!-- Demografik ve Etnik Kültürel Matris -->
         <div class="flex flex-col gap-1.5">
           <div class="flex items-center justify-between">
-            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">Demografik Nüfus Dağılımı</span>
-            <span id="nationPopulationText" class="font-mono text-xs text-white font-bold">85.8M Vatandaş</span>
+            <span class="font-hud text-[11px] text-parchment-muted uppercase tracking-wider">Demografik Nüfus Dağılımı</span>
+            <span id="nationPopulationText" class="font-imperial text-xs text-parchment font-bold">85.8M Vatandaş</span>
           </div>
 
-          <div class="h-2.5 w-full bg-surface-container-lowest rounded-sm overflow-hidden flex p-0.5 border border-outline-variant/30" id="nationDemographicBar"></div>
-          <div class="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[10px] text-outline mt-0.5" id="nationDemographicLegend"></div>
+          <div class="h-2 w-full bg-surface-container-lowest rounded-sm overflow-hidden flex p-0.5 border border-imperial-gold/20" id="nationDemographicBar"></div>
+          <div class="grid grid-cols-2 gap-x-2 gap-y-1 font-hud text-[10px] text-parchment-muted mt-0.5" id="nationDemographicLegend"></div>
 
-          <div class="flex items-center justify-between p-1.5 bg-surface-container/60 rounded text-xs font-mono mt-1 border border-outline-variant/20">
+          <div class="flex items-center justify-between p-1.5 bg-surface-container/60 rounded text-xs font-hud mt-1 border border-imperial-gold/20">
             <div>
-              <span class="text-outline text-[10px]">Sosyal Bütünleşme:</span>
-              <span id="nationCohesion" class="text-primary font-bold ml-1">%82</span>
+              <span class="text-parchment-muted text-[10px]">Toplumsal Bütünleşme:</span>
+              <span id="nationCohesion" class="text-imperial-gold-bright font-bold ml-1">%82</span>
             </div>
             <div>
-              <span class="text-outline text-[10px]">İsyan/Huzursuzluk:</span>
-              <span id="nationUnrest" class="text-tertiary font-bold ml-1">%12 (Düşük)</span>
+              <span class="text-parchment-muted text-[10px]">Ayrılıkçılık/Risk:</span>
+              <span id="nationUnrest" class="text-error-soft font-bold ml-1">%12 (Düşük)</span>
             </div>
           </div>
         </div>
 
-        <!-- Stratejik Yatırımlar -->
+        <!-- Stratejik Yatırımlar (Modern Projeler) -->
         <div class="flex flex-col gap-1.5">
-          <div class="flex items-center justify-between border-t border-outline-variant/30 pt-2">
-            <span class="font-mono text-[10px] text-outline uppercase tracking-wider">STRATEJİK MİLLİ PROJELER</span>
-            <span class="text-[10px] text-primary font-mono">TIKLA VE GELİŞTİR</span>
+          <div class="flex items-center justify-between border-t border-imperial-gold/20 pt-2">
+            <span class="font-hud text-[11px] text-parchment-muted uppercase tracking-wider">STRATEJİK MİLLİ PROJELER</span>
+            <span class="text-[10px] text-imperial-gold font-hud">YATIRIM YAP</span>
           </div>
 
-          <!-- 1. Hızlı Demiryolu -->
-          <div onclick="upgradeProject('rail')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-primary transition-all cursor-pointer group">
+          <!-- Demiryolu -->
+          <div onclick="upgradeProject('rail')" class="p-2 bg-surface-container/80 rounded border border-imperial-gold/25 hover:border-imperial-gold transition-all cursor-pointer group">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-primary text-sm">train</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-primary">Maglev & Demiryolu</span>
+                <span class="material-symbols-outlined text-imperial-gold text-sm">train</span>
+                <span class="font-hud text-xs font-bold text-parchment group-hover:text-imperial-gold-bright">TCDD Maglev & Hızlı Tren Koridoru</span>
               </div>
-              <span id="lvl_rail" class="text-[10px] text-primary font-mono font-bold">LVL 4/5</span>
+              <span id="lvl_rail" class="text-[10px] text-imperial-gold font-hud font-bold">LVL 4/5</span>
             </div>
             <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
-              <div id="bar_rail" class="bg-primary h-full rounded-full" style="width: 80%;"></div>
-            </div>
-          </div>
-
-          <!-- 2. Hava Savunma -->
-          <div onclick="upgradeProject('defense')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-secondary transition-all cursor-pointer group">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-secondary text-sm">shield</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-secondary">Çelik Kubbe & Radar</span>
-              </div>
-              <span id="lvl_defense" class="text-[10px] text-secondary font-mono font-bold">LVL 3/5</span>
-            </div>
-            <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
-              <div id="bar_defense" class="bg-secondary h-full rounded-full" style="width: 60%;"></div>
+              <div id="bar_rail" class="bg-imperial-gold h-full rounded-full" style="width: 80%;"></div>
             </div>
           </div>
 
-          <!-- 3. Yarı İletken AI Parkı -->
-          <div onclick="upgradeProject('tech')" class="p-2 bg-surface-container/80 rounded border border-outline-variant/40 hover:border-tertiary transition-all cursor-pointer group">
+          <!-- Savunma Sanayii -->
+          <div onclick="upgradeProject('defense')" class="p-2 bg-surface-container/80 rounded border border-imperial-gold/25 hover:border-royal-navy transition-all cursor-pointer group">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-tertiary text-sm">memory</span>
-                <span class="font-mono text-xs font-bold text-white group-hover:text-tertiary">Yarı İletken & AI Kampüsü</span>
+                <span class="material-symbols-outlined text-royal-navy text-sm">shield</span>
+                <span class="font-hud text-xs font-bold text-parchment group-hover:text-royal-navy">Çelik Kubbe & KAAN Hava Savunması</span>
               </div>
-              <span id="lvl_tech" class="text-[10px] text-tertiary font-mono font-bold">LVL 2/5</span>
+              <span id="lvl_defense" class="text-[10px] text-royal-navy font-hud font-bold">LVL 3/5</span>
             </div>
             <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
-              <div id="bar_tech" class="bg-tertiary h-full rounded-full" style="width: 40%;"></div>
+              <div id="bar_defense" class="bg-royal-navy h-full rounded-full" style="width: 60%;"></div>
+            </div>
+          </div>
+
+          <!-- Yarı İletken -->
+          <div onclick="upgradeProject('tech')" class="p-2 bg-surface-container/80 rounded border border-imperial-gold/25 hover:border-success-soft transition-all cursor-pointer group">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-success-soft text-sm">memory</span>
+                <span class="font-hud text-xs font-bold text-parchment group-hover:text-success-soft">Milli Yarı İletken & AI Kampüsü</span>
+              </div>
+              <span id="lvl_tech" class="text-[10px] text-success-soft font-hud font-bold">LVL 2/5</span>
+            </div>
+            <div class="w-full bg-surface-container-lowest h-1.5 rounded-full mt-1.5 overflow-hidden">
+              <div id="bar_tech" class="bg-success-soft h-full rounded-full" style="width: 40%;"></div>
             </div>
           </div>
         </div>
 
         <!-- Diplomatik & Askeri Eylemler -->
-        <div class="pt-2 border-t border-outline-variant/30 flex flex-col gap-1.5">
+        <div class="pt-2 border-t border-imperial-gold/20 flex flex-col gap-1.5">
           <div class="flex items-center gap-2">
-            <button onclick="signTradeTreaty()" class="flex-1 py-1.5 bg-gold/20 border border-gold/50 text-gold font-mono text-xs font-bold uppercase rounded hover:bg-gold hover:text-black transition-all">
+            <button onclick="signTradeTreaty()" class="flex-1 py-1.5 bg-imperial-gold/20 border border-imperial-gold/50 text-imperial-gold-bright font-hud text-xs font-bold uppercase rounded hover:bg-imperial-gold hover:text-black transition-all">
               Ticaret Paktı
             </button>
-            <button onclick="declareSanction()" class="flex-1 py-1.5 bg-tertiary/20 border border-tertiary/50 text-tertiary font-mono text-xs font-bold uppercase rounded hover:bg-tertiary hover:text-black transition-all">
+            <button onclick="declareSanction()" class="flex-1 py-1.5 bg-blood-banner/30 border border-blood-banner/60 text-error-soft font-hud text-xs font-bold uppercase rounded hover:bg-blood-banner hover:text-white transition-all">
               Yaptırım Uygula
             </button>
           </div>
-          <button onclick="executeMilitaryInvasion()" id="btnInvasion" class="w-full py-1.5 bg-error/20 border border-error/50 text-error font-mono text-xs font-bold uppercase rounded hover:bg-error hover:text-white transition-all">
+          <button onclick="executeMilitaryInvasion()" id="btnInvasion" class="w-full py-1.5 bg-blood-banner/40 border border-blood-banner/70 text-error-soft font-hud text-xs font-bold uppercase rounded hover:bg-blood-banner hover:text-white transition-all">
             Askeri Harekât Başlat (50K Ordu)
           </button>
         </div>
@@ -556,11 +555,9 @@
   <!-- LEAFLET HARİTA KÜTÜPHANESİ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- JAVASCRIPT: EKSİKSİZ SES MOTORU, ÜRETİM/TÜKETİM VE JEOPOLİTİK SİMÜLASYON -->
+  <!-- JAVASCRIPT: SES MOTORU, ÜRETİM/TÜKETİM VE JEOPOLİTİK SİMÜLASYON -->
   <script>
-    /* ========================================================================= */
-    /* 1. WEB AUDIO API SES MOTORU (Dış Dosya Gerektirmeyen Dahili Donanım Sesi)  */
-    /* ========================================================================= */
+    /* 1. WEB AUDIO API SES MOTORU */
     let audioCtx = null;
 
     function getAudioContext() {
@@ -579,13 +576,12 @@
         const now = ctx.currentTime;
 
         if (type === 'click') {
-          // Askeri HUD Tık Sesi
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(800, now);
-          osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
-          gain.gain.setValueAtTime(0.15, now);
+          osc.frequency.setValueAtTime(750, now);
+          osc.frequency.exponentialRampToValueAtTime(350, now + 0.04);
+          gain.gain.setValueAtTime(0.12, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
           osc.connect(gain);
           gain.connect(ctx.destination);
@@ -593,7 +589,6 @@
           osc.stop(now + 0.04);
 
         } else if (type === 'pact') {
-          // Zafer / Pakt Çanı (Görkemli Altın Akor)
           [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
@@ -608,12 +603,11 @@
           });
 
         } else if (type === 'war') {
-          // Savaş Borusu & Harp Davulu (Derin Uğultu)
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(140, now);
-          osc.frequency.exponentialRampToValueAtTime(60, now + 0.7);
+          osc.frequency.setValueAtTime(130, now);
+          osc.frequency.exponentialRampToValueAtTime(55, now + 0.7);
           gain.gain.setValueAtTime(0.35, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
           osc.connect(gain);
@@ -622,13 +616,12 @@
           osc.stop(now + 0.7);
 
         } else if (type === 'sanction') {
-          // Ambargo & Alarm Uyarısı
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'square';
-          osc.frequency.setValueAtTime(320, now);
-          osc.frequency.setValueAtTime(260, now + 0.1);
-          gain.gain.setValueAtTime(0.2, now);
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.setValueAtTime(240, now + 0.1);
+          gain.gain.setValueAtTime(0.18, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
           osc.connect(gain);
           gain.connect(ctx.destination);
@@ -636,7 +629,6 @@
           osc.stop(now + 0.35);
 
         } else if (type === 'upgrade') {
-          // İnşaat ve Seviye Atlama Sesi
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
@@ -650,12 +642,11 @@
           osc.stop(now + 0.18);
 
         } else if (type === 'turn') {
-          // Ay Geçiş Taktik Sinyali
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(600, now);
-          osc.frequency.setValueAtTime(900, now + 0.05);
+          osc.frequency.setValueAtTime(550, now);
+          osc.frequency.setValueAtTime(820, now + 0.05);
           gain.gain.setValueAtTime(0.12, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
           osc.connect(gain);
@@ -664,13 +655,11 @@
           osc.stop(now + 0.1);
         }
       } catch (e) {
-        console.warn("Ses motoru kullanıcı etkileşimi bekliyor:", e);
+        console.warn("Ses motoru hazır:", e);
       }
     }
 
-    /* ========================================================================= */
-    /* 2. KÜRESEL DEVLETLER VERİTABANI & DİPLOMATİK DURUM                        */
-    /* ========================================================================= */
+    /* 2. KÜRESEL DEVLETLER VERİTABANI (Modern İsimler) */
     const nationsData = {
       "Turkey": {
         name: "TÜRKİYE CUMHURİYETİ",
@@ -680,10 +669,10 @@
         gdp: 1340.0, pop: 85.8, growthRate: 0.011,
         lat: 39.0, lng: 35.0, zoom: 6,
         demographics: [
-          { name: "Türk", pct: 77, color: "bg-primary" },
-          { name: "Kürt", pct: 15, color: "bg-tertiary" },
-          { name: "Balkan / Kafkas", pct: 5, color: "bg-secondary" },
-          { name: "Diğer / Expat", pct: 3, color: "bg-indigo-400" }
+          { name: "Türk", pct: 77, color: "bg-imperial-gold" },
+          { name: "Kürt", pct: 15, color: "bg-parchment-muted" },
+          { name: "Balkan / Kafkas", pct: 5, color: "bg-royal-navy" },
+          { name: "Diğer / Expat", pct: 3, color: "bg-success-soft" }
         ],
         cohesion: 82, unrest: 12,
         leader: { name: "Dr. Selim Aras", title: "Milli Strateji Direktörü", traits: ["Teknokrat", "Uzlaşmacı"], eff: 88, loyalty: 95 },
@@ -697,13 +686,13 @@
         gdp: 27400.0, pop: 336.0, growthRate: 0.005,
         lat: 38.0, lng: -97.0, zoom: 4,
         demographics: [
-          { name: "Beyaz / Anglo", pct: 58, color: "bg-primary" },
-          { name: "Hispanik", pct: 19, color: "bg-tertiary" },
-          { name: "Afro-Amerikan", pct: 13, color: "bg-secondary" },
-          { name: "Asya Kökenli", pct: 10, color: "bg-indigo-400" }
+          { name: "Beyaz / Anglo", pct: 58, color: "bg-royal-navy" },
+          { name: "Hispanik", pct: 19, color: "bg-imperial-gold" },
+          { name: "Afro-Amerikan", pct: 13, color: "bg-parchment-muted" },
+          { name: "Asya Kökenli", pct: 10, color: "bg-success-soft" }
         ],
         cohesion: 68, unrest: 22,
-        leader: { name: "Gen. Marcus Vance", title: "Savunma Danışmanı", traits: ["Şahin", "Dolar Hegemonyası"], eff: 91, loyalty: 80 },
+        leader: { name: "Gen. Marcus Vance", title: "Savunma ve İstihbarat Danışmanı", traits: ["Şahin", "Dolar Hegemonyası"], eff: 91, loyalty: 80 },
         projects: { rail: 2, defense: 5, tech: 5 }
       },
       "Germany": {
@@ -714,10 +703,10 @@
         gdp: 4500.0, pop: 84.4, growthRate: 0.001,
         lat: 51.0, lng: 10.0, zoom: 5,
         demographics: [
-          { name: "Alman", pct: 74, color: "bg-primary" },
-          { name: "Türk Diasporası", pct: 5, color: "bg-tertiary" },
-          { name: "AB İçi Göçmen", pct: 14, color: "bg-secondary" },
-          { name: "Diğer", pct: 7, color: "bg-indigo-400" }
+          { name: "Alman", pct: 74, color: "bg-royal-navy" },
+          { name: "Türk Diasporası", pct: 5, color: "bg-imperial-gold" },
+          { name: "AB İçi Göçmen", pct: 14, color: "bg-parchment-muted" },
+          { name: "Diğer", pct: 7, color: "bg-success-soft" }
         ],
         cohesion: 76, unrest: 16,
         leader: { name: "Helena Lindqvist", title: "Birlik Temsilcisi", traits: ["Yeşil Mutabakat", "Mali Disiplin"], eff: 85, loyalty: 85 },
@@ -731,13 +720,13 @@
         gdp: 2100.0, pop: 144.0, growthRate: -0.002,
         lat: 60.0, lng: 95.0, zoom: 3,
         demographics: [
-          { name: "Rus / Slav", pct: 81, color: "bg-primary" },
-          { name: "Tatar / Türkî", pct: 9, color: "bg-tertiary" },
-          { name: "Kafkas Halkları", pct: 7, color: "bg-secondary" },
-          { name: "Sibirya Yerlileri", pct: 3, color: "bg-indigo-400" }
+          { name: "Rus / Slav", pct: 81, color: "bg-blood-banner" },
+          { name: "Tatar / Türkî", pct: 9, color: "bg-imperial-gold" },
+          { name: "Kafkas Halkları", pct: 7, color: "bg-parchment-muted" },
+          { name: "Sibirya Yerlileri", pct: 3, color: "bg-royal-navy" }
         ],
         cohesion: 76, unrest: 19,
-        leader: { name: "Dmitri Volkov", title: "Güvenlik Konseyi", traits: ["Militarist", "Enerji Karteli"], eff: 85, loyalty: 75 },
+        leader: { name: "Dmitri Volkov", title: "Güvenlik Konseyi Sekreteri", traits: ["Militarist", "Enerji Karteli"], eff: 85, loyalty: 75 },
         projects: { rail: 3, defense: 5, tech: 3 }
       },
       "China": {
@@ -748,13 +737,13 @@
         gdp: 18600.0, pop: 1410.0, growthRate: -0.001,
         lat: 35.0, lng: 105.0, zoom: 4,
         demographics: [
-          { name: "Han Çinlisi", pct: 91, color: "bg-primary" },
-          { name: "Uygur / Türkî", pct: 3, color: "bg-tertiary" },
-          { name: "Tibet / Zhuang", pct: 4, color: "bg-secondary" },
-          { name: "Diğer", pct: 2, color: "bg-indigo-400" }
+          { name: "Han Çinlisi", pct: 91, color: "bg-error-soft" },
+          { name: "Uygur / Türkî", pct: 3, color: "bg-imperial-gold" },
+          { name: "Tibet / Zhuang", pct: 4, color: "bg-parchment-muted" },
+          { name: "Diğer", pct: 2, color: "bg-royal-navy" }
         ],
         cohesion: 89, unrest: 10,
-        leader: { name: "Chen Wei", title: "Devlet Planlama", traits: ["Merkeziyetçi", "AI Öncüsü"], eff: 96, loyalty: 90 },
+        leader: { name: "Chen Wei", title: "Devlet Planlama Komisyonu", traits: ["Merkeziyetçi", "AI Öncüsü"], eff: 96, loyalty: 90 },
         projects: { rail: 5, defense: 4, tech: 5 }
       },
       "United Kingdom": {
@@ -765,29 +754,29 @@
         gdp: 3400.0, pop: 68.2, growthRate: 0.004,
         lat: 54.0, lng: -2.0, zoom: 6,
         demographics: [
-          { name: "Briton / İngiliz", pct: 81, color: "bg-primary" },
-          { name: "Güney Asya", pct: 9, color: "bg-tertiary" },
-          { name: "Afro-Karayip", pct: 4, color: "bg-secondary" },
-          { name: "Diğer", pct: 6, color: "bg-indigo-400" }
+          { name: "Briton / İngiliz", pct: 81, color: "bg-royal-navy" },
+          { name: "Güney Asya", pct: 9, color: "bg-imperial-gold" },
+          { name: "Afro-Karayip", pct: 4, color: "bg-parchment-muted" },
+          { name: "Diğer", pct: 6, color: "bg-success-soft" }
         ],
         cohesion: 77, unrest: 15,
-        leader: { name: "Arthur Sterling", title: "İttifak Temsilcisi", traits: ["Finansör", "Deniz Gücü"], eff: 86, loyalty: 82 },
+        leader: { name: "Arthur Sterling", title: "Stratejik İttifak Temsilcisi", traits: ["Finansör", "Deniz Gücü"], eff: 86, loyalty: 82 },
         projects: { rail: 4, defense: 4, tech: 3 }
       }
     };
 
-    /* 3. DALLANAN PAX STORY İKİLEM HAVUZU */
+    /* 3. DALLANAN PAX STORY İKİLEM HAVUZU (Modern Devlet Krizleri) */
     const dilemmaPool = [
       {
-        tag: "MİLLİ DİREKTİF #402",
-        title: "Kıbrıs & Doğu Akdeniz Mavi Vatan Hidrokarbon Sondaj Krizi",
-        desc: "Akdeniz'deki yeni sondaj kuyusu uluslararası konsorsiyumlar tarafından tartışmaya açıldı. Yerli savunma sanayii fırkateyn eşliğinde sondajın tam kapasite devam etmesini öneriyor.",
+        tag: "CUMHURBAŞKANLIĞI KARARNAMESİ #402",
+        title: "Kıbrıs & Doğu Akdeniz Mavi Vatan Doğalgaz Sondaj Kararnamesi",
+        desc: "Akdeniz'deki yeni sondaj sahası yabancı konsorsiyumlar tarafından tartışmaya açıldı. Yerli savunma sanayii fırkateyn ve SİHA refakatinde sondaj faaliyetlerinin tam kapasite sürmesini tavsiye ediyor.",
         gain: "+%15 Enerji Özerkliği",
         risk: "Orta Risk",
         options: [
-          { text: "A: Milli Filo & Yerli Sondaj", hint: "Fırkateyn refakatinde sondaja devam et.", deltaTreasury: 12, deltaStab: 3, deltaMil: -10 },
-          { text: "B: Çok Uluslu Ortak Konsorsiyum", hint: "Batı ve Körfez ortaklığı kur.", deltaTreasury: 25, deltaStab: -2, deltaMil: 0 },
-          { text: "C: Müzakere Masası ve Dondurma", hint: "Sondaj faaliyetlerini geçici olarak askıya al.", deltaTreasury: 0, deltaStab: -5, deltaMil: 0 }
+          { text: "A: Milli Donanma Refakatinde Sondaj", hint: "Fırkateyn refakatinde sahada kal.", deltaTreasury: 12, deltaStab: 3, deltaMil: -10 },
+          { text: "B: Çok Uluslu Ortak Konsorsiyum", hint: "Batı ve Körfez fonlarıyla anlaş.", deltaTreasury: 25, deltaStab: -2, deltaMil: 0 },
+          { text: "C: Masada Müzakere ve Dondurma", hint: "Sondaj faaliyetlerini geçici olarak askıya al.", deltaTreasury: 0, deltaStab: -5, deltaMil: 0 }
         ]
       },
       {
@@ -797,26 +786,26 @@
         gain: "+%20 Teknoloji Bağımsızlığı",
         risk: "Yüksek Maliyet",
         options: [
-          { text: "A: Yerli Çip Konsorsiyumu Kur", hint: "Devlet hazinesinden $15B fon ayır.", deltaTreasury: -15, deltaStab: 4, deltaMil: 0 },
-          { text: "B: Alternatif İttifaklarla Anlaş", hint: "Kafkasya ve Orta Asya madenlerine yönel.", deltaTreasury: -5, deltaStab: 1, deltaMil: 0 },
-          { text: "C: Üretim Hacmini Düşür", hint: "Otomotiv ve savunmada üretimi kısıtla.", deltaTreasury: 0, deltaStab: -6, deltaMil: 0 }
+          { text: "A: Milli Çip Konsorsiyumu Kur", hint: "Hazine kaynaklarından $15B fon tahsis et.", deltaTreasury: -15, deltaStab: 4, deltaMil: 0 },
+          { text: "B: Alternatif İttifaklarla Anlaş", hint: "Orta Asya ve Kafkas madenlerine yönel.", deltaTreasury: -5, deltaStab: 1, deltaMil: 0 },
+          { text: "C: Üretim Hacmini Kısıtla", hint: "Savunma ve otomotiv üretimini yavaşlat.", deltaTreasury: 0, deltaStab: -6, deltaMil: 0 }
         ]
       },
       {
-        tag: "GÜVENLİK DİREKTİFİ #404",
-        title: "Sınır Bölgesinde Ayrılıkçı Hareketlilik ve SİHA Operasyonu",
-        desc: "Bölgesel istihbarat, sınır ötesinde organize olan ayrılıkçı grupların kritik boru hatlarına saldırı planladığını raporladı.",
+        tag: "MİLLİ SAVUNMA DİREKTİFİ #404",
+        title: "Sınır Ötesi Terör Tehdidi ve SİHA Operasyonu",
+        desc: "MİT ve sınır gözetleme unsurları, kritik enerji boru hatlarına yönelik sınır ötesinde sabotaj hazırlığı tespit etti.",
         gain: "+%25 Sınır Güvenliği",
         risk: "Diplomatik Tepki",
         options: [
-          { text: "A: Geniş Çaplı Nokta SİHA Harekâtı", hint: "Derhal sınır ötesi operasyon emri ver.", deltaTreasury: -8, deltaStab: 6, deltaMil: -20 },
-          { text: "B: Yerel Hükümete Nota Ver", hint: "Bölge ordusunun müdahale etmesini bekle.", deltaTreasury: 0, deltaStab: -3, deltaMil: 0 },
-          { text: "C: Hudut Boyuna Elektronik Duvar Ör", hint: "Sınırı güçlendir, savunmada kal.", deltaTreasury: -12, deltaStab: 2, deltaMil: 0 }
+          { text: "A: Geniş Çaplı Nokta SİHA Harekâtı", hint: "Derhal operasyon emri ver.", deltaTreasury: -8, deltaStab: 6, deltaMil: -20 },
+          { text: "B: Komşu Hükümete Diplomatik Nota", hint: "Bölge güvenlik güçlerini uyar.", deltaTreasury: 0, deltaStab: -3, deltaMil: 0 },
+          { text: "C: Hudut Güvenlik Duvarını Güçlendir", hint: "Savunmada kalarak sınır hattını tahkim et.", deltaTreasury: -12, deltaStab: 2, deltaMil: 0 }
         ]
       }
     ];
 
-    /* 4. GLOBAL SİMÜLASYON DURUMU */
+    /* 4. GLOBAL OYUN DURUMU */
     const gameState = {
       year: 2026, month: 10,
       treasury: 1420.0, monthlyIncome: 48.5,
@@ -826,7 +815,7 @@
       currentDilemmaIndex: 0
     };
 
-    /* 5. HARİTA MOTORU & DİPLOMATİK VFX ÇİZGİLERİ */
+    /* 5. LEAFLET FİLİGRANSIZ HARİTA */
     let map = null;
     let geojsonLayer = null;
     let darkTileLayer = null;
@@ -845,12 +834,12 @@
 
       L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
-      // Filigransız Esri Dark Canvas
+      // Esri Dark Canvas (Filigransız)
       darkTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 16
       }).addTo(map);
 
-      // Google Uydu Katmanı
+      // Google Uydu
       satTileLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
         maxZoom: 20
       });
@@ -859,7 +848,6 @@
         document.getElementById('activeMapCoords').innerText = `${e.latlng.lat.toFixed(2)}°N, ${e.latlng.lng.toFixed(2)}°E`;
       });
 
-      // GeoJSON Sınırları
       fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
         .then(res => res.json())
         .then(data => {
@@ -876,10 +864,10 @@
       const isTurkey = name === "Turkey";
 
       return {
-        fillColor: isSelected ? "#f59e0b" : (isTurkey ? "#0284c7" : "#10182b"),
+        fillColor: isSelected ? "#cba052" : (isTurkey ? "#1e3a8a" : "#0d131f"),
         weight: isSelected ? 2.5 : (isTurkey ? 2 : 1),
         opacity: 0.9,
-        color: isSelected ? "#f59e0b" : (isTurkey ? "#38bdf8" : "#334155"),
+        color: isSelected ? "#e6be6e" : (isTurkey ? "#cba052" : "#2d3748"),
         fillOpacity: isSelected ? 0.65 : (isTurkey ? 0.45 : 0.2)
       };
     }
@@ -889,7 +877,7 @@
       layer.on({
         mouseover: function(e) {
           if (countryName !== gameState.selectedCountry) {
-            e.target.setStyle({ fillColor: '#38bdf8', fillOpacity: 0.5, weight: 2, color: '#38bdf8' });
+            e.target.setStyle({ fillColor: '#cba052', fillOpacity: 0.45, weight: 2, color: '#e6be6e' });
           }
         },
         mouseout: function(e) {
@@ -906,13 +894,13 @@
       if (type === 'satellite') {
         map.removeLayer(darkTileLayer);
         satTileLayer.addTo(map);
-        document.getElementById('layerBtnSat').className = "px-2.5 py-1 text-[11px] font-mono font-bold uppercase rounded bg-primary text-on-primary flex items-center gap-1";
-        document.getElementById('layerBtnDark').className = "px-2.5 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1";
+        document.getElementById('layerBtnSat').className = "px-3 py-1 text-xs font-hud font-bold uppercase rounded bg-imperial-gold text-black flex items-center gap-1";
+        document.getElementById('layerBtnDark').className = "px-3 py-1 text-xs font-hud text-parchment-muted hover:text-parchment rounded flex items-center gap-1";
       } else {
         map.removeLayer(satTileLayer);
         darkTileLayer.addTo(map);
-        document.getElementById('layerBtnDark').className = "px-2.5 py-1 text-[11px] font-mono font-bold uppercase rounded bg-primary text-on-primary flex items-center gap-1";
-        document.getElementById('layerBtnSat').className = "px-2.5 py-1 text-[11px] font-mono text-outline hover:text-white rounded flex items-center gap-1";
+        document.getElementById('layerBtnDark').className = "px-3 py-1 text-xs font-hud font-bold uppercase rounded bg-imperial-gold text-black flex items-center gap-1";
+        document.getElementById('layerBtnSat').className = "px-3 py-1 text-xs font-hud text-parchment-muted hover:text-parchment rounded flex items-center gap-1";
       }
     }
 
@@ -928,13 +916,13 @@
       if (tab === 'nations') {
         document.getElementById('tabContentNations').classList.remove('hidden');
         document.getElementById('tabContentProduction').classList.add('hidden');
-        document.getElementById('tabBtnNations').className = "py-1 rounded bg-primary text-on-primary font-bold uppercase transition-all";
-        document.getElementById('tabBtnProd').className = "py-1 rounded text-outline hover:text-white font-bold uppercase transition-all";
+        document.getElementById('tabBtnNations').className = "py-1 rounded bg-imperial-gold text-black font-bold uppercase transition-all";
+        document.getElementById('tabBtnProd').className = "py-1 rounded text-parchment-muted hover:text-parchment font-bold uppercase transition-all";
       } else {
         document.getElementById('tabContentNations').classList.add('hidden');
         document.getElementById('tabContentProduction').classList.remove('hidden');
-        document.getElementById('tabBtnProd').className = "py-1 rounded bg-primary text-on-primary font-bold uppercase transition-all";
-        document.getElementById('tabBtnNations').className = "py-1 rounded text-outline hover:text-white font-bold uppercase transition-all";
+        document.getElementById('tabBtnProd').className = "py-1 rounded bg-imperial-gold text-black font-bold uppercase transition-all";
+        document.getElementById('tabBtnNations').className = "py-1 rounded text-parchment-muted hover:text-parchment font-bold uppercase transition-all";
       }
     }
 
@@ -951,12 +939,12 @@
           gdp: 850.0, pop: 45.0, growthRate: 0.007,
           lat: 20.0, lng: 0.0, zoom: 4,
           demographics: [
-            { name: "Baskın Ulus", pct: 82, color: "bg-primary" },
-            { name: "Bölgesel Azınlık", pct: 12, color: "bg-tertiary" },
-            { name: "Diğer", pct: 6, color: "bg-indigo-400" }
+            { name: "Baskın Topluluk", pct: 82, color: "bg-imperial-gold" },
+            { name: "Bölgesel Azınlık", pct: 12, color: "bg-parchment-muted" },
+            { name: "Diğer", pct: 6, color: "bg-royal-navy" }
           ],
           cohesion: 75, unrest: 14,
-          leader: { name: "Bölge Valisi", title: "Milli İdare Meclisi", traits: ["Bürokrat", "Maliye"], eff: 78, loyalty: 70 },
+          leader: { name: "Bölge İdare Valisi", title: "Milli İdare Meclisi", traits: ["Bürokrat", "Maliye"], eff: 78, loyalty: 70 },
           projects: { rail: 2, defense: 2, tech: 1 }
         };
       }
@@ -982,7 +970,7 @@
       document.getElementById('leaderLoyalty').innerText = `%${n.leader.loyalty} Güven`;
       
       const traits = document.getElementById('leaderTraits');
-      traits.innerHTML = n.leader.traits.map(t => `<span class="px-1 py-0.2 text-[9px] bg-secondary/20 text-secondary rounded font-mono">${t}</span>`).join('');
+      traits.innerHTML = n.leader.traits.map(t => `<span class="px-1.5 py-0.2 text-[10px] bg-surface-container border border-imperial-gold/30 text-imperial-gold rounded font-hud">${t}</span>`).join('');
 
       const bar = document.getElementById('nationDemographicBar');
       bar.innerHTML = n.demographics.map(d => `<div class="h-full ${d.color}" style="width: ${d.pct}%;"></div>`).join('');
@@ -1019,28 +1007,28 @@
         const div = document.createElement('div');
         div.className = `p-2 rounded cursor-pointer transition-all flex items-center justify-between border ${
           isSelected 
-            ? 'bg-surface-container-high border-primary' 
-            : 'bg-surface-container/40 border-outline-variant/30 hover:border-outline-variant'
+            ? 'bg-surface-container-high border-imperial-gold' 
+            : 'bg-surface-container/40 border-imperial-gold/20 hover:border-imperial-gold/40'
         }`;
         div.onclick = () => { playSound('click'); focusCountry(key); };
         div.innerHTML = `
           <div class="flex items-center gap-2">
-            <div class="w-1.5 h-6 ${isSelected ? 'bg-primary' : 'bg-outline'} rounded-full"></div>
+            <div class="w-1.5 h-6 ${isSelected ? 'bg-imperial-gold' : 'bg-outline-amber'} rounded-full"></div>
             <div>
-              <div class="font-mono text-xs font-bold text-white">${n.name}</div>
-              <div class="text-[9px] text-outline font-mono">${n.bloc}</div>
+              <div class="font-imperial text-xs font-bold text-parchment">${n.name}</div>
+              <div class="text-[10px] text-parchment-muted font-hud">${n.bloc}</div>
             </div>
           </div>
-          <div class="text-right font-mono">
-            <span class="text-xs font-semibold ${isSelected ? 'text-primary' : 'text-white'}">$${(n.gdp/1000).toFixed(1)}T</span>
-            <span class="block text-[9px] text-outline">${n.pop.toFixed(1)}M</span>
+          <div class="text-right font-hud">
+            <span class="text-xs font-semibold ${isSelected ? 'text-imperial-gold-bright' : 'text-parchment'}">$${(n.gdp/1000).toFixed(1)}T</span>
+            <span class="block text-[9px] text-parchment-muted">${n.pop.toFixed(1)}M</span>
           </div>
         `;
         container.appendChild(div);
       });
     }
 
-    /* 7. DİPLOMATİK EYLEMLER, SESLER VE VFX HOLOGRAMLARI */
+    /* 7. DİPLOMATİK EYLEMLER & SESLER */
     function showVfxHologram(title, desc, icon, isWar = false) {
       const banner = document.getElementById('vfxBanner');
       const card = document.getElementById('vfxBannerCard');
@@ -1051,23 +1039,23 @@
       iconEl.innerText = icon;
 
       if (isWar) {
-        card.className = "bg-surface-container-high/95 backdrop-blur-2xl border-2 border-error p-6 rounded-2xl shadow-[0_0_80px_rgba(239,68,68,0.7)] flex flex-col items-center text-center transform scale-90 transition-transform duration-300";
-        document.getElementById('vfxBannerTitle').className = "font-headline font-bold text-2xl text-error uppercase tracking-wider";
-        iconEl.className = "material-symbols-outlined text-error text-5xl mb-2 animate-bounce";
+        card.className = "bg-surface-container-high/95 backdrop-blur-2xl border border-blood-banner p-6 rounded shadow-[0_0_60px_rgba(143,29,29,0.7)] flex flex-col items-center text-center transform scale-95 transition-transform duration-300";
+        document.getElementById('vfxBannerTitle').className = "font-imperial font-bold text-xl text-error-soft uppercase tracking-widest";
+        iconEl.className = "material-symbols-outlined text-error-soft text-4xl mb-1 animate-pulse";
       } else {
-        card.className = "bg-surface-container-high/95 backdrop-blur-2xl border-2 border-gold p-6 rounded-2xl shadow-[0_0_80px_rgba(245,158,11,0.7)] flex flex-col items-center text-center transform scale-90 transition-transform duration-300";
-        document.getElementById('vfxBannerTitle').className = "font-headline font-bold text-2xl text-gold uppercase tracking-wider";
-        iconEl.className = "material-symbols-outlined text-gold text-5xl mb-2 animate-bounce";
+        card.className = "bg-surface-container-high/95 backdrop-blur-2xl border border-imperial-gold/60 p-6 rounded shadow-[0_0_60px_rgba(203,160,82,0.4)] flex flex-col items-center text-center transform scale-95 transition-transform duration-300";
+        document.getElementById('vfxBannerTitle').className = "font-imperial font-bold text-xl text-imperial-gold-bright uppercase tracking-widest";
+        iconEl.className = "material-symbols-outlined text-imperial-gold-bright text-4xl mb-1 animate-pulse";
       }
 
       banner.classList.remove('opacity-0');
-      card.classList.remove('scale-90');
+      card.classList.remove('scale-95');
       card.classList.add('scale-100');
 
       setTimeout(() => {
         banner.classList.add('opacity-0');
         card.classList.remove('scale-100');
-        card.classList.add('scale-90');
+        card.classList.add('scale-95');
       }, 2200);
     }
 
@@ -1076,21 +1064,17 @@
       if (gameState.selectedCountry === "Turkey") return;
 
       playSound('pact');
-      showVfxHologram("STRATEJİK TİCARET PAKTI ONAYLANDI", `${n.name} ile gümrüksüz ticaret koridoru ve ortak yatırım protokolü yürürlüğe girdi.`, "handshake");
+      showVfxHologram("STRATEJİK TİCARET PAKTI ONAYLANDI", `${n.name} ile gümrüksüz ticaret koridoru ve ortak yatırım mutabakatı imzalandı.`, "handshake");
 
-      // Harita üzerine Türkiye ile o ülke arasında parlayan altın lazer çiz
       if (diplomacyLine) map.removeLayer(diplomacyLine);
       diplomacyLine = L.polyline([[39.0, 35.0], [n.lat, n.lng]], {
-        color: '#fbbf24',
-        weight: 3.5,
-        opacity: 0.85,
-        dashArray: '8, 8'
+        color: '#cba052', weight: 3, opacity: 0.85, dashArray: '6, 6'
       }).addTo(map);
 
       gameState.monthlyIncome += 4.5;
       gameState.treasury += 12.0;
       n.cohesion = Math.min(100, n.cohesion + 6);
-      updateTickerNews(`${n.name} ile ticaret paktı imzalandı. Altın rezervleri ve aylık gelir arttı.`);
+      updateTickerNews(`${n.name} ile resmi ticaret paktı imzalandı. Hazine rezervleri ve aylık gelir arttı.`);
       updateHUD();
     }
 
@@ -1099,19 +1083,16 @@
       if (gameState.selectedCountry === "Turkey") return;
 
       playSound('sanction');
-      showVfxHologram("EKONOMİK YAPTIRIM VE AMBARGO", `${n.name} limanlarına ve para transferlerine küresel kısıtlama getirildi.`, "block", true);
+      showVfxHologram("EKONOMİK YAPTIRIM VE AMBARGO", `${n.name} bankalarına ve limanlarına uluslararası kısıtlama kararı çıkarıldı.`, "block", true);
 
       if (diplomacyLine) map.removeLayer(diplomacyLine);
       diplomacyLine = L.polyline([[39.0, 35.0], [n.lat, n.lng]], {
-        color: '#ef4444',
-        weight: 3,
-        opacity: 0.9,
-        dashArray: '4, 6'
+        color: '#f87171', weight: 3, opacity: 0.9, dashArray: '4, 6'
       }).addTo(map);
 
       n.unrest = Math.min(85, n.unrest + 15);
       gameState.stability = Math.max(30, gameState.stability - 2);
-      updateTickerNews(`${n.name} yönetimine yönelik tam ambargo kararnamesi yayınlandı.`);
+      updateTickerNews(`${n.name} yönetimine yönelik resmi yaptırım kararnamesi yürürlüğe girdi.`);
       selectCountry(gameState.selectedCountry);
       updateHUD();
     }
@@ -1121,26 +1102,26 @@
       if (gameState.selectedCountry === "Turkey") return;
 
       if (gameState.military < 50) {
-        alert("Yetersiz askeri birlik!");
+        alert("Yetersiz askeri birlik! Seferberlik emri vermelisiniz.");
         return;
       }
 
       playSound('war');
-      showVfxHologram("ASKERİ HAREKÂT BAŞLATILDI", `${n.name} sınırlarına yönelik hava indirme ve donanma taarruzu başladı!`, "swords", true);
+      showVfxHologram("ASKERİ HAREKÂT BAŞLATILDI", `${n.name} sınırlarına yönelik hava ve kara unsurlarıyla müşterek taarruz başladı!`, "swords", true);
 
       gameState.military -= 50;
       gameState.treasury -= 25.0;
 
       const success = Math.random() > 0.30;
       if (success) {
-        n.status = "Bağlı Uydu Devleti (Protectorate)";
-        n.bloc = "Türkiye Hakimiyet Alanı";
+        n.status = "Bağlı Müttefik Devleti";
+        n.bloc = "Türkiye Etki Alanı";
         gameState.stability = Math.min(100, gameState.stability + 10);
         gameState.monthlyIncome += 7.5;
-        updateTickerNews(`ZAFER: ${n.name} askeri harekatla kontrol altına alındı. Stratejik zafer ilan edildi.`);
+        updateTickerNews(`STRATEJİK ZAFER: ${n.name} kontrol altına alındı. Zafer tebliğ edildi.`);
       } else {
         gameState.stability = Math.max(20, gameState.stability - 12);
-        updateTickerNews(`HAREKÂT PÜSKÜRTÜLDÜ: ${n.name} cephesinde sert mukavemetle karşılaşıldı.`);
+        updateTickerNews(`HAREKÂT DURDURULDU: ${n.name} sınır hattında sert dirençle karşılaşıldı.`);
       }
       selectCountry(gameState.selectedCountry);
       updateHUD();
@@ -1149,7 +1130,7 @@
     function upgradeProject(type) {
       const n = nationsData[gameState.selectedCountry] || nationsData["Turkey"];
       if (n.projects[type] >= 5) {
-        alert("Bu altyapı en son teknoloji seviyesindedir!");
+        alert("Bu altyapı en son teknoloji seviyesine ulaşmıştır!");
         return;
       }
       const cost = type === 'rail' ? 10.0 : (type === 'defense' ? 15.0 : 18.0);
@@ -1163,18 +1144,18 @@
       gameState.monthlyIncome += 2.5;
       gameState.gdp += 18.0;
 
-      updateTickerNews(`${n.name} bölgesinde ${type.toUpperCase()} projesi seviye atladı.`);
+      updateTickerNews(`${n.name} sınırlarında stratejik ${type.toUpperCase()} projesi seviye atladı.`);
       selectCountry(gameState.selectedCountry);
       updateHUD();
     }
 
     function subsidizeCommodities() {
-      if (gameState.treasury < 8.0) { alert("Yetersiz hazine!"); return; }
+      if (gameState.treasury < 8.0) { alert("Yetersiz hazine rezervi!"); return; }
       playSound('upgrade');
       gameState.treasury -= 8.0;
       document.getElementById('balance_steel').innerText = "+8K Ton (Dengede)";
-      document.getElementById('balance_steel').className = "text-success";
-      updateTickerNews("Stratejik çelik ve nadir element ithalatı tamamlandı. Sanayi açığı kapatıldı.");
+      document.getElementById('balance_steel').className = "text-success-soft";
+      updateTickerNews("Stratejik maden rezervi alımı tamamlandı. Sanayi açığı kapatıldı.");
       updateHUD();
     }
 
@@ -1191,8 +1172,8 @@
     function replaceGovernor() {
       playSound('click');
       const n = nationsData[gameState.selectedCountry] || nationsData["Turkey"];
-      const names = ["Prof. Kerem Soylu", "Bürokrat Aylin Tan", "Dr. Hakan Demir", "Gen. Fırat Karaca"];
-      const traitsList = [["Mali Disiplin", "Reformist"], ["Şahin", "Merkeziyetçi"], ["Yatırımcı", "Teknokrat"]];
+      const names = ["Prof. Dr. Kerem Soylu", "Vali Aylin Tan", "Dr. Hakan Demir", "Gen. Fırat Karaca"];
+      const traitsList = [["Mali Disiplin", "Reformist"], ["Savunmacı", "Merkeziyetçi"], ["Yatırımcı", "Teknokrat"]];
       
       n.leader.name = names[Math.floor(Math.random() * names.length)];
       n.leader.traits = traitsList[Math.floor(Math.random() * traitsList.length)];
@@ -1207,7 +1188,7 @@
       playSound('upgrade');
       gameState.treasury += 35.0;
       gameState.stability = Math.max(30, gameState.stability - 4);
-      updateTickerNews("ACİL KARARNAME: Merkez Bankası acil devlet tahvili ihraç etti (+$35B).");
+      updateTickerNews("CUMHURBAŞKANLIĞI KARARNAMESİ: Hazine acil tahvil ihraç etti (+$35B).");
       updateHUD();
     }
 
@@ -1217,7 +1198,7 @@
       gameState.treasury -= 10.0;
       gameState.military += 40;
       gameState.stability = Math.max(30, gameState.stability - 2);
-      updateTickerNews("GENEL SEFERBERLİK: 40,000 yeni ihtiyat birliği aktif silahlı kuvvete dahil edildi.");
+      updateTickerNews("MİLLİ SEFERBERLİK: 40,000 yeni ihtiyat personeli aktif orduya katıldı.");
       updateHUD();
     }
 
@@ -1233,18 +1214,18 @@
       const container = document.getElementById('dilemmaOptionsContainer');
       container.innerHTML = '';
 
-      d.options.forEach((opt, idx) => {
+      d.options.forEach((opt) => {
         const btn = document.createElement('button');
-        btn.className = "p-2 rounded bg-surface-container-low border border-outline-variant/40 hover:border-primary hover:bg-surface-container-highest transition-all text-left flex flex-col justify-between";
+        btn.className = "p-2.5 rounded bg-surface-container-low border border-imperial-gold/25 hover:border-imperial-gold hover:bg-surface-container-highest transition-all text-left flex flex-col justify-between";
         btn.onclick = () => { playSound('click'); resolveDilemmaChoice(opt); };
         btn.innerHTML = `
           <div>
-            <div class="text-xs font-mono font-bold text-primary">${opt.text}</div>
-            <p class="text-[10px] text-outline mt-0.5 leading-tight">${opt.hint}</p>
+            <div class="text-xs font-imperial font-bold text-imperial-gold-bright">${opt.text}</div>
+            <p class="font-parchment text-xs text-parchment-muted mt-0.5 leading-tight italic">${opt.hint}</p>
           </div>
-          <div class="mt-1.5 pt-1 border-t border-outline-variant/20 flex gap-2 text-[9px] font-mono font-bold">
-            <span class="${opt.deltaTreasury >= 0 ? 'text-success' : 'text-error'}">${opt.deltaTreasury >= 0 ? '+' : ''}${opt.deltaTreasury}B Hazine</span>
-            <span class="${opt.deltaStab >= 0 ? 'text-primary' : 'text-error'}">${opt.deltaStab >= 0 ? '+' : ''}${opt.deltaStab}% İstikrar</span>
+          <div class="mt-2 pt-1 border-t border-imperial-gold/15 flex gap-2 text-[10px] font-hud font-bold">
+            <span class="${opt.deltaTreasury >= 0 ? 'text-success-soft' : 'text-error-soft'}">${opt.deltaTreasury >= 0 ? '+' : ''}${opt.deltaTreasury}B Hazine</span>
+            <span class="${opt.deltaStab >= 0 ? 'text-imperial-gold' : 'text-error-soft'}">${opt.deltaStab >= 0 ? '+' : ''}${opt.deltaStab}% İstikrar</span>
           </div>
         `;
         container.appendChild(btn);
@@ -1256,7 +1237,7 @@
       gameState.stability = Math.max(20, Math.min(100, gameState.stability + opt.deltaStab));
       gameState.military = Math.max(50, gameState.military + opt.deltaMil);
 
-      updateTickerNews(`KARARNAME ONAYLANDI: ${opt.text} yürürlüğe girdi. Stratejik sonuçlar işleniyor.`);
+      updateTickerNews(`KARARNAME ONAYLANDI: ${opt.text} yürürlüğe girdi.`);
       
       gameState.currentDilemmaIndex = (gameState.currentDilemmaIndex + 1) % dilemmaPool.length;
       renderDilemma();
@@ -1293,7 +1274,7 @@
       gameState.simSpeed = speed;
       [0, 1, 2].forEach(s => {
         const btn = document.getElementById(`speedBtn${s}`);
-        btn.className = s === speed ? "px-2 py-0.5 text-xs font-mono rounded text-primary bg-surface-container-highest" : "px-2 py-0.5 text-xs font-mono text-outline hover:text-white";
+        btn.className = s === speed ? "px-2.5 py-0.5 text-xs font-hud rounded text-imperial-gold-bright bg-surface-container-highest" : "px-2 py-0.5 text-xs font-hud text-parchment-muted hover:text-parchment";
       });
       clearInterval(gameState.simInterval);
       if (speed === 1) gameState.simInterval = setInterval(() => { advanceTurn(); playSound('turn'); }, 3200);
@@ -1308,12 +1289,11 @@
       document.getElementById('hudStability').innerText = `%${gameState.stability}`;
       
       const lbl = document.getElementById('hudStabilityLabel');
-      if (gameState.stability > 70) { lbl.innerText = "GÜVENLİ"; lbl.className = "text-[9px] text-success bg-surface-container-highest px-1 rounded font-bold"; }
-      else if (gameState.stability > 45) { lbl.innerText = "RİSKLİ"; lbl.className = "text-[9px] text-tertiary bg-surface-container-highest px-1 rounded font-bold"; }
-      else { lbl.innerText = "KRİTİK"; lbl.className = "text-[9px] text-error bg-surface-container-highest px-1 rounded font-bold"; }
+      if (gameState.stability > 70) { lbl.innerText = "GÜVENLİ"; lbl.className = "text-[9px] text-success-soft bg-surface-container-highest px-1.5 py-0.2 rounded font-bold"; }
+      else if (gameState.stability > 45) { lbl.innerText = "RİSKLİ"; lbl.className = "text-[9px] text-imperial-gold bg-surface-container-highest px-1.5 py-0.2 rounded font-bold"; }
+      else { lbl.innerText = "KRİTİK"; lbl.className = "text-[9px] text-error-soft bg-surface-container-highest px-1.5 py-0.2 rounded font-bold"; }
     }
 
-    // Başlangıç Yüklemesi
     document.addEventListener('DOMContentLoaded', () => {
       initMap();
       selectCountry("Turkey");
