@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <title>GEO-STRAT: Modern Geopolitical Dominion (Google Maps Engine)</title>
+  <title>GEO-STRAT: Google Maps Animated City Dominion</title>
   
   <!-- Material Symbols & Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -77,14 +77,29 @@
     
     #geoMap { width: 100%; height: 100%; background: #070b14; }
     .leaflet-container { background: #070b14 !important; font-family: 'Marcellus', serif !important; }
-    .leaflet-bar a {
-      background-color: #0d131f !important; color: #dcb260 !important; border-color: #4a3920 !important;
-    }
-    .leaflet-bar a:hover { background-color: #192338 !important; color: #f1ebe0 !important; }
     
-    /* Google Maps Taktik Karanlık Filtreleme Katmanı */
+    /* Google Maps Koyu Taktik Filtresi */
     .gmap-tactical-dark {
       filter: invert(92%) hue-rotate(185deg) contrast(110%) brightness(88%) saturate(120%);
+    }
+
+    /* Google Maps Tarzı Akıcı Sınır ve Radar Animasyonları */
+    @keyframes radarPulse {
+      0% { r: 6px; stroke-opacity: 0.9; stroke-width: 2px; }
+      50% { r: 24px; stroke-opacity: 0.4; stroke-width: 4px; }
+      100% { r: 42px; stroke-opacity: 0; stroke-width: 1px; }
+    }
+    .city-sonar-pulse {
+      animation: radarPulse 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes dashMove {
+      to { stroke-dashoffset: -40; }
+    }
+    .animated-trade-corridor {
+      stroke-dasharray: 6, 8;
+      animation: dashMove 2s linear infinite;
     }
 
     @keyframes tickerScroll {
@@ -142,7 +157,7 @@
         </div>
       </div>
 
-      <!-- Silahlı Kuvvetler -->
+      <!-- Silahlı Güç -->
       <div class="flex items-center gap-2.5 px-3 py-1 bg-surface-container-low border border-imperial-gold/30 rounded hover:border-imperial-gold/60 transition-colors">
         <span class="material-symbols-outlined text-imperial-gold text-lg" style="font-variation-settings: 'FILL' 1;">military_tech</span>
         <div class="flex flex-col leading-tight">
@@ -205,7 +220,7 @@
           <button onclick="switchLeftTab('production'); playSound('click');" id="tabBtnProd" class="py-1.5 rounded text-parchment-muted hover:text-parchment font-bold uppercase transition-all">Sanayi & Emtia</button>
         </div>
 
-        <!-- 1. SEKME: ŞEHİRLER VE VİLAYETLER LİSTESİ -->
+        <!-- 1. SEKME: ŞEHİRLER LİSTESİ -->
         <div id="tabContentCities" class="flex flex-col gap-2.5">
           <div class="grid grid-cols-2 gap-2">
             <button onclick="triggerEmergencyDecree()" class="flex items-center justify-center gap-1.5 py-2 bg-imperial-gold/15 border border-imperial-gold/40 text-imperial-gold-bright font-hud text-xs font-bold uppercase rounded hover:bg-imperial-gold hover:text-black active:scale-95 transition-all">
@@ -319,7 +334,7 @@
       </div>
     </aside>
 
-    <!-- 3. ORTA ALAN: GERÇEK GOOGLE MAPS ŞEHİR VE İDARİ SINIRLARI -->
+    <!-- 3. ORTA ALAN: GOOGLE MAPS ANİMASYONLU ŞEHİR VE İDARİ SINIRLAR -->
     <div class="flex-1 h-full relative overflow-hidden flex flex-col">
       
       <!-- Harita Modu Seçici (Üst Sol) -->
@@ -360,7 +375,7 @@
           </span>
           <div class="w-full overflow-hidden text-sm font-parchment text-parchment font-semibold italic">
             <span id="newsTickerText" class="animate-ticker text-parchment drop-shadow">
-              Google Maps idari sınır motoru aktifleştirildi. Tüm şehirler, vilayet sınırları ve üretim havzaları canlı bağlandı.
+              Google Maps dinamik idari sınır motoru devrede. Şehir sınırları ve ticaret hatları gerçek zamanlı animasyonla izleniyor.
             </span>
           </div>
         </div>
@@ -537,9 +552,9 @@
   <!-- LEAFLET HARİTA KÜTÜPHANESİ -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- JAVASCRIPT: GOOGLE MAPS İDARİ VE ŞEHİR SINIRLARI MOTORU -->
+  <!-- JAVASCRIPT: ANİMASYONLU GOOGLE MAPS ŞEHİR VE İDARİ SINIRLAR MOTORU -->
   <script>
-    /* 1. ŞEHİRLER VE VİLAYETLER VERİTABANI */
+    /* 1. ŞEHİRLER VE GERÇEKÇİ ÇOKGEN SINIRLARI */
     const citiesData = {
       "istanbul": {
         name: "İSTANBUL / MARMARA",
@@ -547,10 +562,15 @@
         role: "Milli Finans & Boğazlar Komutanlığı",
         tier: "Tier-1 Megacity",
         pop: 15.9,
-        lat: 41.0082, lng: 28.9784, zoom: 10,
+        lat: 41.0082, lng: 28.9784, zoom: 9,
         taxRate: 20,
         baseRevenue: 14.2,
-        facilities: { farm: 3, warehouse: 4, coal: 2, power: 3 }
+        facilities: { farm: 3, warehouse: 4, coal: 2, power: 3 },
+        // Kıvrımlı doğal il sınırı çokgeni (Polygon)
+        boundaryCoords: [
+          [41.52, 28.05], [41.42, 28.75], [41.25, 29.15], 
+          [41.15, 29.90], [40.85, 29.35], [40.90, 28.45], [41.10, 27.95]
+        ]
       },
       "ankara": {
         name: "ANKARA / İÇ ANADOLU",
@@ -558,10 +578,14 @@
         role: "Federal Başkent & Savunma Sanayii",
         tier: "Federal Yönetim Bölgesi",
         pop: 5.8,
-        lat: 39.9334, lng: 32.8597, zoom: 10,
+        lat: 39.9334, lng: 32.8597, zoom: 9,
         taxRate: 20,
         baseRevenue: 8.5,
-        facilities: { farm: 4, warehouse: 3, coal: 3, power: 4 }
+        facilities: { farm: 4, warehouse: 3, coal: 3, power: 4 },
+        boundaryCoords: [
+          [40.45, 32.10], [40.35, 33.45], [39.55, 33.65], 
+          [39.20, 32.85], [39.35, 31.95], [40.05, 31.75]
+        ]
       },
       "izmir": {
         name: "İZMİR / EGE HAVZASI",
@@ -569,10 +593,14 @@
         role: "Ege İhracat Limanı & Yenilenebilir Enerji",
         tier: "Deniz Ticaret Bölgesi",
         pop: 4.5,
-        lat: 38.4237, lng: 27.1428, zoom: 10,
+        lat: 38.4237, lng: 27.1428, zoom: 9,
         taxRate: 20,
         baseRevenue: 6.8,
-        facilities: { farm: 4, warehouse: 4, coal: 1, power: 4 }
+        facilities: { farm: 4, warehouse: 4, coal: 1, power: 4 },
+        boundaryCoords: [
+          [39.15, 26.85], [39.05, 27.45], [38.55, 27.85], 
+          [37.95, 27.35], [38.15, 26.45], [38.75, 26.55]
+        ]
       },
       "antalya": {
         name: "ANTALYA / AKDENİZ",
@@ -580,32 +608,14 @@
         role: "Turizm & Akdeniz Lojistiği",
         tier: "Kıyı ve Lojistik Bölgesi",
         pop: 2.7,
-        lat: 36.8969, lng: 30.7133, zoom: 10,
+        lat: 36.8969, lng: 30.7133, zoom: 9,
         taxRate: 20,
         baseRevenue: 4.5,
-        facilities: { farm: 5, warehouse: 3, coal: 1, power: 2 }
-      },
-      "bursa": {
-        name: "BURSA / GÜNEY MARMARA",
-        country: "Türkiye",
-        role: "Otomotiv & Ağır Makine Sanayisi",
-        tier: "Sanayi ve Üretim Havzası",
-        pop: 3.2,
-        lat: 40.1885, lng: 29.0610, zoom: 10,
-        taxRate: 20,
-        baseRevenue: 5.4,
-        facilities: { farm: 4, warehouse: 4, coal: 3, power: 3 }
-      },
-      "gaziantep": {
-        name: "GAZİANTEP / GÜNEYDOĞU",
-        country: "Türkiye",
-        role: "Organize Sanayi & İhracat Koridoru",
-        tier: "Bölgesel Ticaret Hub'ı",
-        pop: 2.1,
-        lat: 37.0662, lng: 37.3833, zoom: 10,
-        taxRate: 20,
-        baseRevenue: 4.0,
-        facilities: { farm: 4, warehouse: 4, coal: 2, power: 2 }
+        facilities: { farm: 5, warehouse: 3, coal: 1, power: 2 },
+        boundaryCoords: [
+          [37.35, 29.85], [37.45, 31.35], [36.85, 32.35], 
+          [36.25, 31.65], [36.45, 30.15], [36.85, 29.75]
+        ]
       },
       "diyarbakir": {
         name: "DİYARBAKIR / DİCLE HAVZASI",
@@ -613,43 +623,14 @@
         role: "GAP Sulama & Madencilik Koridoru",
         tier: "Stratejik Kalkınma Havzası",
         pop: 1.8,
-        lat: 37.9144, lng: 40.2306, zoom: 10,
+        lat: 37.9144, lng: 40.2306, zoom: 9,
         taxRate: 20,
         baseRevenue: 3.2,
-        facilities: { farm: 5, warehouse: 2, coal: 3, power: 2 }
-      },
-      "trabzon": {
-        name: "TRABZON / KARADENİZ",
-        country: "Türkiye",
-        role: "Karadeniz Deniz Yetki ve İkmal Üssü",
-        tier: "Deniz Ticaret Bölgesi",
-        pop: 0.9,
-        lat: 41.0027, lng: 39.7168, zoom: 10,
-        taxRate: 20,
-        baseRevenue: 2.5,
-        facilities: { farm: 4, warehouse: 3, coal: 2, power: 3 }
-      },
-      "washington": {
-        name: "WASHINGTON D.C.",
-        country: "ABD",
-        role: "Atlantik Savunma & Finans Komutası",
-        tier: "Süper Güç Başkenti",
-        pop: 5.5,
-        lat: 38.9072, lng: -77.0369, zoom: 10,
-        taxRate: 20,
-        baseRevenue: 22.0,
-        facilities: { farm: 2, warehouse: 5, coal: 2, power: 5 }
-      },
-      "berlin": {
-        name: "BERLİN / AVRUPA MERKEZİ",
-        country: "Almanya",
-        role: "Avrupa Birliği Sanayi ve Lojistik Motoru",
-        tier: "Avrupa Metropolü",
-        pop: 3.8,
-        lat: 52.5200, lng: 13.4050, zoom: 10,
-        taxRate: 20,
-        baseRevenue: 18.0,
-        facilities: { farm: 3, warehouse: 5, coal: 1, power: 5 }
+        facilities: { farm: 5, warehouse: 2, coal: 3, power: 2 },
+        boundaryCoords: [
+          [38.45, 39.85], [38.55, 40.85], [37.95, 41.25], 
+          [37.55, 40.65], [37.65, 39.75], [38.05, 39.55]
+        ]
       }
     };
 
@@ -669,32 +650,26 @@
       }
     ];
 
-    /* 3. GLOBAL OYUN DURUMU */
+    /* 3. GLOBAL DURUM */
     const gameState = {
-      day: 24,
-      month: 10,
-      year: 2026,
-      treasury: 1420.0,
-      monthlyIncome: 48.5,
-      gdp: 1340.0,
-      military: 425,
-      stability: 82,
-      simSpeed: 0,
-      simInterval: null,
+      day: 24, month: 10, year: 2026,
+      treasury: 1420.0, monthlyIncome: 48.5, gdp: 1340.0, military: 425, stability: 82,
+      simSpeed: 0, simInterval: null,
       selectedCityKey: "istanbul",
       currentDilemmaIndex: 0
     };
 
-    /* 4. GERÇEK GOOGLE MAPS KATMANLARI VE LEAFLET KURULUMU */
+    /* 4. GOOGLE MAPS VE ANİMASYONLU LEAFLET HARİTASI */
     let map = null;
     let googleLayerDark = null;
     let googleLayerHybrid = null;
     let googleLayerStd = null;
-    let cityMarkers = {};
-    let cityPulseRing = null;
+    let cityPolygons = {};
+    let cityMarkerNodes = {};
+    let activeSonarCircle = null;
+    let animatedCorridors = [];
 
     function initMap() {
-      // Türkiye merkezli başlangıç
       map = L.map('geoMap', {
         center: [39.0, 35.0],
         zoom: 6,
@@ -706,20 +681,20 @@
 
       L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
-      // 1. Google Maps Taktik Koyu Katman (Gerçek İl/Şehir ve Ülke Sınırları İçeren Standart Roadmap + Koyu Filtre)
+      // Google Maps Taktik Koyu Katman
       googleLayerDark = L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=tr&x={x}&y={y}&z={z}', {
         subdomains: ['0', '1', '2', '3'],
         maxZoom: 20,
         className: 'gmap-tactical-dark'
       }).addTo(map);
 
-      // 2. Google Hibrit Katman (Uydu Görüntüsü + Resmi İl/İlçe Sınırları ve Yollar)
+      // Google Hibrit Katman
       googleLayerHybrid = L.tileLayer('https://mt{s}.google.com/vt/lyrs=y&hl=tr&x={x}&y={y}&z={z}', {
         subdomains: ['0', '1', '2', '3'],
         maxZoom: 20
       });
 
-      // 3. Google Standart Siyasi Yol Haritası (Orijinal Renkler)
+      // Google Standart Siyasi Yol
       googleLayerStd = L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=tr&x={x}&y={y}&z={z}', {
         subdomains: ['0', '1', '2', '3'],
         maxZoom: 20
@@ -729,26 +704,72 @@
         document.getElementById('activeMapCoords').innerText = `${e.latlng.lat.toFixed(2)}°N, ${e.latlng.lng.toFixed(2)}°E`;
       });
 
-      // Taktik Şehir Merkezlerini (Metropol Düğümlerini) Haritaya Ekle
-      initCityNodes();
+      // Şehir Sınırlarını ve Ticaret Rotalarını Çiz
+      drawAnimatedBoundariesAndCorridors();
     }
 
-    function initCityNodes() {
-      Object.keys(citiesData).forEach(key => {
-        const c = citiesData[key];
+    function drawAnimatedBoundariesAndCorridors() {
+      // 1. Şehirler arası akan animasyonlu ticaret koridorları (Bosphorus - Ankara - Ege)
+      const corridorPaths = [
+        [[41.0082, 28.9784], [39.9334, 32.8597]], // İstanbul - Ankara
+        [[41.0082, 28.9784], [38.4237, 27.1428]], // İstanbul - İzmir
+        [[38.4237, 27.1428], [36.8969, 30.7133]], // İzmir - Antalya
+        [[39.9334, 32.8597], [37.9144, 40.2306]]  // Ankara - Diyarbakır
+      ];
 
-        // Taktik Şehir Rozeti
-        const marker = L.circleMarker([c.lat, c.lng], {
-          radius: key === 'istanbul' ? 8 : 6,
+      corridorPaths.forEach(pts => {
+        const line = L.polyline(pts, {
           color: '#dcb260',
           weight: 2,
-          fillColor: '#8b1e1e',
-          fillOpacity: 0.95
+          opacity: 0.65,
+          className: 'animated-trade-corridor'
+        }).addTo(map);
+        animatedCorridors.push(line);
+      });
+
+      // 2. Doğal kıvrımlı vilayet sınırları (Polygon)
+      Object.keys(citiesData).forEach(key => {
+        const c = citiesData[key];
+        const isSelected = key === gameState.selectedCityKey;
+
+        const poly = L.polygon(c.boundaryCoords, {
+          color: isSelected ? '#f3cb79' : '#dcb260',
+          weight: isSelected ? 2.5 : 1.2,
+          dashArray: isSelected ? null : '3, 5',
+          fillColor: isSelected ? '#e6be6e' : '#991b1b',
+          fillOpacity: isSelected ? 0.65 : 0.35
+        }).addTo(map);
+
+        poly.on('click', () => {
+          playSound('click');
+          selectCity(key);
+        });
+
+        poly.on('mouseover', () => {
+          if (key !== gameState.selectedCityKey) {
+            poly.setStyle({ fillOpacity: 0.55, weight: 2, color: '#f3cb79' });
+          }
+        });
+
+        poly.on('mouseout', () => {
+          if (key !== gameState.selectedCityKey) {
+            poly.setStyle({ fillOpacity: 0.35, weight: 1.2, color: '#dcb260' });
+          }
+        });
+
+        cityPolygons[key] = poly;
+
+        // Merkez Metropol Rozeti
+        const marker = L.circleMarker([c.lat, c.lng], {
+          radius: key === 'istanbul' ? 8 : 6,
+          color: '#f3cb79',
+          weight: 2,
+          fillColor: '#991b1b',
+          fillOpacity: 1
         }).addTo(map);
 
         marker.bindTooltip(`<b>${c.name}</b><br><span style="font-size:11px;color:#dcb260">${c.role}</span>`, {
-          permanent: false,
-          direction: 'top',
+          permanent: false, direction: 'top',
           className: 'bg-surface-dim text-parchment border border-imperial-gold/50 font-hud'
         });
 
@@ -757,26 +778,25 @@
           selectCity(key);
         });
 
-        cityMarkers[key] = marker;
+        cityMarkerNodes[key] = marker;
       });
 
-      highlightActiveCity(gameState.selectedCityKey);
+      triggerCitySonarPulse(gameState.selectedCityKey);
     }
 
-    function highlightActiveCity(cityKey) {
+    function triggerCitySonarPulse(cityKey) {
       const c = citiesData[cityKey];
       if (!c) return;
 
-      if (cityPulseRing) map.removeLayer(cityPulseRing);
+      if (activeSonarCircle) map.removeLayer(activeSonarCircle);
 
-      // Seçili şehre özel taktik radar aurası
-      cityPulseRing = L.circle([c.lat, c.lng], {
-        radius: 24000,
+      // Google Maps animasyonlu radar çemberi
+      activeSonarCircle = L.circleMarker([c.lat, c.lng], {
+        radius: 12,
         color: '#f3cb79',
-        weight: 2,
-        dashArray: '5, 5',
-        fillColor: '#e6be6e',
-        fillOpacity: 0.25
+        fillColor: '#dcb260',
+        fillOpacity: 0.35,
+        className: 'city-sonar-pulse'
       }).addTo(map);
     }
 
@@ -809,16 +829,28 @@
       selectCity(cityKey);
       const c = citiesData[cityKey];
       if (c) {
-        map.flyTo([c.lat, c.lng], c.zoom, { duration: 1.5 });
+        map.flyTo([c.lat, c.lng], c.zoom, { duration: 1.5, easeLinearity: 0.25 });
       }
     }
 
-    /* 5. ŞEHİR SEÇİMİ VE SAĞ PANEL GÜNCELLEMESİ */
+    /* 5. ŞEHİR SEÇİMİ VE ARAYÜZ YENİLEME */
     function selectCity(cityKey) {
       gameState.selectedCityKey = cityKey;
       const c = citiesData[cityKey];
 
-      highlightActiveCity(cityKey);
+      // Poligon ve Radar Işımasını Güncelle
+      Object.keys(cityPolygons).forEach(k => {
+        const isSel = k === cityKey;
+        cityPolygons[k].setStyle({
+          color: isSel ? '#f3cb79' : '#dcb260',
+          weight: isSel ? 2.5 : 1.2,
+          dashArray: isSel ? null : '3, 5',
+          fillColor: isSel ? '#e6be6e' : '#991b1b',
+          fillOpacity: isSel ? 0.65 : 0.35
+        });
+      });
+
+      triggerCitySonarPulse(cityKey);
 
       document.getElementById('cityName').innerText = c.name;
       document.getElementById('cityRole').innerText = c.role;
@@ -1039,7 +1071,7 @@
       document.getElementById('newsTickerText').innerText = text;
     }
 
-    /* 6. ZAMAN VE TARİH MOTORU (GG.AA.YYYY & 1x, 2x, 5x, 10x) */
+    /* 6. ZAMAN VE TARİH MOTORU */
     function stepOneDay() {
       gameState.day += 1;
       const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -1102,50 +1134,6 @@
         lbl.innerText = "KRİTİK"; 
         lbl.className = "text-[10px] text-error-soft bg-surface-container-highest px-1.5 py-0.2 rounded font-bold"; 
       }
-    }
-
-    function playSound(type) {
-      try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
-        if (type === 'click') {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(750, now);
-          osc.frequency.exponentialRampToValueAtTime(350, now + 0.04);
-          gain.gain.setValueAtTime(0.12, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.04);
-        } else if (type === 'upgrade') {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(440, now);
-          osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
-          gain.gain.setValueAtTime(0.25, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.18);
-        } else if (type === 'turn') {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(550, now);
-          osc.frequency.setValueAtTime(820, now + 0.05);
-          gain.gain.setValueAtTime(0.12, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.1);
-        }
-      } catch (e) {}
     }
 
     document.addEventListener('DOMContentLoaded', () => {
